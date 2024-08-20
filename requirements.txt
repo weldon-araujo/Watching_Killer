@@ -1,0 +1,4 @@
+requests
+json
+colorama
+python-dotenv
