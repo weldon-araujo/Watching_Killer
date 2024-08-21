@@ -41,3 +41,19 @@ python.exe .\Watching_Killer.py --help
 ![img](https://i.imgur.com/31bEgAA.png)
 
 </h4>
+
+* A ferramenta precisa que seja repassada um parâmetro posicional que será o arquivo onde contém os IOCs, podendo ser arquivos TXT ou CSV, como abaixo uma fonte de IOCs em TXT
+
+<h4 align="center">
+
+![img](https://i.imgur.com/TMFtz5i.png)
+
+</h4>
+
+* A rodar a ferramenta com os demais argumentos se utiliza o valor de IOC que deseja extrair juntamente do template de query de siem desejado, a propria ferramenta se encarregará de extrair os valores e sugerir queries
+
+![img](https://i.imgur.com/E9FyQcB.png)
+
+
+
+
