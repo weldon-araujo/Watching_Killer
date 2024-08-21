@@ -52,8 +52,19 @@ python.exe .\Watching_Killer.py --help
 
 * A rodar a ferramenta com os demais argumentos se utiliza o valor de IOC que deseja extrair juntamente do template de query de siem desejado, a propria ferramenta se encarregará de extrair os valores e sugerir queries
 
+<h4 align="center">
+
 ![img](https://i.imgur.com/E9FyQcB.png)
 
+</h4>
+
+O argumento de reputação utiliza o serviço de API do https://www.abuseipdb.com/ então pra utiliza-lo é necessário possuir uma chave de API, que disponibilizar até 1K checks diários, a ferramenta usa preferencialmente o arquivo .env com o valor key atribuido a váriavel **abuseipdbkey**, então na mesma raiz onde foi clonado o projeto basta criar o arquivo .env e inserir o valor dentro
+
+<h4 align="center">
+
+![img](https://i.imgur.com/3xwtlsg.png)
+
+</h4>
 
 
 
