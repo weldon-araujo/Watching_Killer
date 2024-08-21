@@ -2,7 +2,7 @@
 
 <h4 align="center">
 
-    ![Imgur](https://imgur.com/jKYzI7U)
+![Imgur][Imgur](https://imgur.com/jKYzI7U)
 
 </h4>
 
