@@ -8,14 +8,14 @@
 
 <h1>Descrição do projeto</h1>
 
-Essa ferramenta busca realizar automação do processo de cyber threat hunting
+Essa ferramenta busca realizar automação do processo de cyber threat hunting, através de parsing de IOCs e artefatos que costumam ser utilizados em investigações de cyber threat hunting construção automática de queries específicas para investigações. 
 
 <h3></h3>
 
 
 <h4 align="center">
   
-   :construction: Projeto em construção:construction:
+   :construction: Projeto em desenvolvimento:construction:
 
 </h4>
 
@@ -26,12 +26,12 @@ Essa ferramenta busca realizar automação do processo de cyber threat hunting
 
 <h1>Modo de uso</h1>
 
-* Para visualizar ajuda e verificar os parâmetros necessários ou caso execute o script sem parâmetros.
+* Primeiro é necessário instalar as libs externas simplesmente executando **pip install -r requirements.txt** estando no diretório raiz do reposítório ou repassando o caminho absoluto até o arquivo **requirements.txt** Para visualizar ajuda e verificar os parâmetros necessários, ou se caso execute o script principal Watching_Killer.py sem parâmetros.
 
 ```
 python.exe .\Watching_Killer.py -h
 
- ou 
+ou 
 
 python.exe .\Watching_Killer.py --help
 
@@ -42,7 +42,7 @@ python.exe .\Watching_Killer.py --help
 
 </h4>
 
-* A ferramenta precisa que seja repassada um parâmetro posicional que será o arquivo onde contém os IOCs, podendo ser arquivos TXT ou CSV, como abaixo uma fonte de IOCs em TXT
+* A ferramenta precisa que seja repassada um parâmetro posicional que será o arquivo que contém os IOCs, podendo ser arquivos TXT ou CSV, como no exemplo abaixo uma fonte de IOCs em TXT
 
 <h4 align="center">
 
@@ -50,7 +50,7 @@ python.exe .\Watching_Killer.py --help
 
 </h4>
 
-* A rodar a ferramenta com os demais argumentos se utiliza o valor de IOC que deseja extrair juntamente do template de query de siem desejado, a propria ferramenta se encarregará de extrair os valores e sugerir queries
+* Ao rodar a ferramenta com os demais argumentos, se utiliza o valor de IOC que deseja extrair juntamente do template de query do siem desejado, a propria ferramenta se encarregará de extrair os valores e sugerir queries.
 
 <h4 align="center">
 
@@ -58,7 +58,7 @@ python.exe .\Watching_Killer.py --help
 
 </h4>
 
-O argumento de reputação utiliza o serviço de API do https://www.abuseipdb.com/ então pra utiliza-lo é necessário possuir uma chave de API, que disponibilizar até 1K checks diários, a ferramenta usa preferencialmente o arquivo .env com o valor key atribuido a váriavel **abuseipdbkey**, então na mesma raiz onde foi clonado o projeto basta criar o arquivo .env e inserir o valor dentro
+O argumento de reputação utiliza o serviço de API do https://docs.abuseipdb.com/#introduction então pra utiliza-lo é necessário possuir uma chave de API, que disponibilizar até 1K checks diários, a ferramenta usa preferencialmente o arquivo .env com o valor key atribuido a váriavel **abuseipdbkey**, então na mesma raiz onde foi clonado o projeto basta criar o arquivo .env e inserir o valor dentro
 
 <h4 align="center">
 
