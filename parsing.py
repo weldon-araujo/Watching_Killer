@@ -19,4 +19,4 @@ def arguments():
     return parser.parse_args()
 
 if __name__ == "__main__":
-    print('Error, this not main executable, please execute IOC.py')
+    print('Error, this not main executable, please execute python watching_killer.py -h or --help')

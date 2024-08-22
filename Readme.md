@@ -58,7 +58,15 @@ python.exe .\Watching_Killer.py --help
 
 </h4>
 
-O argumento de reputação utiliza o serviço de API do https://docs.abuseipdb.com/#introduction então pra utiliza-lo é necessário possuir uma chave de API, que disponibilizar até 1K checks diários, a ferramenta usa preferencialmente o arquivo .env com o valor key atribuido a váriavel **abuseipdbkey**, então na mesma raiz onde foi clonado o projeto basta criar o arquivo .env e inserir o valor dentro
+* O argumento de reputação utiliza o serviço de API do https://docs.abuseipdb.com/#introduction portanto pra uso desse argumento é necessário possuir uma chave de API desse serviço, que disponibiliza até 1K checks diários na categoria free, a ferramenta usa preferencialmente o arquivo .env com o valor key atribuido a váriavel **abuseipdbkey**, então na mesma raiz onde foi clonado o projeto basta criar o arquivo .env e inserir o valor dentro.
+
+<h4 align="center">
+
+![img](https://i.imgur.com/gl6tw4Y.png)
+
+</h4>
+
+* Após essa inserção a ferramenta estará apta a realização de consuta de repultação dos endereços IPs extraidos da fonte de IOCs.
 
 <h4 align="center">
 
