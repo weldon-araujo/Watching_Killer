@@ -42,7 +42,7 @@ python.exe .\Watching_Killer.py --help
 
 </h4>
 
-* A ferramenta precisa que seja repassada um parâmetro posicional que será o arquivo que contém os IOCs, podendo ser arquivos TXT ou CSV, como no exemplo abaixo uma fonte de IOCs em TXT
+* A ferramenta precisa que seja repassada um parâmetro posicional que será o arquivo que contém os IOCs, podendo ser arquivos TXT ou CSV, como no exemplo abaixo uma fonte de IOCs em TXT.
 
 <h4 align="center">
 

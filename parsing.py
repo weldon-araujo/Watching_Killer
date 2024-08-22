@@ -4,7 +4,7 @@ def arguments():
     
     parser = argparse.ArgumentParser(description='Tool for parsing of IOCs')
 
-    parser.add_argument('input', help='Path to file to parser')
+    parser.add_argument('input', help='Path of file to parser')
     parser.add_argument('--scnx', action='store_true',help='output query to target siem securonix')
     parser.add_argument('--rsa', action='store_true',help='output query to target siem rsa')
     parser.add_argument('--md5', action='store_true',help='try to capture capture all hashes md5')
