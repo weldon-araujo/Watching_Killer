@@ -62,7 +62,7 @@ python.exe .\Watching_Killer.py --help
 
 <h4 align="center">
 
-![img](https://i.imgur.com/gl6tw4Y.png)
+![img](https://i.imgur.com/Z5q8k6y.png)
 
 </h4>
 
