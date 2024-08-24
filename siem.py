@@ -34,6 +34,10 @@ def scnx_processinformationprocessname():
     processinformationprocessname = colorama.Fore.BLUE + 'processinformationprocessname' + colorama.Style.RESET_ALL
     return processinformationprocessname
 
+def scnx_destinationprocessinformation():
+    destination_process_information = colorama.Fore.BLUE + 'destinationprocessinformation' + colorama.Style.RESET_ALL
+    return destination_process_information
+
 
 def rsa_source_address():
     source_address = colorama.Fore.BLUE + 'ip.src =' + colorama.Style.RESET_ALL

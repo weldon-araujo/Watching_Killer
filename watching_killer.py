@@ -18,7 +18,7 @@ args = parsing.arguments()
 
 def ip(arq):
     ips = []
-    with open(arq, 'r') as outfile:
+    with open(arq, 'r', encoding="utf8") as outfile:
         reader = csv.reader(outfile)
         for raw in reader:
             for cell in raw:
@@ -29,7 +29,7 @@ def ip(arq):
 
 def md5(arq):
     hashes = []
-    with open(arq, 'r') as outfile:
+    with open(arq, 'r', encoding="utf8") as outfile:
         reader = csv.reader(outfile)
         for raw in reader:
             for cell in raw:
@@ -40,7 +40,7 @@ def md5(arq):
 
 def sha1(arq):
     hashes = []
-    with open(arq, 'r') as outfile:
+    with open(arq, 'r', encoding="utf8") as outfile:
         reader = csv.reader(outfile)
         for raw in reader:
             for cell in raw:
@@ -51,7 +51,7 @@ def sha1(arq):
 
 def sha256(arq):
     hashes = []
-    with open(arq, 'r') as outfile:
+    with open(arq, 'r', encoding="utf8") as outfile:
         reader = csv.reader(outfile)
         for raw in reader:
             for cell in raw:
@@ -63,7 +63,7 @@ def sha256(arq):
 def domain(arq):
     domains = []
     tld = ['.com','net','.br','.onion','org','gov']
-    with open(arq, 'r') as outfile:
+    with open(arq, 'r', encoding="utf8") as outfile:
         reader = csv.reader(outfile)
         for raw in reader:
             for cell in raw:
@@ -78,7 +78,7 @@ def domain(arq):
 def artifact(arq):
     process = []
     process_extension = ['.exe','dll','.py','.vbs','.ps1','.bin']
-    with open(arq, 'r') as outfile:
+    with open(arq, 'r', encoding="utf8") as outfile:
         reader = csv.reader(outfile)
         for raw in reader:
             for cell in raw:
@@ -257,8 +257,8 @@ def option(arguments):
 
     elif arguments.input and arguments.artifact == True and arguments.rsa == True:
 
-        if not ip(arguments.input):
-            print('not found ip address')
+        if not artifact(arguments.input):
+            print('not found artifact')
         else:        
 
             records_artifact = []
@@ -267,8 +267,18 @@ def option(arguments):
             for index in found_artifact:
                 records_artifact.append(index)
             print('[AVS / EDRS / Windows / Linux]:\n')
-            color = ' || ' + colorama.Fore.BLUE + ' process = ' + colorama.Style.RESET_ALL
-            print(colorama.Fore.BLUE +'&&'+ colorama.Style.RESET_ALL, rsa_process, color.join(records_artifact))       
+            color = ' ||' + colorama.Fore.BLUE + ' process = ' + colorama.Style.RESET_ALL
+            print(colorama.Fore.BLUE +'&&'+ colorama.Style.RESET_ALL, rsa_process, color.join(records_artifact))
+
+
+    elif arguments.input and arguments.artifact:
+
+        if not artifact(arguments.input):
+            print('not found artifact')
+        else:
+            found_artifact = artifact(args.input)
+            for index in set(found_artifact):
+                print(index)
 
 
     elif arguments.input and arguments.md5 == True and arguments.scnx == True:
