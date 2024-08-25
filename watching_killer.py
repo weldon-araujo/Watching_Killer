@@ -102,16 +102,26 @@ def option(arguments):
             records_ip = []
             scnx_src_address = siem.scnx_src_address()
             scnx_dst_address = siem.scnx_destination_adrress()
+            src_without = siem.scnx_src_address_without()
+            dst_without = siem.scnx_destination_address_without()
+            stats = siem.scnx_stats()
             found_ip = ip(args.input)
             for index in found_ip:
                 records_ip.append(index)
 
             print('[AVs / EDRs / SOs]:\n')
-            print(scnx_src_address,'(', ', '.join(records_ip),')\n')
-            print(scnx_dst_address,'(', ', '.join(records_ip),')\n')
-            print(scnx_src_address,'(', ', '.join(records_ip),')', colorama.Fore.BLUE + ' OR ' + colorama.Style.RESET_ALL ,scnx_dst_address ,'(', ', '.join(records_ip),')')        
-            
 
+            print(f'{scnx_src_address} ({', '.join(records_ip)})\n')
+
+            print(f'{scnx_dst_address} ({', '.join(records_ip)})\n')
+
+            print(scnx_src_address,'(', ', '.join(records_ip),')', colorama.Fore.BLUE + ' OR ' + colorama.Style.RESET_ALL ,scnx_dst_address ,'(', ', '.join(records_ip),')\n')
+                    
+            print(scnx_src_address,'(', ', '.join(records_ip),')', colorama.Fore.BLUE + ' OR ' + colorama.Style.RESET_ALL ,scnx_dst_address ,'(', ', '.join(records_ip),')', stats, src_without,'\n')
+
+            print(scnx_src_address,'(', ', '.join(records_ip),')', colorama.Fore.BLUE + ' OR ' + colorama.Style.RESET_ALL ,scnx_dst_address ,'(', ', '.join(records_ip),')', stats, dst_without)     
+                 
+            
     elif arguments.input and arguments.ip == True and arguments.rsa == True:
 
         if not ip(arguments.input):
@@ -208,11 +218,14 @@ def option(arguments):
         else:
             records_domain = []
             scnx_request_url = siem.scnx_request_url()
+            scnx_request_without = siem.scnx_request_url_without()
+            stats = siem.scnx_stats()
             found_domain = domain(args.input)
             for index in found_domain:
                 records_domain.append(index)
             print('[NGFW / WAF / PROXY]:\n')
-            print(scnx_request_url,'(', ', '.join(records_domain),')')
+            print(f'{scnx_request_url} ({', '.join(records_domain)})\n')
+            print(f'{scnx_request_url} ({', '.join(records_domain)}) {stats} {scnx_request_without}')
 
     
     elif arguments.input and arguments.domain == True and arguments.rsa == True:
