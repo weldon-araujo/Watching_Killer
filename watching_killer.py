@@ -275,12 +275,12 @@ def option(arguments):
         else:        
 
             records_artifact = []
-            rsa_process = siem.rsa_process()
+            rsa_process = siem.process_contains()
             found_artifact = artifact(args.input)
             for index in found_artifact:
                 records_artifact.append(index)
             print('[AVS / EDRS / Windows / Linux]:\n')
-            color = ' ||' + colorama.Fore.BLUE + ' process = ' + colorama.Style.RESET_ALL
+            color = ' ||' + colorama.Fore.BLUE + ' process contains ' + colorama.Style.RESET_ALL
             print(colorama.Fore.BLUE +'&&'+ colorama.Style.RESET_ALL, rsa_process, color.join(records_artifact))
 
 
