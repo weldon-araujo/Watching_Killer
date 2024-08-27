@@ -106,6 +106,7 @@ def option(arguments):
             dst_without = siem.scnx_destination_address_without()
             stats = siem.scnx_stats()
             found_ip = ip(args.input)
+            
             for index in found_ip:
                 records_ip.append(index)
 
@@ -115,11 +116,11 @@ def option(arguments):
 
             print(f'{scnx_dst_address} ({', '.join(records_ip)})\n')
 
-            print(scnx_src_address,'(', ', '.join(records_ip),')', colorama.Fore.BLUE + ' OR ' + colorama.Style.RESET_ALL ,scnx_dst_address ,'(', ', '.join(records_ip),')\n')
+            print(f'{scnx_src_address} ({', '.join(records_ip)}) {colorama.Fore.BLUE}OR{colorama.Style.RESET_ALL} {scnx_dst_address} ({', '.join(records_ip)})\n')
                     
-            print(scnx_src_address,'(', ', '.join(records_ip),')', colorama.Fore.BLUE + ' OR ' + colorama.Style.RESET_ALL ,scnx_dst_address ,'(', ', '.join(records_ip),')', stats, src_without,'\n')
+            print(f'{scnx_src_address} ({', '.join(records_ip)}) {colorama.Fore.BLUE}OR{colorama.Style.RESET_ALL} {scnx_dst_address} ({', '.join(records_ip)}) {stats} {src_without}\n')  
 
-            print(scnx_src_address,'(', ', '.join(records_ip),')', colorama.Fore.BLUE + ' OR ' + colorama.Style.RESET_ALL ,scnx_dst_address ,'(', ', '.join(records_ip),')', stats, dst_without)     
+            print(f'{scnx_src_address} ({', '.join(records_ip)}) {colorama.Fore.BLUE}OR{colorama.Style.RESET_ALL} {scnx_dst_address} ({', '.join(records_ip)}) {stats} {dst_without}\n')
                  
             
     elif arguments.input and arguments.ip == True and arguments.rsa == True:
