@@ -84,9 +84,14 @@ def rsa_url():
     return url
 
 
-def rsa_process():
+def rsa_process_only():
     process = colorama.Fore.BLUE + 'process =' + colorama.Style.RESET_ALL
     return process
+
+
+def process_contains():
+    process_contains = colorama.Fore.BLUE + 'process contains' + colorama.Style.RESET_ALL
+    return process_contains
 
 
 def rsa_src_process():
