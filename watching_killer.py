@@ -22,8 +22,10 @@ def ip(arq):
         reader = csv.reader(outfile)
         for raw in reader:
             for cell in raw:
+                cell = cell.replace('[', '').replace(']', '')
                 matches = re.findall(r'\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}', cell)
-                ips.extend(matches)    
+                ips.extend(matches)
+
     return set(ips) 
 
 
@@ -67,6 +69,7 @@ def domain(arq):
         reader = csv.reader(outfile)
         for raw in reader:
             for cell in raw:
+                cell = cell.replace('[', '').replace(']', '')
                 matches = re.findall(r'\b(?:[a-zA-Z0-9-]+\.){1,}[a-zA-Z]{2,}\b', cell)
                 for match in matches:
                     for index in tld:
@@ -137,11 +140,11 @@ def option(arguments):
 
             print('[AVs / EDRs / SOs]:\n')
             color = ' || ' + colorama.Fore.BLUE + ' ip.src = ' + colorama.Style.RESET_ALL
-            print(colorama.Fore.BLUE +'&&'+ colorama.Style.RESET_ALL, rsa_src_adress, color.join(records_ip),'\n')
+            print(f'{rsa_src_adress} {color.join(records_ip)} \n')
             color = ' || ' + colorama.Fore.BLUE + ' ip.dst = ' + colorama.Style.RESET_ALL
-            print(colorama.Fore.BLUE +'&&'+ colorama.Style.RESET_ALL, rsa_dst_adress, color.join(records_ip),'\n')
+            print(f'{rsa_dst_adress} {color.join(records_ip)} \n')
             color = ' || ' + colorama.Fore.BLUE + ' ip.src = ' + colorama.Style.RESET_ALL
-            print(colorama.Fore.BLUE +'&&'+ colorama.Style.RESET_ALL, rsa_src_adress, color.join(records_ip), colorama.Fore.BLUE + 'OR' + colorama.Style.RESET_ALL)
+            print(f'{rsa_src_adress} {color.join(records_ip)} {colorama.Fore.BLUE} + OR + {colorama.Style.RESET_ALL}')
             color = ' || ' + colorama.Fore.BLUE + ' ip.dst = ' + colorama.Style.RESET_ALL
             print(rsa_dst_adress, color.join(records_ip))
         
@@ -231,8 +234,8 @@ def option(arguments):
     
     elif arguments.input and arguments.domain == True and arguments.rsa == True:
 
-        if not ip(arguments.input):
-            print('not found ip address')
+        if not domain(arguments.input):
+            print('not found doman address')
         else:   
             records_domain = []
             rsa_url = siem.rsa_url()
@@ -242,13 +245,13 @@ def option(arguments):
                 
             print('[NGFW / WAF / PROXY]:\n')
             color = ' || ' + colorama.Fore.BLUE + ' url = ' + colorama.Style.RESET_ALL
-            print(colorama.Fore.BLUE +'&&'+ colorama.Style.RESET_ALL, rsa_url, color.join(records_domain))
+            print(f'{rsa_url} {color.join(records_domain)}')
 
 
     elif arguments.input and arguments.domain == True:
 
-        if not ip(arguments.input):
-            print('not found ip address')
+        if not domain(arguments.input):
+            print('not found domain address')
         else:        
             found_domain = domain(args.input)
             for index in set(found_domain):
@@ -266,8 +269,7 @@ def option(arguments):
             for index in found_artifact:
                 records_artifact.append(index)
             print('[AVS / EDRS / Windows / Linux]:\n')
-            print(scnx_processinformationprocessname,'(', ', '.join(records_artifact),')')
-
+            print(f'{scnx_processinformationprocessname} ({', '.join(records_artifact)})')
 
     elif arguments.input and arguments.artifact == True and arguments.rsa == True:
 
@@ -282,7 +284,7 @@ def option(arguments):
                 records_artifact.append(index)
             print('[AVS / EDRS / Windows / Linux]:\n')
             color = ' ||' + colorama.Fore.BLUE + ' process contains ' + colorama.Style.RESET_ALL
-            print(colorama.Fore.BLUE +'&&'+ colorama.Style.RESET_ALL, rsa_process, color.join(records_artifact))
+            print(f'{rsa_process} {color.join(records_artifact)}')
 
 
     elif arguments.input and arguments.artifact:
@@ -306,7 +308,7 @@ def option(arguments):
             for index in found_md5:
                 records_md5.append(index)
             print('[AVs / EDRs]:\n')
-            print(scnx_old_file_hash, '(', ', '.join(records_md5),')')
+            print(f'{scnx_old_file_hash} ({', '.join(records_md5)})')
 
 
     elif arguments.input and arguments.md5 == True and arguments.rsa == True:
@@ -321,10 +323,10 @@ def option(arguments):
                 records_md5.append(index)
             print('[AVs / EDRs]:\n')
             color = ' || ' + colorama.Fore.BLUE + ' checksum = ' + colorama.Style.RESET_ALL
-            print(colorama.Fore.BLUE +'&&'+ colorama.Style.RESET_ALL, rsa_checksum, color.join(records_md5),'\n')  
+            print(f'{rsa_checksum} {color.join(records_md5)} \n')  
             print('[Sysmon]\n')
             color = ' || ' + colorama.Fore.BLUE + ' checksum = ' + colorama.Style.RESET_ALL + 'md5='
-            print(colorama.Fore.BLUE +'&&'+ colorama.Style.RESET_ALL, rsa_checksum, color.join(records_md5)) 
+            print(f'{rsa_checksum} {color.join(records_md5)}') 
 
  
     elif arguments.input and arguments.md5 == True:
@@ -348,7 +350,7 @@ def option(arguments):
             for index in found_sha1:
                 records_sha1.append(index)
             print('[AVs / EDRs]:\n')
-            print(scnx_old_file_hash, '(', ', '.join(records_sha1),')')
+            print(f'{scnx_old_file_hash} ({', '.join(records_sha1)})')
 
     
     elif arguments.input and arguments.sha1 == True and arguments.rsa == True:
@@ -364,10 +366,10 @@ def option(arguments):
             print('[AVs / EDRs]:\n')
             
             color = ' || ' + colorama.Fore.BLUE + ' checksum = ' + colorama.Style.RESET_ALL
-            print(colorama.Fore.BLUE +'&&'+ colorama.Style.RESET_ALL, rsa_checksum, color.join(records_sha1),'\n')  
+            print(f'{rsa_checksum} {color.join(records_sha1)}\n')  
             print('[Sysmon]\n')
             color = ' ||' + colorama.Fore.BLUE + ' checksum = ' + colorama.Style.RESET_ALL + 'sha1='
-            print(colorama.Fore.BLUE +'&&'+ colorama.Style.RESET_ALL, rsa_checksum,'sha1=', color.join(records_sha1)) 
+            print(f'{rsa_checksum} sha1= {color.join(records_sha1)}') 
 
 
     elif arguments.input and arguments.sha1 == True:
@@ -391,7 +393,7 @@ def option(arguments):
             for index in set(found_sha256):
                 records_sha256.append(index)
             print('[AVs / EDRs]:\n')
-            print(scnx_old_file_hash, '(', ', '.join(records_sha256),')')   
+            print(f'{scnx_old_file_hash} ({', '.join(records_sha256)})')   
         
     
     elif arguments.input and arguments.sha256 == True and arguments.rsa == True:
@@ -407,16 +409,20 @@ def option(arguments):
 
             print('[AVs / EDRs]:\n')
             color = ' || ' + colorama.Fore.BLUE + ' checksum = ' + colorama.Style.RESET_ALL
-            print(colorama.Fore.BLUE +'&&'+ colorama.Style.RESET_ALL, rsa_checksum, color.join(records_sha256),'\n')  
+            print(f'{rsa_checksum} {color.join(records_sha256)}\n')  
             print('[Sysmon]\n')
             color = ' ||' + colorama.Fore.BLUE + ' checksum = ' + colorama.Style.RESET_ALL + 'sha256='
-            print(colorama.Fore.BLUE +'&&'+ colorama.Style.RESET_ALL, rsa_checksum,'sha256=', color.join(records_sha256)) 
+            print(f'{rsa_checksum} sha256= {color.join(records_sha256)}') 
         
 
     elif arguments.input and arguments.sha256 == True:
-        found_sha256 = sha256(args.input)
-        for index in set(found_sha256):
-            print(index)
+
+        if not sha256(arguments.input):
+            print('not found sha256 hashes')
+        else:
+            found_sha256 = sha256(args.input)
+            for index in set(found_sha256):
+                print(index)
 
     
     elif arguments.input and arguments.all == True:
