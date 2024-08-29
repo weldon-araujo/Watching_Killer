@@ -66,7 +66,7 @@ python.exe .\Watching_Killer.py --help
 
 </h4>
 
-* Após essa inserção a ferramenta estará apta a realização de consuta de reputação dos endereços IPs extraidos da fonte de IOCs.
+* Após essa inserção a ferramenta estará apta a realização de consulta de reputação dos endereços IPs extraidos da fonte de IOCs.
 
 <h4 align="center">
 

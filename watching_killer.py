@@ -171,37 +171,51 @@ def option(arguments):
 
             ip_parsing = ip(args.input)   
 
+
             for index in ip_parsing:
                 querystring["ipAddress"] = index
-                response = requests.request(method='GET', url=url, headers=headers, params=querystring)
-                decodedResponse = json.loads(response.text)
-                address = decodedResponse['data']['ipAddress']
-                rep = decodedResponse['data']['abuseConfidenceScore']
-                dns = decodedResponse['data']['hostnames']
+                try:
+                    response = requests.request(method='GET', url=url, headers=headers, params=querystring)
+                    decodedResponse = json.loads(response.text)
+                    address = decodedResponse['data']['ipAddress']
+                    rep = decodedResponse['data']['abuseConfidenceScore']
+                    dns = decodedResponse['data']['hostnames']
+                except KeyError:
+                    print("There's probably something wrong with the API key. Check if it's the right one and try again. Also, check if the file is named .env.",'\n')
+                    break
+
                 ip_parsing = list(set(ip_parsing))
 
                 if not dns:
-                    if rep >= 0 and rep <= 30:   
+                    if rep >= 0 and rep <= 25:   
                         rep2 = str(rep) + '%'             
                         print(f'{address} {colorama.Fore.GREEN + rep2 + colorama.Style.RESET_ALL }')
 
-                    elif rep >= 30 and rep <= 69:
+                    elif rep >= 26 and rep <= 50:
+                        rep2 = str(rep) + '%'
+                        print(f'{address} {colorama.Fore.BLUE + rep2 + colorama.Style.RESET_ALL}')
+
+                    elif rep >= 51 and rep <= 75:
                         rep2 = str(rep) + '%'
                         print(f'{address} {colorama.Fore.YELLOW + rep2 + colorama.Style.RESET_ALL }')
                     
-                    elif rep >= 70 and rep <= 100:
+                    elif rep >= 76 and rep <= 100:
                         rep2 = str(rep) + '%'
                         print(f'{address} {colorama.Fore.RED + rep2 + colorama.Style.RESET_ALL }')
 
-                elif rep >= 0 and rep <= 30:   
+                elif rep >= 0 and rep <= 25:   
                     rep2 = str(rep) + '%'             
                     print(f'{address} {colorama.Fore.GREEN + rep2 + colorama.Style.RESET_ALL } {dns} ')
 
-                elif rep >= 30 and rep <= 69:
+                elif rep >= 26 and rep <= 50:   
+                    rep2 = str(rep) + '%'             
+                    print(f'{address} {colorama.Fore.BLUE + rep2 + colorama.Style.RESET_ALL } {dns} ')
+
+                elif rep >= 51 and rep <= 75:
                     rep2 = str(rep) + '%'
                     print(f'{address} {colorama.Fore.YELLOW + rep2 + colorama.Style.RESET_ALL } {dns} ')
                     
-                elif rep >= 70 and rep <= 100:
+                elif rep >= 76 and rep <= 100:
                     rep2 = str(rep) + '%'
                     print(f'{address} {colorama.Fore.RED + rep2 + colorama.Style.RESET_ALL } {dns} ')       
             
