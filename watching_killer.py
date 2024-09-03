@@ -135,6 +135,7 @@ def option(arguments):
             rsa_src_adress = siem.rsa_source_address()
             rsa_dst_adress = siem.rsa_destination_adress()
             found_ip = ip(args.input)
+
             for index in found_ip:
                 records_ip.append(index)
 
@@ -242,6 +243,7 @@ def option(arguments):
             scnx_request_without = siem.scnx_request_url_without()
             stats = siem.scnx_stats()
             found_domain = domain(args.input)
+
             for index in found_domain:
                 records_domain.append(index)
 
@@ -258,6 +260,7 @@ def option(arguments):
             records_domain = []
             rsa_url = siem.rsa_url()
             found_domain = domain(args.input)
+
             for index in found_domain:
                 records_domain.append("'" + index + "'")
                 
