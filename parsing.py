@@ -2,7 +2,7 @@ import argparse
 
 def arguments():
     
-    parser = argparse.ArgumentParser(description='Tool for parsing of IOCs')
+    parser = argparse.ArgumentParser(description='Tool for parsing IOCs')
 
     parser.add_argument('input', help='Path of file to parser')
     parser.add_argument('--scnx', action='store_true',help='output query to target siem securonix')
@@ -14,7 +14,6 @@ def arguments():
     parser.add_argument('--domain', action='store_true', help='try to capture all hashes domains')
     parser.add_argument('--artifact', action='store_true', help='try to capture all artifact like process')
     parser.add_argument('--reputation', action='store_true', help='verify reputataion of address ip')
-    parser.add_argument('--all', action='store_true', help='This option runl all option')
 
     return parser.parse_args()
 
