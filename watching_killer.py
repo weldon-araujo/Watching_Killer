@@ -64,7 +64,7 @@ def sha256(arq):
 
 def domain(arq):
     domains = []
-    tld = ['.com','net','.br','.onion','org','gov']
+    tld = ['.com','net','.br','.onion','org','gov', '.de', '.at']
     with open(arq, 'r', encoding="utf8") as outfile:
         reader = csv.reader(outfile)
         for raw in reader:
