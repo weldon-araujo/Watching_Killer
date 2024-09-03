@@ -80,7 +80,7 @@ def domain(arq):
 
 def artifact(arq):
     process = []
-    process_extension = ['.exe','dll','.py','.vbs','.ps1','.bin']
+    process_extension = ['.exe','dll','.py','.vbs','.ps1','.bin','.bat']
     with open(arq, 'r', encoding="utf8") as outfile:
         reader = csv.reader(outfile)
         for raw in reader:
