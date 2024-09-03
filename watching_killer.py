@@ -141,10 +141,13 @@ def option(arguments):
             print('[AVs / EDRs / SOs]:\n')
             color = ' || ' + colorama.Fore.BLUE + ' ip.src = ' + colorama.Style.RESET_ALL
             print(f'{rsa_src_adress} {color.join(records_ip)} \n')
+
             color = ' || ' + colorama.Fore.BLUE + ' ip.dst = ' + colorama.Style.RESET_ALL
             print(f'{rsa_dst_adress} {color.join(records_ip)} \n')
+
             color = ' || ' + colorama.Fore.BLUE + ' ip.src = ' + colorama.Style.RESET_ALL
             print(f'{rsa_src_adress} {color.join(records_ip)} {colorama.Fore.BLUE} + OR + {colorama.Style.RESET_ALL}')
+
             color = ' || ' + colorama.Fore.BLUE + ' ip.dst = ' + colorama.Style.RESET_ALL
             print(rsa_dst_adress, color.join(records_ip))
         
@@ -241,6 +244,7 @@ def option(arguments):
             found_domain = domain(args.input)
             for index in found_domain:
                 records_domain.append(index)
+
             print('[NGFW / WAF / PROXY]:\n')
             print(f'{scnx_request_url} ({', '.join(records_domain)})\n')
             print(f'{scnx_request_url} ({', '.join(records_domain)}) {stats} {scnx_request_without}')
@@ -255,10 +259,10 @@ def option(arguments):
             rsa_url = siem.rsa_url()
             found_domain = domain(args.input)
             for index in found_domain:
-                records_domain.append(index)
+                records_domain.append("'" + index + "'")
                 
             print('[NGFW / WAF / PROXY]:\n')
-            color = ' || ' + colorama.Fore.BLUE + ' url = ' + colorama.Style.RESET_ALL
+            color = ' ||' + colorama.Fore.BLUE + ' url = ' + colorama.Style.RESET_ALL
             print(f'{rsa_url} {color.join(records_domain)}')
 
 
@@ -295,7 +299,8 @@ def option(arguments):
             rsa_process = siem.process_contains()
             found_artifact = artifact(args.input)
             for index in found_artifact:
-                records_artifact.append(index)
+                records_artifact.append("'" + index + "'")
+
             print('[AVS / EDRS / Windows / Linux]:\n')
             color = ' ||' + colorama.Fore.BLUE + ' process contains ' + colorama.Style.RESET_ALL
             print(f'{rsa_process} {color.join(records_artifact)}')
@@ -321,6 +326,7 @@ def option(arguments):
             found_md5 = md5(args.input)
             for index in found_md5:
                 records_md5.append(index)
+
             print('[AVs / EDRs]:\n')
             print(f'{scnx_old_file_hash} ({', '.join(records_md5)})')
 
@@ -333,15 +339,22 @@ def option(arguments):
             records_md5 = []
             rsa_checksum = siem.rsa_cheksum()
             found_checksum = md5(args.input)
+
             for index in found_checksum:
                 records_md5.append(index)
-            print('[AVs / EDRs]:\n')
-            color = ' || ' + colorama.Fore.BLUE + ' checksum = ' + colorama.Style.RESET_ALL
-            print(f'{rsa_checksum} {color.join(records_md5)} \n')  
-            print('[Sysmon]\n')
-            color = ' || ' + colorama.Fore.BLUE + ' checksum = ' + colorama.Style.RESET_ALL + 'md5='
-            print(f'{rsa_checksum} {color.join(records_md5)}') 
 
+            print('[AVs / EDRs]:\n')
+            color = ' ||' + colorama.Fore.BLUE + ' checksum = ' + colorama.Style.RESET_ALL
+            print(f'{rsa_checksum} {color.join(records_md5)} \n') 
+
+            print('[Sysmon]\n')
+            color = ' ||' + colorama.Fore.BLUE + ' checksum = ' + colorama.Style.RESET_ALL + "'MD5="
+
+            records_md5 = [f"{md5}'" for md5 in records_md5]
+        
+            print(f"{rsa_checksum} 'MD5={color.join(records_md5)}")
+                        
+           
  
     elif arguments.input and arguments.md5 == True:
 
