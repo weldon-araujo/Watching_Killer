@@ -55,13 +55,14 @@ def scnx_request_url_without():
     return request_url_without
 
 
-def scnx_processinformationprocessname():
-    processinformationprocessname = colorama.Fore.BLUE + 'processinformationprocessname' + colorama.Style.RESET_ALL
-    return processinformationprocessname
+def scnx_sourceprocessname():
+    source_process_name = colorama.Fore.BLUE + 'sourceprocessname in' + colorama.Style.RESET_ALL
+    return source_process_name
 
-def scnx_destinationprocessinformation():
-    destination_process_information = colorama.Fore.BLUE + 'destinationprocessinformation' + colorama.Style.RESET_ALL
-    return destination_process_information
+
+def scnx_destinationprocessname():
+    destination_process_name = colorama.Fore.BLUE + 'destinationprocessname in' + colorama.Style.RESET_ALL
+    return destination_process_name
 
 
 def rsa_source_address():

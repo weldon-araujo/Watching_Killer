@@ -80,7 +80,7 @@ def domain(arq):
 
 def artifact(arq):
     process = []
-    process_extension = ['.exe','dll','.py','.vbs','.ps1','.bin','.bat']
+    process_extension = ['.exe','dll','.py','.vbs','.ps1','.bin','.bat','.wsf']
     with open(arq, 'r', encoding="utf8") as outfile:
         reader = csv.reader(outfile)
         for raw in reader:
@@ -285,12 +285,19 @@ def option(arguments):
             print('not found artifact')
         else:        
             records_artifact = []
-            scnx_processinformationprocessname = siem.scnx_processinformationprocessname()
+            scnx_sourceprocessname = siem.scnx_sourceprocessname()
+            scnx_destinationprocessname = siem.scnx_destinationprocessname()
             found_artifact = artifact(args.input)
             for index in found_artifact:
                 records_artifact.append(index)
             print('[AVS / EDRS / Windows / Linux]:\n')
-            print(f'{scnx_processinformationprocessname} ({', '.join(records_artifact)})')
+            print(f'{scnx_sourceprocessname} ({', '.join(records_artifact)})\n')
+
+            print(f'{scnx_destinationprocessname} ({', '.join(records_artifact)})\n')
+
+            print(f'{scnx_sourceprocessname} ({', '.join(records_artifact)}) {colorama.Fore.BLUE}OR{colorama.Style.RESET_ALL} {scnx_destinationprocessname} ({', '.join(records_artifact)})\n')
+
+            
 
     elif arguments.input and arguments.artifact == True and arguments.rsa == True:
 
