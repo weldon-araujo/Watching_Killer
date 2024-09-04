@@ -64,6 +64,10 @@ def scnx_destinationprocessname():
     destination_process_name = colorama.Fore.BLUE + 'destinationprocessname in' + colorama.Style.RESET_ALL
     return destination_process_name
 
+def filename():
+    file_name = colorama.Fore.BLUE + 'filename in' + colorama.Style.RESET_ALL
+    return file_name
+
 
 def rsa_source_address():
     source_address = colorama.Fore.BLUE + 'ip.src =' + colorama.Style.RESET_ALL

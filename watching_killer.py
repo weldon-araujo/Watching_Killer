@@ -287,6 +287,7 @@ def option(arguments):
             records_artifact = []
             scnx_sourceprocessname = siem.scnx_sourceprocessname()
             scnx_destinationprocessname = siem.scnx_destinationprocessname()
+            scnx_filename = siem.filename()
             found_artifact = artifact(args.input)
             for index in found_artifact:
                 records_artifact.append(index)
@@ -297,7 +298,9 @@ def option(arguments):
 
             print(f'{scnx_sourceprocessname} ({', '.join(records_artifact)}) {colorama.Fore.BLUE}OR{colorama.Style.RESET_ALL} {scnx_destinationprocessname} ({', '.join(records_artifact)})\n')
 
-            
+            print(f'{scnx_filename} ({', '.join(records_artifact)})\n')
+
+           
 
     elif arguments.input and arguments.artifact == True and arguments.rsa == True:
 
