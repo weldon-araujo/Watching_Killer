@@ -333,19 +333,19 @@ def option(arguments):
             for index in found_domain:
                 records_domain.append(index)
                 meadle = len(records_domain) // 2
-                new10 = records_domain[:meadle]
-                new20 = records_domain[meadle:]
+                new1 = records_domain[:meadle]
+                new2 = records_domain[meadle:]
                 
             
             print('[NGFW / WAF / PROXY]:\n')
             
-            print(f'{scnx_request_url} ({', '.join(new10)})\n')
+            print(f'{scnx_request_url} ({', '.join(new1)})\n')
 
-            print(f'{scnx_request_url} ({', '.join(new20)})\n')
+            print(f'{scnx_request_url} ({', '.join(new2)})\n')
 
-            print(f'{scnx_request_url} ({', '.join(new10)}) {stats}{scnx_request_without}\n')
+            print(f'{scnx_request_url} ({', '.join(new1)}) {stats}{scnx_request_without}\n')
 
-            print(f'{scnx_request_url} ({', '.join(new20)}) {stats}{scnx_request_without}')
+            print(f'{scnx_request_url} ({', '.join(new2)}) {stats}{scnx_request_without}')
 
 
     elif arguments.input and arguments.domain == True and arguments.scnx == True:
@@ -366,7 +366,31 @@ def option(arguments):
             print(f'{scnx_request_url} ({', '.join(records_domain)})\n')
             print(f'{scnx_request_url} ({', '.join(records_domain)}) {stats}{scnx_request_without}')
 
-    
+
+    elif arguments.input and arguments.domain and arguments.rsa and arguments.l:
+
+        if not domain(arguments.input):
+            print('not found doman address')
+        else:   
+            records_domain = []
+            rsa_url = siem.rsa_url()
+            found_domain = domain(args.input)
+
+            for index in found_domain:
+                records_domain.append("'" + index + "'")
+                meadle = len(records_domain) // 2
+                new1 = records_domain[:meadle]
+                new2 = records_domain[meadle:]
+
+                
+            print('[NGFW / WAF / PROXY]:\n')
+            color = ' ||' + colorama.Fore.BLUE + ' url = ' + colorama.Style.RESET_ALL
+            print(f'{rsa_url} {color.join(new1)}\n')
+
+            color = ' ||' + colorama.Fore.BLUE + ' url = ' + colorama.Style.RESET_ALL
+            print(f'{rsa_url} {color.join(new2)}')
+
+
     elif arguments.input and arguments.domain == True and arguments.rsa == True:
 
         if not domain(arguments.input):
