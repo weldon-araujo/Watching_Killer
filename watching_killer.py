@@ -102,8 +102,7 @@ def option(arguments):
 
         if not ip(arguments.input):
             print('not found ip address')
-        else:
-            
+        else:            
             records_ip = []
             scnx_src_address = siem.scnx_src_address()
             scnx_dst_address = siem.scnx_destination_adrress()
@@ -418,6 +417,68 @@ def option(arguments):
                 print(index)
         
     
+    elif arguments.input and arguments.artifact and arguments.scnx and arguments.l:
+
+        if not artifact(arguments.input):
+            print('not found artifact')
+        else:        
+            records_artifact = []
+            scnx_sourceprocessname = siem.scnx_sourceprocessname()
+            scnx_destinationprocessname = siem.scnx_destinationprocessname()
+            scnx_filename = siem.filename()
+            found_artifact = artifact(args.input)
+
+            for index in found_artifact:
+                records_artifact.append(index)
+                meadle = len(records_artifact) // 2
+                new1 = records_artifact[:meadle]
+                new2 = records_artifact[meadle:]
+
+            print('[AVS / EDRS / Windows / Linux]:\n')
+
+            print(f'{scnx_sourceprocessname} ({', '.join(new1)})\n')
+
+            print(f'{scnx_sourceprocessname} ({', '.join(new2)})\n')
+
+            print(f'{scnx_destinationprocessname} ({', '.join(new1)})\n')
+
+            print(f'{scnx_destinationprocessname} ({', '.join(new2)})\n')
+
+            print(f'{scnx_sourceprocessname} ({', '.join(new1)}) {colorama.Fore.BLUE}OR{colorama.Style.RESET_ALL} {scnx_destinationprocessname} ({', '.join(new1)})\n')
+
+            print(f'{scnx_sourceprocessname} ({', '.join(new2)}) {colorama.Fore.BLUE}OR{colorama.Style.RESET_ALL} {scnx_destinationprocessname} ({', '.join(new2)})\n')
+
+            print(f'{scnx_filename} ({', '.join(new1)})\n')
+
+            print(f'{scnx_filename} ({', '.join(new2)})\n')
+
+        
+    elif arguments.input and arguments.artifact and arguments.rsa and arguments.l:
+
+        if not artifact(arguments.input):
+            print('not found artifact')
+        else:        
+
+            records_artifact = []
+            rsa_process = siem.process_contains()
+            found_artifact = artifact(args.input)
+
+            for index in found_artifact:
+                records_artifact.append("'" + index + "'")
+                meadle = len(records_artifact) // 2
+                new1 = records_artifact[:meadle]
+                new2 = records_artifact[meadle:]
+
+
+            print('[AVS / EDRS / Windows / Linux]:\n')
+
+            color = ' ||' + colorama.Fore.BLUE + ' process contains ' + colorama.Style.RESET_ALL
+            print(f'{rsa_process} {color.join(new1)}\n')
+
+            color = ' ||' + colorama.Fore.BLUE + ' process contains ' + colorama.Style.RESET_ALL
+            print(f'{rsa_process} {color.join(new2)}')
+
+
     elif arguments.input and arguments.artifact == True and arguments.scnx == True:
 
         if not artifact(arguments.input):
@@ -428,9 +489,12 @@ def option(arguments):
             scnx_destinationprocessname = siem.scnx_destinationprocessname()
             scnx_filename = siem.filename()
             found_artifact = artifact(args.input)
+
             for index in found_artifact:
                 records_artifact.append(index)
+                
             print('[AVS / EDRS / Windows / Linux]:\n')
+
             print(f'{scnx_sourceprocessname} ({', '.join(records_artifact)})\n')
 
             print(f'{scnx_destinationprocessname} ({', '.join(records_artifact)})\n')
@@ -440,7 +504,6 @@ def option(arguments):
             print(f'{scnx_filename} ({', '.join(records_artifact)})\n')
 
            
-
     elif arguments.input and arguments.artifact == True and arguments.rsa == True:
 
         if not artifact(arguments.input):
@@ -455,6 +518,7 @@ def option(arguments):
                 records_artifact.append("'" + index + "'")
 
             print('[AVS / EDRS / Windows / Linux]:\n')
+
             color = ' ||' + colorama.Fore.BLUE + ' process contains ' + colorama.Style.RESET_ALL
             print(f'{rsa_process} {color.join(records_artifact)}')
 
@@ -467,6 +531,62 @@ def option(arguments):
             found_artifact = artifact(args.input)
             for index in set(found_artifact):
                 print(index)
+
+
+    elif arguments.input and arguments.md5 and arguments.scnx and arguments.l:
+
+        if not md5(arguments.input):
+            print('not found md5 hashes')
+        else:        
+            records_md5 = []
+            scnx_old_file_hash = siem.scnx_old_file_hash()
+            found_md5 = md5(args.input)
+
+            for index in found_md5:
+                records_md5.append(index)
+                meadle = len(records_md5) // 2
+                new1 = records_md5[:meadle]
+                new2 = records_md5[meadle:]
+
+            print('[AVs / EDRs]:\n')
+
+            print(f'{scnx_old_file_hash} ({', '.join(new1)})\n')
+
+            print(f'{scnx_old_file_hash} ({', '.join(new2)})')
+
+    
+    elif arguments.input and arguments.md5 and arguments.rsa and arguments.l:
+
+        if not md5(arguments.input):
+            print('not found md5 hashes')
+        else:        
+            records_md5 = []
+            rsa_checksum = siem.rsa_cheksum()
+            found_checksum = md5(args.input)
+
+            for index in found_checksum:
+                records_md5.append(index)
+                meadle = len(records_md5) // 2
+                new1 = records_md5[:meadle]
+                new2 = records_md5[meadle:]
+
+            print('[AVs / EDRs]:\n')
+
+            color = ' ||' + colorama.Fore.BLUE + ' checksum = ' + colorama.Style.RESET_ALL
+            print(f'{rsa_checksum} {color.join(new1)} \n')
+
+            color = ' ||' + colorama.Fore.BLUE + ' checksum = ' + colorama.Style.RESET_ALL
+            print(f'{rsa_checksum} {color.join(new2)} \n') 
+
+            print('[Sysmon]\n')
+
+            color = ' ||' + colorama.Fore.BLUE + ' checksum = ' + colorama.Style.RESET_ALL + "'md5="
+            records_md5 = [f"{md5}'" for md5 in records_md5]        
+            print(f"{rsa_checksum} 'md5={color.join(new1)}\n")
+
+            color = ' ||' + colorama.Fore.BLUE + ' checksum = ' + colorama.Style.RESET_ALL + "'md5="
+            records_md5 = [f"{md5}'" for md5 in records_md5]        
+            print(f"{rsa_checksum} 'md5={color.join(new2)}")
 
 
     elif arguments.input and arguments.md5 == True and arguments.scnx == True:
