@@ -93,6 +93,19 @@ def artifact(arq):
     return set(process)
 
 
+def emails(arq):
+    emails = []
+    with open(arq, 'r', encoding="utf8") as outfile:
+        reader = csv.reader(outfile)
+        for raw in reader:
+            for cell in raw:
+                matches = re.findall(r'\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*', cell)
+                pass 
+
+        #AINDA PRECISO TERMINAR ISSO DEPOIS# 
+        
+
+
 # Main arguments test for run
 
 
