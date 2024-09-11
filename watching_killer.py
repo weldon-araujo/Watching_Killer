@@ -637,6 +637,62 @@ def option(arguments):
                 print(index)
 
     
+    elif arguments.input and arguments.sha1 and arguments.scnx and arguments.l:
+
+        if not sha1(arguments.input):
+            print('not found sha1 hashes')
+        else:        
+            records_sha1 = []
+            scnx_old_file_hash = siem.scnx_old_file_hash()
+            found_sha1 = sha1(args.input)
+            
+            for index in found_sha1:
+                records_sha1.append(index)
+                meadle = len(records_sha1) // 2
+                new1 = records_sha1[:meadle]
+                new2 = records_sha1[meadle:]
+
+
+            print('[AVs / EDRs]:\n')
+            print(f'{scnx_old_file_hash} ({', '.join(new1)})\n')
+
+            print(f'{scnx_old_file_hash} ({', '.join(new2)})')
+
+
+    elif arguments.input and arguments.sha1 and arguments.rsa and arguments.l:
+
+        if not sha1(arguments.input):
+            print('not found sha1 hashes')
+        else:        
+            records_sha1 = []
+            rsa_checksum = siem.rsa_cheksum()
+            found_checksum = sha1(args.input)
+
+            for index in found_checksum:
+                records_sha1.append(index)
+                meadle = len(records_sha1) // 2
+                new1 = records_sha1[:meadle]
+                new2 = records_sha1[meadle:]
+
+            print('[AVs / EDRs]:\n')
+            
+            color = ' || ' + colorama.Fore.BLUE + ' checksum = ' + colorama.Style.RESET_ALL
+            print(f'{rsa_checksum} {color.join(new1)}\n')  
+
+            color = ' || ' + colorama.Fore.BLUE + ' checksum = ' + colorama.Style.RESET_ALL
+            print(f'{rsa_checksum} {color.join(new2)}\n')
+
+            print('[Sysmon]\n')
+
+            color = ' ||' + colorama.Fore.BLUE + ' checksum = ' + colorama.Style.RESET_ALL + "'sha1="
+            records_sha1 = [f"{sha1}'" for sha1 in records_sha1]
+            print(f"{rsa_checksum} 'sha1={color.join(new1)}\n")
+
+            color = ' ||' + colorama.Fore.BLUE + ' checksum = ' + colorama.Style.RESET_ALL + "'sha1="
+            records_sha1 = [f"{sha1}'" for sha1 in records_sha1]
+            print(f"{rsa_checksum} 'sha1={color.join(new2)}")
+
+
     elif arguments.input and arguments.sha1 == True and arguments.scnx == True:
 
         if not sha1(arguments.input):
@@ -648,6 +704,7 @@ def option(arguments):
 
             for index in found_sha1:
                 records_sha1.append(index)
+
             print('[AVs / EDRs]:\n')
             print(f'{scnx_old_file_hash} ({', '.join(records_sha1)})')
 
@@ -663,10 +720,12 @@ def option(arguments):
 
             for index in found_checksum:
                 records_sha1.append(index)
+
             print('[AVs / EDRs]:\n')
             
             color = ' || ' + colorama.Fore.BLUE + ' checksum = ' + colorama.Style.RESET_ALL
             print(f'{rsa_checksum} {color.join(records_sha1)}\n')  
+
             print('[Sysmon]\n')
 
             color = ' ||' + colorama.Fore.BLUE + ' checksum = ' + colorama.Style.RESET_ALL + "'sha1="
@@ -683,7 +742,63 @@ def option(arguments):
             for index in set(found_sha1):
                 print(index)
 
-    
+
+    elif arguments.input and arguments.sha256 and arguments.scnx and arguments.l:
+
+        if not sha256(arguments.input):
+            print('not found sha256 hashes')
+        else:
+            records_sha256 = []
+            scnx_old_file_hash = siem.scnx_old_file_hash()
+            found_sha256 = sha256(arguments.input)
+
+            for index in set(found_sha256):
+                records_sha256.append(index)
+                meadle = len(records_sha256) // 2
+                new1 = records_sha256[:meadle]
+                new2 = records_sha256[meadle:]
+
+            print('[AVs / EDRs]:\n')
+
+            print(f'{scnx_old_file_hash} ({', '.join(new1)})\n')   
+
+            print(f'{scnx_old_file_hash} ({', '.join(new2)})') 
+
+
+    elif arguments.input and arguments.sha256 and arguments.rsa and arguments.l:
+
+        if not sha256(arguments.input):
+            print('not found sha256 hashes')
+        else:
+            records_sha256 = []
+            rsa_checksum = siem.rsa_cheksum()
+            found_checksum = sha256(args.input)
+
+            for index in found_checksum:
+                records_sha256.append(index)
+                meadle = len(records_sha256) // 2
+                new1 = records_sha256[:meadle]
+                new2 = records_sha256[meadle:]
+
+            print('[AVs / EDRs]:\n')
+
+            color = ' || ' + colorama.Fore.BLUE + ' checksum = ' + colorama.Style.RESET_ALL
+            print(f'{rsa_checksum} {color.join(new1)}\n')  
+
+            color = ' || ' + colorama.Fore.BLUE + ' checksum = ' + colorama.Style.RESET_ALL
+            print(f'{rsa_checksum} {color.join(new2)}\n')
+
+            print('[Sysmon]\n')
+
+            color = ' ||' + colorama.Fore.BLUE + ' checksum = ' + colorama.Style.RESET_ALL + "'sha256="
+            records_sha256 = [f"{sha256}'" for sha256 in records_sha256]
+            print(f"{rsa_checksum} 'sha256={color.join(new1)}\n") 
+
+            color = ' ||' + colorama.Fore.BLUE + ' checksum = ' + colorama.Style.RESET_ALL + "'sha256="
+            records_sha256 = [f"{sha256}'" for sha256 in records_sha256]
+            print(f"{rsa_checksum} 'sha256={color.join(new2)}") 
+
+
     elif arguments.input and arguments.sha256 == True and arguments.scnx == True:
 
         if not sha256(arguments.input):
@@ -695,6 +810,7 @@ def option(arguments):
 
             for index in set(found_sha256):
                 records_sha256.append(index)
+
             print('[AVs / EDRs]:\n')
             print(f'{scnx_old_file_hash} ({', '.join(records_sha256)})')   
         
@@ -712,10 +828,12 @@ def option(arguments):
                 records_sha256.append(index)
 
             print('[AVs / EDRs]:\n')
+
             color = ' || ' + colorama.Fore.BLUE + ' checksum = ' + colorama.Style.RESET_ALL
             print(f'{rsa_checksum} {color.join(records_sha256)}\n')  
 
             print('[Sysmon]\n')
+
             color = ' ||' + colorama.Fore.BLUE + ' checksum = ' + colorama.Style.RESET_ALL + "'sha256="
             records_sha256 = [f"{sha256}'" for sha256 in records_sha256]
             print(f"{rsa_checksum} 'sha256={color.join(records_sha256)}") 
