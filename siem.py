@@ -64,6 +64,12 @@ def scnx_destinationprocessname():
     destination_process_name = colorama.Fore.BLUE + 'destinationprocessname in' + colorama.Style.RESET_ALL
     return destination_process_name
 
+
+def scnx_mailboxownerupn():
+    mailboxownerupn = colorama.Fore.BLUE + 'mailboxownerupn in' + colorama.Style.RESET_ALL
+    return mailboxownerupn
+
+
 def filename():
     file_name = colorama.Fore.BLUE + 'filename in' + colorama.Style.RESET_ALL
     return file_name

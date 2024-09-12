@@ -64,7 +64,7 @@ def sha256(arq):
 
 def domain(arq):
     domains = []
-    tld = ['.com','net','.br','.onion','org','gov', '.de', '.at']
+    tld = ['.com','net','.br','.onion','org','gov', '.de', '.at', '.co','.link','.sh']
     with open(arq, 'r', encoding="utf8") as outfile:
         reader = csv.reader(outfile)
         for raw in reader:
@@ -93,18 +93,17 @@ def artifact(arq):
     return set(process)
 
 
-def emails(arq):
+def email(arq):
     emails = []
     with open(arq, 'r', encoding="utf8") as outfile:
         reader = csv.reader(outfile)
         for raw in reader:
             for cell in raw:
-                matches = re.findall(r'\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*', cell)
-                pass 
+                matches = re.findall(r'[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}', cell)
+                emails.extend(matches)
+    return set(emails)
 
-        #AINDA PRECISO TERMINAR ISSO DEPOIS# 
-        
-
+        #AINDA PRECISO TERMINAR ISSO DEPOIS#         
 
 # Main arguments test for run
 
@@ -171,6 +170,7 @@ def option(arguments):
                 new2 = records_ip[meadle:]
 
             print('[AVs / EDRs / SOs]:\n')
+
             color = ' ||' + colorama.Fore.BLUE + ' ip.src = ' + colorama.Style.RESET_ALL
             print(f'{rsa_src_adress} {color.join(new1)} \n')
 
@@ -238,6 +238,7 @@ def option(arguments):
                 records_ip.append(index)
 
             print('[AVs / EDRs / SOs]:\n')
+
             color = ' ||' + colorama.Fore.BLUE + ' ip.src = ' + colorama.Style.RESET_ALL
             print(f'{rsa_src_adress} {color.join(records_ip)} \n')
 
@@ -276,6 +277,7 @@ def option(arguments):
 
             for index in ip_parsing:
                 querystring["ipAddress"] = index
+
                 try:
                     response = requests.request(method='GET', url=url, headers=headers, params=querystring)
                     decodedResponse = json.loads(response.text)
@@ -323,6 +325,7 @@ def option(arguments):
             
 
     elif arguments.input and arguments.ip == True:
+
         if not ip(arguments.input):
             print('not found ip address')
         else:        
@@ -375,6 +378,7 @@ def option(arguments):
                 records_domain.append(index)
 
             print('[NGFW / WAF / PROXY]:\n')
+
             print(f'{scnx_request_url} ({', '.join(records_domain)})\n')
             print(f'{scnx_request_url} ({', '.join(records_domain)}) {stats}{scnx_request_without}')
 
@@ -396,6 +400,7 @@ def option(arguments):
 
                 
             print('[NGFW / WAF / PROXY]:\n')
+
             color = ' ||' + colorama.Fore.BLUE + ' url = ' + colorama.Style.RESET_ALL
             print(f'{rsa_url} {color.join(new1)}\n')
 
@@ -416,6 +421,7 @@ def option(arguments):
                 records_domain.append("'" + index + "'")
                 
             print('[NGFW / WAF / PROXY]:\n')
+
             color = ' ||' + colorama.Fore.BLUE + ' url = ' + colorama.Style.RESET_ALL
             print(f'{rsa_url} {color.join(records_domain)}')
 
@@ -610,6 +616,7 @@ def option(arguments):
             records_md5 = []
             scnx_old_file_hash = siem.scnx_old_file_hash()
             found_md5 = md5(args.input)
+
             for index in found_md5:
                 records_md5.append(index)
 
@@ -630,10 +637,12 @@ def option(arguments):
                 records_md5.append(index)
 
             print('[AVs / EDRs]:\n')
+
             color = ' ||' + colorama.Fore.BLUE + ' checksum = ' + colorama.Style.RESET_ALL
             print(f'{rsa_checksum} {color.join(records_md5)} \n') 
 
             print('[Sysmon]\n')
+
             color = ' ||' + colorama.Fore.BLUE + ' checksum = ' + colorama.Style.RESET_ALL + "'md5="
             records_md5 = [f"{md5}'" for md5 in records_md5]        
             print(f"{rsa_checksum} 'md5={color.join(records_md5)}")
@@ -646,6 +655,7 @@ def option(arguments):
             print('not found md5 hashes')
         else:        
             found_md5 = md5(args.input)
+
             for index in set(found_md5):
                 print(index)
 
@@ -667,6 +677,7 @@ def option(arguments):
 
 
             print('[AVs / EDRs]:\n')
+
             print(f'{scnx_old_file_hash} ({', '.join(new1)})\n')
 
             print(f'{scnx_old_file_hash} ({', '.join(new2)})')
@@ -719,6 +730,7 @@ def option(arguments):
                 records_sha1.append(index)
 
             print('[AVs / EDRs]:\n')
+
             print(f'{scnx_old_file_hash} ({', '.join(records_sha1)})')
 
     
@@ -825,6 +837,7 @@ def option(arguments):
                 records_sha256.append(index)
 
             print('[AVs / EDRs]:\n')
+
             print(f'{scnx_old_file_hash} ({', '.join(records_sha256)})')   
         
     
@@ -860,6 +873,32 @@ def option(arguments):
             found_sha256 = sha256(args.input)
             for index in set(found_sha256):
                 print(index)
+
+
+    elif arguments.input and arguments.email and arguments.scnx and arguments.l:
+
+        if not email(arguments.input):
+            print('Not found Emails Address')
+        else:
+            records_email = []
+            scnx_mailboxownerupn = siem.scnx_mailboxownerupn()
+            found_email = email(arguments.input)
+
+            for index in set(found_email):
+                records_email.append(index)
+                meadle = len(records_email) // 2
+                new1 = records_email[:meadle]
+                new2 = records_email[meadle:]
+
+            print('[Email]:\n')
+
+            print(f'{scnx_mailboxownerupn} ({', '.join(new1)})\n')   
+
+            print(f'{scnx_mailboxownerupn} ({', '.join(new2)})') 
+
+
+    elif arguments.input and arguments.email and arguments.rsa and arguments.l:
+        pass
 
 
 option(args)
