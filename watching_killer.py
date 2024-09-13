@@ -803,17 +803,19 @@ def option(arguments):
 
             print('[AVs / EDRs]:\n')
 
-            color = ' || ' + colorama.Fore.BLUE + ' checksum = ' + colorama.Style.RESET_ALL
-            print(f'{rsa_checksum} {color.join(new1)}\n')  
+            color = ' || ' + colorama.Fore.BLUE + ' checksum = ' + colorama.Style.RESET_ALL + "'"
+            records_sha256s = [f"{sha256}'" for sha256 in new1]
+            print(f'{rsa_checksum} {color.join(records_sha256s)}\n')  
 
-            color = ' || ' + colorama.Fore.BLUE + ' checksum = ' + colorama.Style.RESET_ALL
-            print(f'{rsa_checksum} {color.join(new2)}\n')
+            color = ' || ' + colorama.Fore.BLUE + ' checksum = ' + colorama.Style.RESET_ALL+ "'"
+            records_sha256s = [f"{sha256}'" for sha256 in new2]
+            print(f'{rsa_checksum} {color.join(records_sha256s)}\n')
 
             print('[Sysmon]\n')
 
             color = ' ||' + colorama.Fore.BLUE + ' checksum = ' + colorama.Style.RESET_ALL + "'sha256="
-            records_sha256 = [f"{sha256}'" for sha256 in records_sha256]
-            print(f"{rsa_checksum} 'sha256={color.join(new1)}\n") 
+            records_sha256s = [f"{sha256}'" for sha256 in new1]
+            print(f"{rsa_checksum} 'sha256={color.join(records_sha256s)}\n") 
 
             color = ' ||' + colorama.Fore.BLUE + ' checksum = ' + colorama.Style.RESET_ALL + "'sha256="
             records_sha256 = [f"{sha256}'" for sha256 in records_sha256]
