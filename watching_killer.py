@@ -103,10 +103,6 @@ def email(arq):
                 emails.extend(matches)
     return set(emails)
 
-        #AINDA PRECISO TERMINAR ISSO DEPOIS#         
-
-# Main arguments test for run
-
 
 def option(arguments):
 
@@ -852,11 +848,13 @@ def option(arguments):
 
             for index in found_checksum:
                 records_sha256.append(index)
+                
 
             print('[AVs / EDRs]:\n')
 
-            color = ' || ' + colorama.Fore.BLUE + ' checksum = ' + colorama.Style.RESET_ALL
-            print(f'{rsa_checksum} {color.join(records_sha256)}\n')  
+            color = ' || ' + colorama.Fore.BLUE + ' checksum = ' + colorama.Style.RESET_ALL + "'"
+            records_sha256s = [f"{sha256}'" for sha256 in records_sha256]
+            print(f'{rsa_checksum} \'{color.join(records_sha256s)}\n')  
 
             print('[Sysmon]\n')
 
@@ -898,7 +896,72 @@ def option(arguments):
 
 
     elif arguments.input and arguments.email and arguments.rsa and arguments.l:
-        pass
+
+        if not email(arguments.input):
+            print('not found email address')
+        else:
+            records_email = []
+            rsa_email = siem.rsa_email()
+            found_email = email(args.input)
+
+            for index in found_email:
+                records_email.append("'" + index + "'")
+                meadle = len(records_email) // 2
+                new1 = records_email[:meadle]
+                new2 = records_email[meadle:]
+
+            print('[Exchange]\n')
+
+            color = ' || ' + colorama.Fore.BLUE + ' email = ' + colorama.Style.RESET_ALL
+            print(f'{rsa_email} {color.join(new1)}\n')  
+
+            color = ' || ' + colorama.Fore.BLUE + ' email = ' + colorama.Style.RESET_ALL
+            print(f'{rsa_email} {color.join(new2)}\n')
+
+
+    elif arguments.input and arguments.email == True and arguments.scnx == True:
+
+        if not email(arguments.input):
+            print('not found email address')
+        else:
+            records_email = []
+            scnx_mailboxownerupn = siem.scnx_mailboxownerupn()
+            found_email = email(arguments.input)
+
+            for index in set(found_email):
+                records_email.append(index)
+
+            print('[Email]:\n')
+
+            print(f'{scnx_mailboxownerupn} ({', '.join(records_email)})') 
+
+    
+    elif arguments.input and arguments.email == True and arguments.rsa == True:
+
+        if not email(arguments.input):
+            print('not found email address')
+        else:
+            records_email = []
+            rsa_email = siem.rsa_email()
+            found_email = email(args.input)
+
+            for index in found_email:
+                records_email.append("'" + index + "'")
+
+            print('[Emails]:\n')
+
+            color = ' || ' + colorama.Fore.BLUE + ' email = ' + colorama.Style.RESET_ALL
+            print(f'{rsa_email} {color.join(records_email)}\n')  
+
+    
+    elif arguments.input and arguments.email == True:
+
+        if not email(arguments.input):
+            print('not found email adress')
+        else:
+            found_email = email(args.input)
+            for index in set(found_email):
+                print(index)
 
 
 option(args)

@@ -70,6 +70,11 @@ def scnx_mailboxownerupn():
     return mailboxownerupn
 
 
+def rsa_email():
+    email = colorama.Fore.BLUE + 'email in' + colorama.Style.RESET_ALL
+    return email
+
+
 def filename():
     file_name = colorama.Fore.BLUE + 'filename in' + colorama.Style.RESET_ALL
     return file_name
