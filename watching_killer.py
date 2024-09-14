@@ -329,6 +329,7 @@ def option(arguments):
             for index in set(found_ip):
                 print(index)
 
+
     elif arguments.input and arguments.domain and arguments.scnx and arguments.l:
     
         if not domain(arguments.input):
@@ -356,7 +357,17 @@ def option(arguments):
 
             print(f'{scnx_request_url} ({', '.join(new1)}) {stats}{scnx_request_without}\n')
 
-            print(f'{scnx_request_url} ({', '.join(new2)}) {stats}{scnx_request_without}')
+            print(f'{scnx_request_url} ({', '.join(new2)}) {stats}{scnx_request_without}\n')
+
+            domain_without = f' OR {scnx_request_without} contains '
+
+            print(f'{scnx_request_without} contains {domain_without.join(new1)}\n')
+
+            print(f'{scnx_request_without} contains {domain_without.join(new2)}\n')
+
+            print(f'{scnx_request_without} contains {domain_without.join(new1)} {stats}{scnx_request_without}\n')
+
+            print(f'{scnx_request_without} contains {domain_without.join(new2)} {stats}{scnx_request_without}\n')
 
 
     elif arguments.input and arguments.domain == True and arguments.scnx == True:
@@ -376,6 +387,11 @@ def option(arguments):
             print('[NGFW / WAF / PROXY]:\n')
 
             print(f'{scnx_request_url} ({', '.join(records_domain)})\n')
+
+            domain_without = f' OR {scnx_request_without} contains '
+
+            print(f'{scnx_request_without} contains {domain_without.join(records_domain)}\n')
+
             print(f'{scnx_request_url} ({', '.join(records_domain)}) {stats}{scnx_request_without}')
 
 
@@ -397,7 +413,7 @@ def option(arguments):
                 
             print('[NGFW / WAF / PROXY]:\n')
 
-            color = ' ||' + colorama.Fore.BLUE + ' url = ' + colorama.Style.RESET_ALL
+            color = ' ||' + colorama.Fore.BLUE + ' url = ' + colorama.Style.RESET_ALL 
             print(f'{rsa_url} {color.join(new1)}\n')
 
             color = ' ||' + colorama.Fore.BLUE + ' url = ' + colorama.Style.RESET_ALL
@@ -587,21 +603,23 @@ def option(arguments):
 
             print('[AVs / EDRs]:\n')
 
-            color = ' ||' + colorama.Fore.BLUE + ' checksum = ' + colorama.Style.RESET_ALL
-            print(f'{rsa_checksum} {color.join(new1)} \n')
+            color = ' ||' + colorama.Fore.BLUE + ' checksum = ' + colorama.Style.RESET_ALL + "'"
+            records_md5_two = [f"{sha256}'" for sha256 in new1]
+            print(f'{rsa_checksum} {color.join(records_md5_two)} \n')
 
-            color = ' ||' + colorama.Fore.BLUE + ' checksum = ' + colorama.Style.RESET_ALL
-            print(f'{rsa_checksum} {color.join(new2)} \n') 
+            color = ' ||' + colorama.Fore.BLUE + ' checksum = ' + colorama.Style.RESET_ALL + "'"
+            records_md5_two = [f"{sha256}'" for sha256 in new2]
+            print(f'{rsa_checksum} {color.join(records_md5_two)} \n') 
 
             print('[Sysmon]\n')
 
             color = ' ||' + colorama.Fore.BLUE + ' checksum = ' + colorama.Style.RESET_ALL + "'md5="
-            records_md5 = [f"{md5}'" for md5 in records_md5]        
-            print(f"{rsa_checksum} 'md5={color.join(new1)}\n")
+            records_md5_two = [f"{md5}'" for md5 in new1]        
+            print(f"{rsa_checksum} 'md5={color.join(records_md5_two)}\n")
 
             color = ' ||' + colorama.Fore.BLUE + ' checksum = ' + colorama.Style.RESET_ALL + "'md5="
-            records_md5 = [f"{md5}'" for md5 in records_md5]        
-            print(f"{rsa_checksum} 'md5={color.join(new2)}")
+            records_md5_two = [f"{md5}'" for md5 in new2]        
+            print(f"{rsa_checksum} 'md5={color.join(records_md5_two)}")
 
 
     elif arguments.input and arguments.md5 == True and arguments.scnx == True:
@@ -634,8 +652,9 @@ def option(arguments):
 
             print('[AVs / EDRs]:\n')
 
-            color = ' ||' + colorama.Fore.BLUE + ' checksum = ' + colorama.Style.RESET_ALL
-            print(f'{rsa_checksum} {color.join(records_md5)} \n') 
+            color = ' ||' + colorama.Fore.BLUE + ' checksum = ' + colorama.Style.RESET_ALL + "'"
+            records_md5_two = [f"{md5}'" for md5 in records_md5]
+            print(f'{rsa_checksum} \'{color.join(records_md5_two)} \n') 
 
             print('[Sysmon]\n')
 
@@ -696,21 +715,23 @@ def option(arguments):
 
             print('[AVs / EDRs]:\n')
             
-            color = ' || ' + colorama.Fore.BLUE + ' checksum = ' + colorama.Style.RESET_ALL
-            print(f'{rsa_checksum} {color.join(new1)}\n')  
+            color = ' || ' + colorama.Fore.BLUE + ' checksum = ' + colorama.Style.RESET_ALL + "'"
+            records_sha1_two = [f"{sha1}'" for sha1 in new1]
+            print(f'{rsa_checksum} {color.join(records_sha1_two)}\n')  
 
-            color = ' || ' + colorama.Fore.BLUE + ' checksum = ' + colorama.Style.RESET_ALL
-            print(f'{rsa_checksum} {color.join(new2)}\n')
+            color = ' || ' + colorama.Fore.BLUE + ' checksum = ' + colorama.Style.RESET_ALL + "'"
+            records_sha1_two = [f"{sha1}'" for sha1 in new2]
+            print(f'{rsa_checksum} {color.join(records_sha1_two)}\n')
 
             print('[Sysmon]\n')
 
             color = ' ||' + colorama.Fore.BLUE + ' checksum = ' + colorama.Style.RESET_ALL + "'sha1="
-            records_sha1 = [f"{sha1}'" for sha1 in records_sha1]
-            print(f"{rsa_checksum} 'sha1={color.join(new1)}\n")
+            records_sha1_two = [f"{sha1}'" for sha1 in new1]
+            print(f"{rsa_checksum} 'sha1={color.join(records_sha1_two)}\n")
 
             color = ' ||' + colorama.Fore.BLUE + ' checksum = ' + colorama.Style.RESET_ALL + "'sha1="
-            records_sha1 = [f"{sha1}'" for sha1 in records_sha1]
-            print(f"{rsa_checksum} 'sha1={color.join(new2)}")
+            records_sha1_two = [f"{sha1}'" for sha1 in new2]
+            print(f"{rsa_checksum} 'sha1={color.join(records_sha1_two)}")
 
 
     elif arguments.input and arguments.sha1 == True and arguments.scnx == True:
@@ -744,8 +765,9 @@ def option(arguments):
 
             print('[AVs / EDRs]:\n')
             
-            color = ' || ' + colorama.Fore.BLUE + ' checksum = ' + colorama.Style.RESET_ALL
-            print(f'{rsa_checksum} {color.join(records_sha1)}\n')  
+            color = ' || ' + colorama.Fore.BLUE + ' checksum = ' + colorama.Style.RESET_ALL + "'"
+            records_sha1_two = [f"{sha1}'" for sha1 in records_sha1]
+            print(f'{rsa_checksum} \'{color.join(records_sha1_two)}\n')  
 
             print('[Sysmon]\n')
 
@@ -804,22 +826,22 @@ def option(arguments):
             print('[AVs / EDRs]:\n')
 
             color = ' || ' + colorama.Fore.BLUE + ' checksum = ' + colorama.Style.RESET_ALL + "'"
-            records_sha256s = [f"{sha256}'" for sha256 in new1]
-            print(f'{rsa_checksum} {color.join(records_sha256s)}\n')  
+            records_sha256_two = [f"{sha256}'" for sha256 in new1]
+            print(f'{rsa_checksum} {color.join(records_sha256_two)}\n')  
 
             color = ' || ' + colorama.Fore.BLUE + ' checksum = ' + colorama.Style.RESET_ALL+ "'"
-            records_sha256s = [f"{sha256}'" for sha256 in new2]
-            print(f'{rsa_checksum} {color.join(records_sha256s)}\n')
+            records_sha256_two = [f"{sha256}'" for sha256 in new2]
+            print(f'{rsa_checksum} {color.join(records_sha256_two)}\n')
 
             print('[Sysmon]\n')
 
             color = ' ||' + colorama.Fore.BLUE + ' checksum = ' + colorama.Style.RESET_ALL + "'sha256="
-            records_sha256s = [f"{sha256}'" for sha256 in new1]
-            print(f"{rsa_checksum} 'sha256={color.join(records_sha256s)}\n") 
+            records_sha256_two = [f"{sha256}'" for sha256 in new1]
+            print(f"{rsa_checksum} 'sha256={color.join(records_sha256_two)}\n") 
 
             color = ' ||' + colorama.Fore.BLUE + ' checksum = ' + colorama.Style.RESET_ALL + "'sha256="
-            records_sha256 = [f"{sha256}'" for sha256 in records_sha256]
-            print(f"{rsa_checksum} 'sha256={color.join(new2)}") 
+            records_sha256_two = [f"{sha256}'" for sha256 in new2]
+            print(f"{rsa_checksum} 'sha256={color.join(records_sha256_two)}") 
 
 
     elif arguments.input and arguments.sha256 == True and arguments.scnx == True:
@@ -855,8 +877,8 @@ def option(arguments):
             print('[AVs / EDRs]:\n')
 
             color = ' || ' + colorama.Fore.BLUE + ' checksum = ' + colorama.Style.RESET_ALL + "'"
-            records_sha256s = [f"{sha256}'" for sha256 in records_sha256]
-            print(f'{rsa_checksum} \'{color.join(records_sha256s)}\n')  
+            records_sha256_two = [f"{sha256}'" for sha256 in records_sha256]
+            print(f'{rsa_checksum} \'{color.join(records_sha256_two)}\n')  
 
             print('[Sysmon]\n')
 
@@ -890,7 +912,7 @@ def option(arguments):
                 new1 = records_email[:meadle]
                 new2 = records_email[meadle:]
 
-            print('[Email]:\n')
+            print('[Exchange]:\n')
 
             print(f'{scnx_mailboxownerupn} ({', '.join(new1)})\n')   
 
@@ -933,7 +955,7 @@ def option(arguments):
             for index in set(found_email):
                 records_email.append(index)
 
-            print('[Email]:\n')
+            print('[Exchange]:\n')
 
             print(f'{scnx_mailboxownerupn} ({', '.join(records_email)})') 
 

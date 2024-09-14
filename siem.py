@@ -5,11 +5,6 @@ def scnx_src_address():
     return src_adress
 
 
-def scnx_src_address_only():
-    src_address_only = colorama.Fore.BLUE + 'sourceaddress =' + colorama.Style.RESET_ALL
-    return src_address_only
-
-
 def scnx_src_address_without(): 
     src_address_without = colorama.Fore.BLUE + 'sourceaddress' + colorama.Style.RESET_ALL
     return src_address_without
