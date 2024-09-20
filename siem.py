@@ -65,6 +65,31 @@ def scnx_mailboxownerupn():
     return mailboxownerupn
 
 
+def scnx_mailboxownerupn_without():
+    mailboxownerupn = colorama.Fore.BLUE + 'mailboxownerupn' + colorama.Style.RESET_ALL
+    return mailboxownerupn
+
+
+def scnx_accountname():
+    accountname = colorama.Fore.BLUE + 'accountname in' + colorama.Style.RESET_ALL
+    return accountname
+
+
+def scnx_accountname_without():
+    accountname = colorama.Fore.BLUE + 'accountname' + colorama.Style.RESET_ALL
+    return accountname
+
+
+def scnx_workemail():
+    workemail = colorama.Fore.BLUE + 'workemail in' + colorama.Style.RESET_ALL
+    return workemail
+
+
+def scnx_workemail_without():
+    workemail = colorama.Fore.BLUE + 'workemail' + colorama.Style.RESET_ALL
+    return workemail
+
+
 def rsa_email():
     email = colorama.Fore.BLUE + 'email in' + colorama.Style.RESET_ALL
     return email

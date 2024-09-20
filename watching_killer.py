@@ -904,7 +904,13 @@ def option(arguments):
         else:
             records_email = []
             scnx_mailboxownerupn = siem.scnx_mailboxownerupn()
+            scnx_mailboxownerupn_without = siem.scnx_mailboxownerupn_without()
+            scnx_workemail = siem.scnx_workemail()
+            scnx_workemail_without = siem.scnx_workemail_without() 
+            scnx_accountname = siem.scnx_accountname()
+            scnx_accountname_without = siem.scnx_accountname_without()
             found_email = email(arguments.input)
+            stats = siem.scnx_stats()
 
             for index in set(found_email):
                 records_email.append(index)
@@ -916,7 +922,27 @@ def option(arguments):
 
             print(f'{scnx_mailboxownerupn} ({', '.join(new1)})\n')   
 
-            print(f'{scnx_mailboxownerupn} ({', '.join(new2)})') 
+            print(f'{scnx_mailboxownerupn} ({', '.join(new2)})\n')
+
+            print(f'{scnx_accountname} ({', '.join(new1)})\n')   
+
+            print(f'{scnx_accountname} ({', '.join(new2)})\n')
+
+            print(f'{scnx_workemail} ({', '.join(new1)})\n') 
+
+            print(f'{scnx_workemail} ({', '.join(new2)})\n') 
+
+            print(f'{scnx_mailboxownerupn} ({', '.join(new1)}) {stats} {scnx_mailboxownerupn_without}\n')   
+
+            print(f'{scnx_mailboxownerupn} ({', '.join(new2)}) {stats} {scnx_mailboxownerupn_without}\n')
+
+            print(f'{scnx_accountname} ({', '.join(new1)}) {stats} {scnx_accountname_without}\n')   
+
+            print(f'{scnx_accountname} ({', '.join(new2)}) {stats} {scnx_accountname_without}\n')
+
+            print(f'{scnx_workemail} ({', '.join(new1)}) {stats} {scnx_workemail_without}\n')   
+
+            print(f'{scnx_workemail} ({', '.join(new2)}) {stats} {scnx_workemail_without}\n')
 
 
     elif arguments.input and arguments.email and arguments.rsa and arguments.l:
@@ -950,14 +976,30 @@ def option(arguments):
         else:
             records_email = []
             scnx_mailboxownerupn = siem.scnx_mailboxownerupn()
+            scnx_mailboxownerupn_without = siem.scnx_mailboxownerupn_without()
+            scnx_workemail = siem.scnx_workemail()
+            scnx_workemail_without = siem.scnx_workemail_without() 
+            scnx_accountname = siem.scnx_accountname()
+            scnx_accountname_without = siem.scnx_accountname_without()
             found_email = email(arguments.input)
+            stats = siem.scnx_stats()
 
             for index in set(found_email):
                 records_email.append(index)
 
             print('[Exchange]:\n')
 
-            print(f'{scnx_mailboxownerupn} ({', '.join(records_email)})') 
+            print(f'{scnx_mailboxownerupn} ({', '.join(records_email)})\n') 
+
+            print(f'{scnx_workemail} ({', '.join(records_email)})\n') 
+
+            print(f'{scnx_accountname} ({', '.join(records_email)})\n') 
+
+            print(f'{scnx_mailboxownerupn} ({', '.join(records_email)} {stats} {scnx_mailboxownerupn_without}\n') 
+
+            print(f'{scnx_workemail} ({', '.join(records_email)} {stats} {scnx_workemail_without}\n') 
+
+            print(f'{scnx_accountname} ({', '.join(records_email)} {stats} {scnx_accountname_without}\n')
 
     
     elif arguments.input and arguments.email == True and arguments.rsa == True:
@@ -972,7 +1014,7 @@ def option(arguments):
             for index in found_email:
                 records_email.append("'" + index + "'")
 
-            print('[Emails]:\n')
+            print('[Exchange]:\n')
 
             color = ' || ' + colorama.Fore.BLUE + ' email = ' + colorama.Style.RESET_ALL
             print(f'{rsa_email} {color.join(records_email)}\n')  

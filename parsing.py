@@ -15,7 +15,7 @@ def arguments():
     parser.add_argument('--artifact', '-artifact', action='store_true', help='try to capture all artifact like process')
     parser.add_argument('--reputation', '-reputation', action='store_true', help='verify reputataion of address ip')
     parser.add_argument('--email', '-email', action='store_true', help='This option try capture email addresses')
-    parser.add_argument('-l', action='store_true', help='divude')
+    parser.add_argument('-l', action='store_true', help='This option divides the query in two parts')
 
     return parser.parse_args()
 
