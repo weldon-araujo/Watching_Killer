@@ -5,9 +5,9 @@ def scnx_src_address():
     return src_adress
 
 
-def scnx_src_address_without(): 
-    src_address_without = colorama.Fore.BLUE + 'sourceaddress' + colorama.Style.RESET_ALL
-    return src_address_without
+def scnx_source_address_only(): 
+    sourcec_address_only = colorama.Fore.BLUE + 'sourceaddress' + colorama.Style.RESET_ALL
+    return sourcec_address_only
 
 
 def scnx_stats():
@@ -21,13 +21,8 @@ def scnx_destination_adrress():
 
 
 def scnx_destination_address_only():
-    dst_address_only = colorama.Fore.BLUE + 'destinationaddress =' + colorama.Style.RESET_ALL
+    dst_address_only = colorama.Fore.BLUE + 'destinationaddress' + colorama.Style.RESET_ALL
     return dst_address_only
-
-
-def scnx_destination_address_without():
-    dst_address_without = colorama.Fore.BLUE + 'destinationaddress' + colorama.Style.RESET_ALL
-    return dst_address_without
 
 
 def scnx_old_file_hash():
@@ -55,9 +50,19 @@ def scnx_sourceprocessname():
     return source_process_name
 
 
+def scnx_sourceprocessname_without():
+    scnx_sourceprocessname_without = colorama.Fore.BLUE + 'sourceprocessname' + colorama.Style.RESET_ALL
+    return scnx_sourceprocessname_without
+
+
 def scnx_destinationprocessname():
     destination_process_name = colorama.Fore.BLUE + 'destinationprocessname in' + colorama.Style.RESET_ALL
     return destination_process_name
+
+
+def scnx_destination_process_only():
+    destination_process_only = colorama.Fore.BLUE + 'destinationprocessname' + colorama.Style.RESET_ALL
+    return destination_process_only
 
 
 def scnx_mailboxownerupn():

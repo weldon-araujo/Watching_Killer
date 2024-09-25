@@ -114,8 +114,8 @@ def option(arguments):
             records_ip = []
             scnx_src_address = siem.scnx_src_address()
             scnx_dst_address = siem.scnx_destination_adrress()
-            src_without = siem.scnx_src_address_without()
-            dst_without = siem.scnx_destination_address_without()
+            src_only = siem.scnx_source_address_only()
+            dst_only = siem.scnx_destination_address_only()
             stats = siem.scnx_stats()
             found_ip = ip(args.input)                
 
@@ -139,13 +139,13 @@ def option(arguments):
 
             print(f'{scnx_src_address} ({', '.join(new2)}) {colorama.Fore.BLUE}OR{colorama.Style.RESET_ALL} {scnx_dst_address} ({', '.join(new2)})\n')
 
-            print(f'{scnx_src_address} ({', '.join(new1)}) {colorama.Fore.BLUE}OR{colorama.Style.RESET_ALL} {scnx_dst_address} ({', '.join(new1)}) {stats}{src_without}\n')
+            print(f'{scnx_src_address} ({', '.join(new1)}) {colorama.Fore.BLUE}OR{colorama.Style.RESET_ALL} {scnx_dst_address} ({', '.join(new1)}) {stats}{src_only}\n')
 
-            print(f'{scnx_src_address} ({', '.join(new2)}) {colorama.Fore.BLUE}OR{colorama.Style.RESET_ALL} {scnx_dst_address} ({', '.join(new2)}) {stats}{src_without}\n')
+            print(f'{scnx_src_address} ({', '.join(new2)}) {colorama.Fore.BLUE}OR{colorama.Style.RESET_ALL} {scnx_dst_address} ({', '.join(new2)}) {stats}{src_only}\n')
 
-            print(f'{scnx_src_address} ({', '.join(new1)}) {colorama.Fore.BLUE}OR{colorama.Style.RESET_ALL} {scnx_dst_address} ({', '.join(new1)}) {stats}{dst_without}\n')
+            print(f'{scnx_src_address} ({', '.join(new1)}) {colorama.Fore.BLUE}OR{colorama.Style.RESET_ALL} {scnx_dst_address} ({', '.join(new1)}) {stats}{dst_only}\n')
 
-            print(f'{scnx_src_address} ({', '.join(new2)}) {colorama.Fore.BLUE}OR{colorama.Style.RESET_ALL} {scnx_dst_address} ({', '.join(new2)}) {stats}{dst_without}\n')
+            print(f'{scnx_src_address} ({', '.join(new2)}) {colorama.Fore.BLUE}OR{colorama.Style.RESET_ALL} {scnx_dst_address} ({', '.join(new2)}) {stats}{dst_only}\n')
 
 
     elif arguments.input and arguments.ip and arguments.rsa and arguments.l:
