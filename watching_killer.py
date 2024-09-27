@@ -112,10 +112,10 @@ def option(arguments):
             print('not found ip address')
         else:            
             records_ip = []
-            scnx_src_address = siem.scnx_src_address()
-            scnx_dst_address = siem.scnx_destination_adrress()
-            src_only = siem.scnx_source_address_only()
-            dst_only = siem.scnx_destination_address_only()
+            scnx_source_address = siem.scnx_source_address()
+            scnx_destination_address = siem.scnx_destination_adrress()
+            source_only = siem.scnx_source_address_only()
+            destination_only = siem.scnx_destination_address_only()
             stats = siem.scnx_stats()
             found_ip = ip(args.input)                
 
@@ -127,25 +127,25 @@ def option(arguments):
 
             print('[AVs / EDRs / SOs]:\n')
 
-            print(f'{scnx_src_address} ({', '.join(new1)})\n')
+            print(f'{scnx_source_address} ({', '.join(new1)})\n')
 
-            print(f'{scnx_src_address} ({', '.join(new2)})\n')
+            print(f'{scnx_source_address} ({', '.join(new2)})\n')
 
-            print(f'{scnx_dst_address} ({', '.join(new1)})\n')
+            print(f'{scnx_destination_address} ({', '.join(new1)})\n')
 
-            print(f'{scnx_dst_address} ({', '.join(new2)})\n')
+            print(f'{scnx_destination_address} ({', '.join(new2)})\n')
 
-            print(f'{scnx_src_address} ({', '.join(new1)}) {colorama.Fore.BLUE}OR{colorama.Style.RESET_ALL} {scnx_dst_address} ({', '.join(new1)})\n')
+            print(f'{scnx_source_address} ({', '.join(new1)}) {colorama.Fore.BLUE}OR{colorama.Style.RESET_ALL} {scnx_destination_address} ({', '.join(new1)})\n')
 
-            print(f'{scnx_src_address} ({', '.join(new2)}) {colorama.Fore.BLUE}OR{colorama.Style.RESET_ALL} {scnx_dst_address} ({', '.join(new2)})\n')
+            print(f'{scnx_source_address} ({', '.join(new2)}) {colorama.Fore.BLUE}OR{colorama.Style.RESET_ALL} {scnx_destination_address} ({', '.join(new2)})\n')
 
-            print(f'{scnx_src_address} ({', '.join(new1)}) {colorama.Fore.BLUE}OR{colorama.Style.RESET_ALL} {scnx_dst_address} ({', '.join(new1)}) {stats}{src_only}\n')
+            print(f'{scnx_source_address} ({', '.join(new1)}) {colorama.Fore.BLUE}OR{colorama.Style.RESET_ALL} {scnx_destination_address} ({', '.join(new1)}) {stats}{source_only}\n')
 
-            print(f'{scnx_src_address} ({', '.join(new2)}) {colorama.Fore.BLUE}OR{colorama.Style.RESET_ALL} {scnx_dst_address} ({', '.join(new2)}) {stats}{src_only}\n')
+            print(f'{scnx_source_address} ({', '.join(new2)}) {colorama.Fore.BLUE}OR{colorama.Style.RESET_ALL} {scnx_destination_address} ({', '.join(new2)}) {stats}{source_only}\n')
 
-            print(f'{scnx_src_address} ({', '.join(new1)}) {colorama.Fore.BLUE}OR{colorama.Style.RESET_ALL} {scnx_dst_address} ({', '.join(new1)}) {stats}{dst_only}\n')
+            print(f'{scnx_source_address} ({', '.join(new1)}) {colorama.Fore.BLUE}OR{colorama.Style.RESET_ALL} {scnx_destination_address} ({', '.join(new1)}) {stats}{destination_only}\n')
 
-            print(f'{scnx_src_address} ({', '.join(new2)}) {colorama.Fore.BLUE}OR{colorama.Style.RESET_ALL} {scnx_dst_address} ({', '.join(new2)}) {stats}{dst_only}\n')
+            print(f'{scnx_source_address} ({', '.join(new2)}) {colorama.Fore.BLUE}OR{colorama.Style.RESET_ALL} {scnx_destination_address} ({', '.join(new2)}) {stats}{destination_only}\n')
 
 
     elif arguments.input and arguments.ip and arguments.rsa and arguments.l:
@@ -197,10 +197,10 @@ def option(arguments):
             print('not found ip address')
         else:
             records_ip = []
-            scnx_src_address = siem.scnx_src_address()
-            scnx_dst_address = siem.scnx_destination_adrress()
-            src_without = siem.scnx_src_address_without()
-            dst_without = siem.scnx_destination_address_without()
+            scnx_source_address = siem.scnx_source_address()
+            scnx_destination_address = siem.scnx_destination_adrress()
+            source_only = siem.scnx_source_address_only()
+            destination_only = siem.scnx_destination_address_only()
             stats = siem.scnx_stats()
             found_ip = ip(args.input)
             
@@ -209,15 +209,15 @@ def option(arguments):
 
             print('[AVs / EDRs / SOs]:\n')
 
-            print(f'{scnx_src_address} ({', '.join(records_ip)})\n')
+            print(f'{scnx_source_address} ({', '.join(records_ip)})\n')
 
-            print(f'{scnx_dst_address} ({', '.join(records_ip)})\n')
+            print(f'{scnx_destination_address} ({', '.join(records_ip)})\n')
 
-            print(f'{scnx_src_address} ({', '.join(records_ip)}) {colorama.Fore.BLUE}OR{colorama.Style.RESET_ALL} {scnx_dst_address} ({', '.join(records_ip)})\n')
+            print(f'{scnx_source_address} ({', '.join(records_ip)}) {colorama.Fore.BLUE}OR{colorama.Style.RESET_ALL} {scnx_destination_address} ({', '.join(records_ip)})\n')
                     
-            print(f'{scnx_src_address} ({', '.join(records_ip)}) {colorama.Fore.BLUE}OR{colorama.Style.RESET_ALL} {scnx_dst_address} ({', '.join(records_ip)}) {stats}{src_without}\n')  
+            print(f'{scnx_source_address} ({', '.join(records_ip)}) {colorama.Fore.BLUE}OR{colorama.Style.RESET_ALL} {scnx_destination_address} ({', '.join(records_ip)}) {stats}{source_only}\n')  
 
-            print(f'{scnx_src_address} ({', '.join(records_ip)}) {colorama.Fore.BLUE}OR{colorama.Style.RESET_ALL} {scnx_dst_address} ({', '.join(records_ip)}) {stats}{dst_without}\n')
+            print(f'{scnx_source_address} ({', '.join(records_ip)}) {colorama.Fore.BLUE}OR{colorama.Style.RESET_ALL} {scnx_destination_address} ({', '.join(records_ip)}) {stats}{destination_only}\n')
                  
             
     elif arguments.input and arguments.ip == True and arguments.rsa == True:

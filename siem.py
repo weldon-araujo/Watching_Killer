@@ -1,8 +1,8 @@
 import colorama
 
-def scnx_src_address():
-    src_adress = colorama.Fore.BLUE + 'sourceaddress in' + colorama.Style.RESET_ALL
-    return src_adress
+def scnx_source_address():
+    source_adress = colorama.Fore.BLUE + 'sourceaddress in' + colorama.Style.RESET_ALL
+    return source_adress
 
 
 def scnx_source_address_only(): 
