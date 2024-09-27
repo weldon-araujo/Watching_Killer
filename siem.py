@@ -36,13 +36,8 @@ def scnx_request_url():
 
 
 def scnx_request_url_only():
-    request_url_only = colorama.Fore.BLUE + 'requesturl in' + colorama.Style.RESET_ALL
+    request_url_only = colorama.Fore.BLUE + 'requesturl' + colorama.Style.RESET_ALL
     return request_url_only
-
-
-def scnx_request_url_without():
-    request_url_without = colorama.Fore.BLUE + 'requesturl' + colorama.Style.RESET_ALL
-    return request_url_without
 
 
 def scnx_sourceprocessname():
@@ -50,19 +45,19 @@ def scnx_sourceprocessname():
     return source_process_name
 
 
-def scnx_sourceprocessname_without():
-    scnx_sourceprocessname_without = colorama.Fore.BLUE + 'sourceprocessname' + colorama.Style.RESET_ALL
-    return scnx_sourceprocessname_without
+def scnx_source_process_name_only():
+    scnx_source_processname_only = colorama.Fore.BLUE + 'sourceprocessname' + colorama.Style.RESET_ALL
+    return scnx_source_processname_only
 
 
-def scnx_destinationprocessname():
+def scnx_destination_process_name():
     destination_process_name = colorama.Fore.BLUE + 'destinationprocessname in' + colorama.Style.RESET_ALL
     return destination_process_name
 
 
-def scnx_destination_process_only():
-    destination_process_only = colorama.Fore.BLUE + 'destinationprocessname' + colorama.Style.RESET_ALL
-    return destination_process_only
+def scnx_destination_process_name_only():
+    destination_process_name_only = colorama.Fore.BLUE + 'destinationprocessname' + colorama.Style.RESET_ALL
+    return destination_process_name_only
 
 
 def scnx_mailboxownerupn():
@@ -100,9 +95,14 @@ def rsa_email():
     return email
 
 
-def filename():
+def scnx_file_name():
     file_name = colorama.Fore.BLUE + 'filename in' + colorama.Style.RESET_ALL
     return file_name
+
+
+def scnx_file_name_only():
+    file_name_only = colorama.Fore.BLUE + 'filename' + colorama.Style.RESET_ALL
+    return file_name_only
 
 
 def rsa_source_address():
