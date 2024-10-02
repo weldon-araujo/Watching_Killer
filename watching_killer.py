@@ -64,7 +64,7 @@ def sha256(arq):
 
 def domain(arq):
     domains = []
-    tld = ['.com','net','.br','.onion','org','gov', '.de', '.at', '.co','.link','.sh']
+    tld = ['.com','net','.br','.onion','org','gov', '.de', '.at', '.co','.link','.sh','nz']
     with open(arq, 'r', encoding="utf8") as outfile:
         reader = csv.reader(outfile)
         for raw in reader:
@@ -535,7 +535,7 @@ def option(arguments):
             records_artifact = []
             scnx_sourceprocessname = siem.scnx_sourceprocessname()
             scnx_destination_process_name = siem.scnx_destination_process_name()
-            scnx_filename = siem.filename()
+            scnx_filename = siem.scnx_file_name()
             found_artifact = artifact(args.input)
 
             for index in found_artifact:
