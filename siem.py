@@ -40,7 +40,7 @@ def scnx_request_url_only():
     return request_url_only
 
 
-def scnx_sourceprocessname():
+def scnx_source_process_name():
     source_process_name = colorama.Fore.BLUE + 'sourceprocessname in' + colorama.Style.RESET_ALL
     return source_process_name
 
@@ -88,6 +88,16 @@ def scnx_workemail():
 def scnx_workemail_without():
     workemail = colorama.Fore.BLUE + 'workemail' + colorama.Style.RESET_ALL
     return workemail
+
+
+def scnx_command_line():
+    command_line = colorama.Fore.BLUE + 'commandline in' + colorama.Style.RESET_ALL
+    return command_line
+
+
+def scnx_command_line_only():
+    scnx_command_line_only = colorama.Fore.BLUE + 'commandline' + colorama.Style.RESET_ALL 
+    return scnx_command_line_only
 
 
 def rsa_email():

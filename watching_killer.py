@@ -14,7 +14,16 @@ abuseip = os.getenv("abuseipdbkey")
 
 args = parsing.arguments()
 
-# Function to parsing in file input
+def cve(arq):
+    cve = []
+    with open(arq, 'r', encoding="utf8") as outfile:
+        reader = csv.reader(outfile)
+        for raw in reader:
+            for cell in raw:
+                matches = re.findall(r'CVE-[\d]{4}-[\d]{,5}', cell)
+                cve.extend(matches)
+    return set (cve)
+
 
 def ip(arq):
     ips = []
@@ -25,7 +34,6 @@ def ip(arq):
                 cell = cell.replace('[', '').replace(']', '')
                 matches = re.findall(r'\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}', cell)
                 ips.extend(matches)
-
     return set(ips) 
 
 
@@ -454,13 +462,14 @@ def option(arguments):
             print(colorama.Fore.RED + 'Not found artifact' + colorama.Style.RESET_ALL)
         else:        
             records_artifact = []
-            scnx_sourceprocessname = siem.scnx_sourceprocessname()
+            scnx_sourceprocessname = siem.scnx_source_process_name()
             scnx_source_process_name_only = siem.scnx_source_process_name_only()
             scnx_destination_process_name = siem.scnx_destination_process_name()
             scnx_destination_process_name_only = siem.scnx_destination_process_name_only()
             scnx_filename = siem.scnx_file_name()
             scnx_file_name_only = siem.scnx_file_name_only()
             found_artifact = artifact(args.input)
+            command_line_only = siem.scnx_command_line_only()
             stats = siem.scnx_stats()
 
             for index in found_artifact:
@@ -491,14 +500,13 @@ def option(arguments):
 
             print(f'{scnx_filename} ({', '.join(new2)}) {stats} {scnx_file_name_only}\n')
 
-            print(f'{scnx_sourceprocessname} ({', '.join(new1)}) {stats} {scnx_source_process_name_only}\n')
+            print(f'{scnx_sourceprocessname} ({', '.join(new1)}) {stats} {scnx_source_process_name_only} {command_line_only}\n')
 
-            print(f'{scnx_sourceprocessname} ({', '.join(new2)}) {stats} {scnx_source_process_name_only}\n')
+            print(f'{scnx_sourceprocessname} ({', '.join(new2)}) {stats} {scnx_source_process_name_only} {command_line_only}\n')
 
-            print(f'{scnx_destination_process_name} ({', '.join(new1)}) {stats} {scnx_destination_process_name_only}\n')
+            print(f'{scnx_destination_process_name} ({', '.join(new1)}) {stats} {scnx_destination_process_name_only} {command_line_only}\n')
 
-            print(f'{scnx_destination_process_name} ({', '.join(new2)}) {stats} {scnx_destination_process_name_only}\n')
-
+            print(f'{scnx_destination_process_name} ({', '.join(new2)}) {stats} {scnx_destination_process_name_only} {command_line_only}\n')
 
         
     elif arguments.input and arguments.artifact and arguments.rsa and arguments.l:
@@ -533,10 +541,15 @@ def option(arguments):
             print(colorama.Fore.RED + 'Not found artifact' + colorama.Style.RESET_ALL)
         else:        
             records_artifact = []
-            scnx_sourceprocessname = siem.scnx_sourceprocessname()
+            scnx_sourceprocessname = siem.scnx_source_process_name()
+            scnx_source_process_name_only = siem.scnx_source_process_name_only()
             scnx_destination_process_name = siem.scnx_destination_process_name()
+            scnx_destination_process_name_only = siem.scnx_destination_process_name_only()
             scnx_filename = siem.scnx_file_name()
+            scnx_file_name_only = siem.scnx_file_name_only()
             found_artifact = artifact(args.input)
+            command_line_only = siem.scnx_command_line_only()
+            stats = siem.scnx_stats()
 
             for index in found_artifact:
                 records_artifact.append(index)
@@ -551,6 +564,11 @@ def option(arguments):
 
             print(f'{scnx_filename} ({', '.join(records_artifact)})\n')
 
+            print(f'{scnx_filename} ({', '.join(records_artifact)}) {stats} {scnx_file_name_only}\n')
+
+            print(f'{scnx_sourceprocessname} ({', '.join(records_artifact)}) {stats} {scnx_source_process_name_only} {command_line_only}\n')
+
+            print(f'{scnx_destination_process_name} ({', '.join(records_artifact)}) {stats} {scnx_destination_process_name_only} {command_line_only}\n')
            
     elif arguments.input and arguments.artifact == True and arguments.rsa == True:
 
@@ -1044,6 +1062,15 @@ def option(arguments):
         else:
             found_email = email(args.input)
             for index in set(found_email):
+                print(index)
+
+    elif arguments.input and arguments.cve == True:
+
+        if not cve(arguments.input):
+            print(colorama.Fore.RED + 'Not found CVEs' + colorama.Style.RESET_ALL)
+        else:
+            found_cves = cve(arguments.input)
+            for index in set(found_cves):
                 print(index)
 
 
