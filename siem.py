@@ -40,6 +40,16 @@ def scnx_request_url_only():
     return request_url_only
 
 
+def scnx_email_recipient_domain():
+    email_recipient_domain = colorama.Fore.BLUE + 'emailrecipientdomain in' + colorama.Style.RESET_ALL
+    return email_recipient_domain
+
+
+def scnx_email_recipient_domain_only():
+    email_recipient_domain_only = colorama.Fore.BLUE + 'emailrecipientdomain' + colorama.Style.RESET_ALL
+    return email_recipient_domain_only
+
+
 def scnx_source_process_name():
     source_process_name = colorama.Fore.BLUE + 'sourceprocessname in' + colorama.Style.RESET_ALL
     return source_process_name

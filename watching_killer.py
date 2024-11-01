@@ -72,7 +72,7 @@ def sha256(arq):
 
 def domain(arq):
     domains = []
-    tld = ['.com','net','.br','.onion','org','gov', '.de', '.at', '.co','.link','.sh','nz']
+    tld = ['.com','.net','.br','.onion','.org','.gov', '.de', '.at', '.co','.link','.sh','.nz','.ua']
     with open(arq, 'r', encoding="utf8") as outfile:
         reader = csv.reader(outfile)
         for raw in reader:
@@ -107,6 +107,7 @@ def email(arq):
         reader = csv.reader(outfile)
         for raw in reader:
             for cell in raw:
+                cell = cell.replace('[', '').replace(']', '')
                 matches = re.findall(r'[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}', cell)
                 emails.extend(matches)
     return set(emails)
@@ -386,21 +387,27 @@ def option(arguments):
             records_domain = []
             scnx_request_url = siem.scnx_request_url()
             scnx_request_only = siem.scnx_request_url_only()
+            scnx_email_recipient_domain = siem.scnx_email_recipient_domain()
+            scnx_email_recipient_domain_only = siem.scnx_email_recipient_domain_only()
             stats = siem.scnx_stats()
             found_domain = domain(args.input)
 
             for index in found_domain:
                 records_domain.append(index)
 
-            print('[NGFW / WAF / PROXY]:\n')
+            print('[NGFW / WAF / PROXY / EXCHANGE]:\n')
 
             print(f'{scnx_request_url} ({', '.join(records_domain)})\n')
+
+            print(f'{scnx_email_recipient_domain} ({', '.join(records_domain)})\n')
 
             domain_without = f' OR {scnx_request_only} contains '
 
             print(f'{scnx_request_only} contains {domain_without.join(records_domain)}\n')
 
-            print(f'{scnx_request_url} ({', '.join(records_domain)}) {stats}{scnx_request_only}')
+            print(f'{scnx_request_url} ({', '.join(records_domain)}) {stats}{scnx_request_only}\n')
+
+            print(f'{scnx_email_recipient_domain} ({', '.join(records_domain)}) {stats}{scnx_email_recipient_domain_only}')
 
 
     elif arguments.input and arguments.domain and arguments.rsa and arguments.l:
@@ -953,7 +960,7 @@ def option(arguments):
                 new1 = records_email[:meadle]
                 new2 = records_email[meadle:]
 
-            print('[Exchange]:\n')
+            print('[EXCHANGE]:\n')
 
             print(f'{scnx_mailboxownerupn} ({', '.join(new1)})\n')   
 
@@ -995,7 +1002,7 @@ def option(arguments):
                 new1 = records_email[:meadle]
                 new2 = records_email[meadle:]
 
-            print('[Exchange]\n')
+            print('[EXCHANGE]\n')
 
             color = ' || ' + colorama.Fore.BLUE + ' email = ' + colorama.Style.RESET_ALL
             print(f'{rsa_email} {color.join(new1)}\n')  
@@ -1022,7 +1029,7 @@ def option(arguments):
             for index in set(found_email):
                 records_email.append(index)
 
-            print('[Exchange]:\n')
+            print('[EXCHANGE]:\n')
 
             print(f'{scnx_mailboxownerupn} ({', '.join(records_email)})\n') 
 
@@ -1030,11 +1037,11 @@ def option(arguments):
 
             print(f'{scnx_accountname} ({', '.join(records_email)})\n') 
 
-            print(f'{scnx_mailboxownerupn} ({', '.join(records_email)} {stats} {scnx_mailboxownerupn_without}\n') 
+            print(f'{scnx_mailboxownerupn} ({', '.join(records_email)}) {stats} {scnx_mailboxownerupn_without}\n') 
 
-            print(f'{scnx_workemail} ({', '.join(records_email)} {stats} {scnx_workemail_without}\n') 
+            print(f'{scnx_workemail} ({', '.join(records_email)}) {stats} {scnx_workemail_without}\n') 
 
-            print(f'{scnx_accountname} ({', '.join(records_email)} {stats} {scnx_accountname_without}\n')
+            print(f'{scnx_accountname} ({', '.join(records_email)}) {stats} {scnx_accountname_without}\n')
 
     
     elif arguments.input and arguments.email == True and arguments.rsa == True:
@@ -1049,7 +1056,7 @@ def option(arguments):
             for index in found_email:
                 records_email.append("'" + index + "'")
 
-            print('[Exchange]:\n')
+            print('[EXCHANGE]:\n')
 
             color = ' || ' + colorama.Fore.BLUE + ' email = ' + colorama.Style.RESET_ALL
             print(f'{rsa_email} {color.join(records_email)}\n')  
