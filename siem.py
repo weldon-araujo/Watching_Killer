@@ -111,7 +111,7 @@ def scnx_command_line_only():
 
 
 def rsa_email():
-    email = colorama.Fore.BLUE + 'email in' + colorama.Style.RESET_ALL
+    email = colorama.Fore.BLUE + 'email =' + colorama.Style.RESET_ALL
     return email
 
 
