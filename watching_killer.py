@@ -7,6 +7,7 @@ from dotenv import load_dotenv
 import parsing
 import siem
 import colorama
+import ipaddress
 
 load_dotenv(override=True)
 
@@ -34,7 +35,14 @@ def ip(arq):
                 cell = cell.replace('[', '').replace(']', '')
                 matches = re.findall(r'\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}', cell)
                 ips.extend(matches)
-    return set(ips) 
+                ip2 = []
+                for valid in ips:
+                    try:
+                        ipaddress.ip_address(valid)
+                        ip2.append(valid)
+                    except ValueError:
+                        pass
+    return set(ip2) 
 
 
 def md5(arq):
