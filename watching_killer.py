@@ -15,6 +15,19 @@ abuseip = os.getenv("abuseipdbkey")
 
 args = parsing.arguments()
 
+
+def reg(arq):
+    reg = []
+    with open(arq, 'r', encoding="utf8") as outfile:
+        reader = csv.reader(outfile)
+        for raw in reader:
+            for cell in raw: 
+                matches = re.findall(r'((?:HKEY_LOCAL_MACHINE|HKEY_CURRENT_USER|HKEY_CLASSES_ROOT|HKEY_USERS|HKEY_CURRENT_CONFIG|HKLM|HKCU|HKCR|HKU|HKCC)(?:\\[\w\dçÇ]+)*(?:\\[\w\dçÇ]*(?:\r?\n[\w\d\\\\]+)*))', cell)
+                reg.extend(matches)
+    return set(reg)
+
+
+
 def cve(arq):
     cve = []
     with open(arq, 'r', encoding="utf8") as outfile:
@@ -584,6 +597,9 @@ def option(arguments):
             print(f'{scnx_sourceprocessname} ({', '.join(records_artifact)}) {stats} {scnx_source_process_name_only} {command_line_only}\n')
 
             print(f'{scnx_destination_process_name} ({', '.join(records_artifact)}) {stats} {scnx_destination_process_name_only} {command_line_only}\n')
+
+            print(f'{scnx_sourceprocessname} ({', '.join(records_artifact)}) {stats} {scnx_source_process_name_only} {scnx_destination_process_name_only} {command_line_only}\n')
+            
            
     elif arguments.input and arguments.artifact == True and arguments.rsa == True:
 
@@ -1079,6 +1095,7 @@ def option(arguments):
             for index in set(found_email):
                 print(index)
 
+
     elif arguments.input and arguments.cve == True:
 
         if not cve(arguments.input):
@@ -1087,6 +1104,15 @@ def option(arguments):
             found_cves = cve(arguments.input)
             for index in set(found_cves):
                 print(index)
+
+
+    elif arguments.input and arguments.reg == True:
+         if not reg(arguments.input):
+             print(colorama.Fore.RED + 'Not found Windows registry' + colorama.Style.RESET_ALL)
+         else:
+             found_reg = reg(arguments.input)
+             for index in set(found_reg):
+                 print(index)
 
 
 option(args)
