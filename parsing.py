@@ -12,12 +12,14 @@ def arguments():
     parser.add_argument('--sha256', '-sha256', action='store_true',help='This option try to capture all hashes sha256')
     parser.add_argument('--ip','-ip', action='store_true',help='This option try to capture all address ip')
     parser.add_argument('--domain', '-domain', action='store_true', help='This option try to capture all domains address')
-    parser.add_argument('--artifact', '-artifact', action='store_true', help='This option try to capture all artifact like tools and process')
-    parser.add_argument('--reputation', '-reputation', action='store_true', help='This option verifies the reputation of address ip, necessary to use with -ip or --ip option')
-    parser.add_argument('--email', '-email', action='store_true', help='This option try capture all email addresses')
     parser.add_argument('--cve', '-cve', action='store_true', help='This option try capture CVEs IDs')
+    parser.add_argument('--email', '-email', action='store_true', help='This option try capture all email addresses')
     parser.add_argument('--reg','-r', action='store_true', help='This option try capture Windows registry')
+    parser.add_argument('--artifact', '-artifact', action='store_true', help='This option try to capture all artifact like tools and process')
+    parser.add_argument('--report', '-re', action='store_true', help='This option will generat report with argument --cve')
+    parser.add_argument('--reputation', '-reputation', action='store_true', help='This option verifies the reputation of address ip, necessary to use with -ip or --ip option')
     parser.add_argument('-l', action='store_true', help='This option divides the results query in two parts')
+    
 
     return parser.parse_args()
 

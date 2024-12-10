@@ -8,6 +8,8 @@ import parsing
 import siem
 import colorama
 import ipaddress
+from fpdf import FPDF
+
 
 load_dotenv(override=True)
 
@@ -1096,6 +1098,20 @@ def option(arguments):
                 print(index)
 
 
+    elif arguments.input and arguments.reg == True:
+         if not reg(arguments.input):
+             print(colorama.Fore.RED + 'Not found Windows registry' + colorama.Style.RESET_ALL)
+         else:
+             found_reg = reg(arguments.input)
+             for index in set(found_reg):
+                 print(index)
+                           
+
+    elif arguments.input and arguments.cve == True and arguments.report == True:
+        conv = list(cve(arguments.input))
+        return conv    
+    
+        
     elif arguments.input and arguments.cve == True:
 
         if not cve(arguments.input):
@@ -1106,13 +1122,101 @@ def option(arguments):
                 print(index)
 
 
-    elif arguments.input and arguments.reg == True:
-         if not reg(arguments.input):
-             print(colorama.Fore.RED + 'Not found Windows registry' + colorama.Style.RESET_ALL)
-         else:
-             found_reg = reg(arguments.input)
-             for index in set(found_reg):
-                 print(index)
+def check_analysis(cves, base_path='./CVE/'):
+    cves_analyzed = {}
+    cves_pending = []
+
+    for cve in cves:
+        cve_dir = os.path.join(base_path, cve)
+        cve_file = os.path.join(cve_dir, "CVE.json")
+        
+        if os.path.exists(cve_file):
+            try:
+                with open(cve_file, 'r', encoding='utf-8') as file:
+                    data = json.load(file)
+                
+                imagens = [
+                    os.path.join(cve_dir, img)
+                    for img in os.listdir(cve_dir)
+                    if img.lower().endswith(('.png', '.jpg', '.jpeg'))
+                ]
+                data['imagens'] = imagens
+                
+                cves_analyzed[cve] = data
+            except Exception as e:
+                print(f"Error  process {cve_file}: {e}")
+        else:
+            cves_pending.append(cve)
+    
+    return cves_analyzed, cves_pending
 
 
-option(args)
+class CVEReport(FPDF):
+    def header(self):
+        self.set_font('Arial', 'B', 12)
+        self.cell(0, 10, 'Watching Killer Exploit Analysis', 0, 1, 'C')
+        self.ln(10)
+    
+    
+    def footer(self):
+        self.set_y(-15)
+        self.set_font('Arial', 'I', 8)
+        self.cell(0, 10, f'Página {self.page_no()}', 0, 0, 'C')
+
+
+def generator_report(cves_analyzed, cves_pending):
+    pdf = CVEReport()
+
+
+    for cve_id, data in cves_analyzed.items():
+        pdf.add_page() 
+        pdf.set_font('Arial', 'B', 16)
+        pdf.cell(0, 10, f' {cve_id}', ln=True)
+        pdf.ln(10)
+        
+
+        pdf.set_font('Arial', '', 12)
+        pdf.multi_cell(0, 10, f'Descrição: {data.get("descricao", "N/A")}')
+        pdf.ln(5)
+        
+
+        pdf.set_font('Arial', 'B', 12)
+        pdf.cell(0, 10, 'Sugestões de Queries para Hunting:', ln=True)
+        pdf.set_font('Arial', '', 12)
+        for query in data.get('queries', []):
+            pdf.multi_cell(0, 10, f'- {query}')
+            pdf.ln(2)
+        pdf.ln(10)
+        
+
+        pdf.set_font('Arial', 'B', 12)
+        pdf.cell(0, 10, 'Análises:', ln=True)
+        for img_path in data.get('imagens', []):
+            try:
+                pdf.image(img_path, x=10, y=None, w=180)
+                pdf.ln(10)
+            except RuntimeError:
+                pdf.cell(0, 10, f'Erro ao carregar imagem: {img_path}', ln=True)
+    
+
+    if cves_pending:
+        pdf.add_page()
+        pdf.set_font('Arial', 'B', 16)
+        pdf.cell(0, 10, 'CVEs Pendentes de Análise:', ln=True)
+        pdf.ln(10)
+        
+        pdf.set_font('Arial', '', 12)
+        for cve in cves_pending:
+            pdf.cell(0, 10, f'- {cve}', ln=True)
+    
+    file_name = f"Relatório.pdf"
+    pdf.output(file_name)
+    print(f"Relatório gerado: {file_name}")
+
+
+if option(args) == None:
+    pass
+else:
+    cves_extraidas = option(args)
+    cves_analyzed, cves_pending = check_analysis(cves_extraidas)
+    generator_report(cves_analyzed, cves_pending)
