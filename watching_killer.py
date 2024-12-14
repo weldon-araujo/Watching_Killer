@@ -142,42 +142,49 @@ def option(arguments):
 
         if not ip(arguments.input):
             print(colorama.Fore.RED + 'Not found ip address' + colorama.Style.RESET_ALL )
-        else:            
-            records_ip = []
-            scnx_source_address = siem.scnx_source_address()
-            scnx_destination_address = siem.scnx_destination_adrress()
-            source_only = siem.scnx_source_address_only()
-            destination_only = siem.scnx_destination_address_only()
-            stats = siem.scnx_stats()
-            found_ip = ip(args.input)                
+        else:       
+                records_ip = []
+                scnx_source_address = siem.scnx_source_address()
+                scnx_destination_address = siem.scnx_destination_adrress()
+                source_only = siem.scnx_source_address_only()
+                destination_only = siem.scnx_destination_address_only()
+                stats = siem.scnx_stats()
+                found_ip = ip(args.input)                     
 
-            for index in found_ip:
-                records_ip.append(index)
-                meadle = len(records_ip) // 2
-                new1 = records_ip[:meadle]
-                new2 = records_ip[meadle:]
+                while len(found_ip) >= 2:
 
-            print('[AVs / EDRs / SOs]:\n')
+                    for index in found_ip:
+                        records_ip.append(index)
+                        meadle = len(records_ip) // 2
+                        new1 = records_ip[:meadle]
+                        new2 = records_ip[meadle:]
 
-            print(f'{scnx_source_address} ({', '.join(new1)})\n')
+                    print('[AVs / EDRs / SOs]:\n')
 
-            print(f'{scnx_source_address} ({', '.join(new2)})\n')
+                    print(f'{scnx_source_address} ({', '.join(new1)})\n')
 
-            print(f'{scnx_destination_address} ({', '.join(new1)})\n')
+                    print(f'{scnx_source_address} ({', '.join(new2)})\n')
 
-            print(f'{scnx_destination_address} ({', '.join(new2)})\n')
+                    print(f'{scnx_destination_address} ({', '.join(new1)})\n')
 
-            print(f'{scnx_source_address} ({', '.join(new1)}) {colorama.Fore.BLUE}OR{colorama.Style.RESET_ALL} {scnx_destination_address} ({', '.join(new1)})\n')
+                    print(f'{scnx_destination_address} ({', '.join(new2)})\n')
 
-            print(f'{scnx_source_address} ({', '.join(new2)}) {colorama.Fore.BLUE}OR{colorama.Style.RESET_ALL} {scnx_destination_address} ({', '.join(new2)})\n')
+                    print(f'{scnx_source_address} ({', '.join(new1)}) {colorama.Fore.BLUE}OR{colorama.Style.RESET_ALL} {scnx_destination_address} ({', '.join(new1)})\n')
 
-            print(f'{scnx_source_address} ({', '.join(new1)}) {colorama.Fore.BLUE}OR{colorama.Style.RESET_ALL} {scnx_destination_address} ({', '.join(new1)}) {stats}{source_only}\n')
+                    print(f'{scnx_source_address} ({', '.join(new2)}) {colorama.Fore.BLUE}OR{colorama.Style.RESET_ALL} {scnx_destination_address} ({', '.join(new2)})\n')
 
-            print(f'{scnx_source_address} ({', '.join(new2)}) {colorama.Fore.BLUE}OR{colorama.Style.RESET_ALL} {scnx_destination_address} ({', '.join(new2)}) {stats}{source_only}\n')
+                    print(f'{scnx_source_address} ({', '.join(new1)}) {colorama.Fore.BLUE}OR{colorama.Style.RESET_ALL} {scnx_destination_address} ({', '.join(new1)}) {stats}{source_only}\n')
 
-            print(f'{scnx_source_address} ({', '.join(new1)}) {colorama.Fore.BLUE}OR{colorama.Style.RESET_ALL} {scnx_destination_address} ({', '.join(new1)}) {stats}{destination_only}\n')
+                    print(f'{scnx_source_address} ({', '.join(new2)}) {colorama.Fore.BLUE}OR{colorama.Style.RESET_ALL} {scnx_destination_address} ({', '.join(new2)}) {stats}{source_only}\n')
 
-            print(f'{scnx_source_address} ({', '.join(new2)}) {colorama.Fore.BLUE}OR{colorama.Style.RESET_ALL} {scnx_destination_address} ({', '.join(new2)}) {stats}{destination_only}\n')
+                    print(f'{scnx_source_address} ({', '.join(new1)}) {colorama.Fore.BLUE}OR{colorama.Style.RESET_ALL} {scnx_destination_address} ({', '.join(new1)}) {stats}{destination_only}\n')
+
+                    print(f'{scnx_source_address} ({', '.join(new2)}) {colorama.Fore.BLUE}OR{colorama.Style.RESET_ALL} {scnx_destination_address} ({', '.join(new2)}) {stats}{destination_only}\n')
+                
+                    break
+
+                if len(found_ip) < 2:                    
+                    print(colorama.Fore.RED + 'The -l or --l argument only accepts values ​​equal to or greater than 2, possibly the source does not have more than one value or cannot be extracted correctly\n' + colorama.Style.RESET_ALL)
 
 
     elif arguments.input and arguments.ip and arguments.rsa and arguments.l:
@@ -191,38 +198,45 @@ def option(arguments):
             rsa_dst_adress = siem.rsa_destination_adress()
             found_ip = ip(args.input)
 
-            for index in found_ip:
-                records_ip.append(index)
-                meadle = len(records_ip) // 2
-                new1 = records_ip[:meadle]
-                new2 = records_ip[meadle:]
+            while len(found_ip) >= 2:
 
-            print('[AVs / EDRs / SOs]:\n')
+                for index in found_ip:
+                    records_ip.append(index)
+                    meadle = len(records_ip) // 2
+                    new1 = records_ip[:meadle]
+                    new2 = records_ip[meadle:]
 
-            color = ' ||' + colorama.Fore.BLUE + ' ip.src = ' + colorama.Style.RESET_ALL
-            print(f'{rsa_src_adress} {color.join(new1)} \n')
+                print('[AVs / EDRs / SOs]:\n')
 
-            color = ' ||' + colorama.Fore.BLUE + ' ip.src = ' + colorama.Style.RESET_ALL
-            print(f'{rsa_src_adress} {color.join(new2)} \n')
+                color = ' ||' + colorama.Fore.BLUE + ' ip.src = ' + colorama.Style.RESET_ALL
+                print(f'{rsa_src_adress} {color.join(new1)} \n')
 
-            color = ' ||' + colorama.Fore.BLUE + ' ip.dst = ' + colorama.Style.RESET_ALL
-            print(f'{rsa_dst_adress} {color.join(new1)} \n')
+                color = ' ||' + colorama.Fore.BLUE + ' ip.src = ' + colorama.Style.RESET_ALL
+                print(f'{rsa_src_adress} {color.join(new2)} \n')
 
-            color = ' ||' + colorama.Fore.BLUE + ' ip.dst = ' + colorama.Style.RESET_ALL
-            print(f'{rsa_dst_adress} {color.join(new2)} \n')
+                color = ' ||' + colorama.Fore.BLUE + ' ip.dst = ' + colorama.Style.RESET_ALL
+                print(f'{rsa_dst_adress} {color.join(new1)} \n')
 
-            color = ' ||' + colorama.Fore.BLUE + ' ip.src = ' + colorama.Style.RESET_ALL
-            print(f'{rsa_src_adress} {color.join(new1)} {colorama.Fore.BLUE} || {colorama.Style.RESET_ALL}', end='')
+                color = ' ||' + colorama.Fore.BLUE + ' ip.dst = ' + colorama.Style.RESET_ALL
+                print(f'{rsa_dst_adress} {color.join(new2)} \n')
 
-            color = ' ||' + colorama.Fore.BLUE + ' ip.dst = ' + colorama.Style.RESET_ALL
-            print(f'{rsa_dst_adress} {color.join(new1)} {colorama.Fore.BLUE} {colorama.Style.RESET_ALL} \n')
+                color = ' ||' + colorama.Fore.BLUE + ' ip.src = ' + colorama.Style.RESET_ALL
+                print(f'{rsa_src_adress} {color.join(new1)} {colorama.Fore.BLUE} || {colorama.Style.RESET_ALL}', end='')
 
-            color = ' ||' + colorama.Fore.BLUE + ' ip.src = ' + colorama.Style.RESET_ALL
-            print(f'{rsa_src_adress} {color.join(new2)} {colorama.Fore.BLUE} || {colorama.Style.RESET_ALL}', end='')
+                color = ' ||' + colorama.Fore.BLUE + ' ip.dst = ' + colorama.Style.RESET_ALL
+                print(f'{rsa_dst_adress} {color.join(new1)} {colorama.Fore.BLUE} {colorama.Style.RESET_ALL} \n')
 
-            color = ' ||' + colorama.Fore.BLUE + ' ip.dst = ' + colorama.Style.RESET_ALL
-            print(f'{rsa_dst_adress} {color.join(new2)} {colorama.Fore.BLUE} {colorama.Style.RESET_ALL} \n')
+                color = ' ||' + colorama.Fore.BLUE + ' ip.src = ' + colorama.Style.RESET_ALL
+                print(f'{rsa_src_adress} {color.join(new2)} {colorama.Fore.BLUE} || {colorama.Style.RESET_ALL}', end='')
+
+                color = ' ||' + colorama.Fore.BLUE + ' ip.dst = ' + colorama.Style.RESET_ALL
+                print(f'{rsa_dst_adress} {color.join(new2)} {colorama.Fore.BLUE} {colorama.Style.RESET_ALL} \n')
                 
+                break
+            
+            if len(found_ip) < 2:                    
+                    print(colorama.Fore.RED + 'The -l or --l argument only accepts values ​​equal to or greater than 2, possibly the source does not have more than one value or cannot be extracted correctly\n' + colorama.Style.RESET_ALL)
+
     
     elif arguments.input and arguments.ip == True and arguments.scnx == True:
         if not ip(arguments.input):
@@ -371,6 +385,12 @@ def option(arguments):
             records_domain = []
             scnx_request_url = siem.scnx_request_url()
             scnx_request_only = siem.scnx_request_url_only()
+            scnx_email_recipient_domain = siem.scnx_email_recipient_domain()
+            scnx_email_recipient_domain_only = siem.scnx_email_recipient_domain_only()
+            scnx_fqdn = siem.scnx_fqdn()
+            scnx_fqdn_only = siem.scnx_fqdn_only()
+            scnx_root_domain = siem.scnx_root_domain()
+            scnx_root_domain_only = siem.scnx_root_domain_only()
             stats = siem.scnx_stats()
             found_domain = domain(args.input)
 
@@ -381,15 +401,39 @@ def option(arguments):
                 new2 = records_domain[meadle:]
                 
             
-            print('[NGFW / WAF / PROXY]:\n')
+            print('[NGFW / WAF / PROXY / EXCHANGE]:\n')
             
             print(f'{scnx_request_url} ({', '.join(new1)})\n')
 
             print(f'{scnx_request_url} ({', '.join(new2)})\n')
 
+            print(f'{scnx_email_recipient_domain} ({', '.join(new1)})\n')
+
+            print(f'{scnx_email_recipient_domain} ({', '.join(new2)})\n')
+
+            print(f'{scnx_fqdn} ({', '.join(new1)})\n')
+
+            print(f'{scnx_fqdn} ({', '.join(new2)})\n')
+
+            print(f'{scnx_root_domain} ({', '.join(new1)})\n')
+
+            print(f'{scnx_root_domain} ({', '.join(new2)})\n')            
+
             print(f'{scnx_request_url} ({', '.join(new1)}) {stats}{scnx_request_only}\n')
 
             print(f'{scnx_request_url} ({', '.join(new2)}) {stats}{scnx_request_only}\n')
+
+            print(f'{scnx_email_recipient_domain} ({', '.join(new1)}) {stats}{scnx_email_recipient_domain_only}\n')
+
+            print(f'{scnx_email_recipient_domain} ({', '.join(new2)}) {stats}{scnx_email_recipient_domain_only}\n')
+
+            print(f'{scnx_fqdn} ({', '.join(new1)}) {stats}{scnx_fqdn_only}\n')
+
+            print(f'{scnx_fqdn} ({', '.join(new2)}) {stats}{scnx_fqdn_only}\n')
+
+            print(f'{scnx_root_domain} ({', '.join(new1)}) {stats}{scnx_root_domain_only}\n')
+
+            print(f'{scnx_root_domain} ({', '.join(new2)}) {stats}{scnx_root_domain_only}\n')
 
             domain_without = f' OR {scnx_request_only} contains '
 
@@ -412,6 +456,10 @@ def option(arguments):
             scnx_request_only = siem.scnx_request_url_only()
             scnx_email_recipient_domain = siem.scnx_email_recipient_domain()
             scnx_email_recipient_domain_only = siem.scnx_email_recipient_domain_only()
+            scnx_fqdn = siem.scnx_fqdn()
+            scnx_fqdn_only = siem.scnx_fqdn_only()
+            scnx_root_domain = siem.scnx_root_domain()
+            scnx_root_domain_only = siem.scnx_root_domain_only()
             stats = siem.scnx_stats()
             found_domain = domain(args.input)
 
@@ -424,13 +472,29 @@ def option(arguments):
 
             print(f'{scnx_email_recipient_domain} ({', '.join(records_domain)})\n')
 
+            print(f'{scnx_fqdn} ({', '.join(records_domain)})\n')
+
+            print(f'{scnx_root_domain} ({', '.join(records_domain)})\n')
+
             domain_without = f' OR {scnx_request_only} contains '
+
+            domain_without = f' OR {scnx_fqdn_only} contains '
+
+            domain_without = f' OR {scnx_root_domain_only} contains '
 
             print(f'{scnx_request_only} contains {domain_without.join(records_domain)}\n')
 
+            print(f'{scnx_fqdn_only} contains {domain_without.join(records_domain)}\n')
+
+            print(f'{scnx_root_domain_only} contains {domain_without.join(records_domain)}\n')
+
             print(f'{scnx_request_url} ({', '.join(records_domain)}) {stats}{scnx_request_only}\n')
 
-            print(f'{scnx_email_recipient_domain} ({', '.join(records_domain)}) {stats}{scnx_email_recipient_domain_only}')
+            print(f'{scnx_email_recipient_domain} ({', '.join(records_domain)}) {stats}{scnx_email_recipient_domain_only}\n')
+
+            print(f'{scnx_fqdn} ({', '.join(records_domain)}) {stats}{scnx_fqdn_only}\n')
+
+            print(f'{scnx_root_domain} ({', '.join(records_domain)}) {stats}{scnx_root_domain_only}\n')
 
 
     elif arguments.input and arguments.domain and arguments.rsa and arguments.l:
@@ -502,41 +566,48 @@ def option(arguments):
             command_line_only = siem.scnx_command_line_only()
             stats = siem.scnx_stats()
 
-            for index in found_artifact:
-                records_artifact.append(index)
-                meadle = len(records_artifact) // 2
-                new1 = records_artifact[:meadle]
-                new2 = records_artifact[meadle:]
+            while len(found_artifact) >= 2:
 
-            print('[AVS / EDRS / Windows / Linux]:\n')
+                for index in found_artifact:
+                    records_artifact.append(index)
+                    meadle = len(records_artifact) // 2
+                    new1 = records_artifact[:meadle]
+                    new2 = records_artifact[meadle:]
 
-            print(f'{scnx_sourceprocessname} ({', '.join(new1)})\n')
+                print('[AVS / EDRS / Windows / Linux]:\n')
 
-            print(f'{scnx_sourceprocessname} ({', '.join(new2)})\n')
+                print(f'{scnx_sourceprocessname} ({', '.join(new1)})\n')
 
-            print(f'{scnx_destination_process_name} ({', '.join(new1)})\n')
+                print(f'{scnx_sourceprocessname} ({', '.join(new2)})\n')
 
-            print(f'{scnx_destination_process_name} ({', '.join(new2)})\n')
+                print(f'{scnx_destination_process_name} ({', '.join(new1)})\n')
 
-            print(f'{scnx_sourceprocessname} ({', '.join(new1)}) {colorama.Fore.BLUE}OR{colorama.Style.RESET_ALL} {scnx_destination_process_name} ({', '.join(new1)})\n')
+                print(f'{scnx_destination_process_name} ({', '.join(new2)})\n')
 
-            print(f'{scnx_sourceprocessname} ({', '.join(new2)}) {colorama.Fore.BLUE}OR{colorama.Style.RESET_ALL} {scnx_destination_process_name} ({', '.join(new2)})\n')
+                print(f'{scnx_sourceprocessname} ({', '.join(new1)}) {colorama.Fore.BLUE}OR{colorama.Style.RESET_ALL} {scnx_destination_process_name} ({', '.join(new1)})\n')
 
-            print(f'{scnx_filename} ({', '.join(new1)})\n')
+                print(f'{scnx_sourceprocessname} ({', '.join(new2)}) {colorama.Fore.BLUE}OR{colorama.Style.RESET_ALL} {scnx_destination_process_name} ({', '.join(new2)})\n')
 
-            print(f'{scnx_filename} ({', '.join(new2)})\n')
+                print(f'{scnx_filename} ({', '.join(new1)})\n')
 
-            print(f'{scnx_filename} ({', '.join(new1)}) {stats} {scnx_file_name_only}\n')
+                print(f'{scnx_filename} ({', '.join(new2)})\n')
 
-            print(f'{scnx_filename} ({', '.join(new2)}) {stats} {scnx_file_name_only}\n')
+                print(f'{scnx_filename} ({', '.join(new1)}) {stats} {scnx_file_name_only}\n')
 
-            print(f'{scnx_sourceprocessname} ({', '.join(new1)}) {stats} {scnx_source_process_name_only} {command_line_only}\n')
+                print(f'{scnx_filename} ({', '.join(new2)}) {stats} {scnx_file_name_only}\n')
 
-            print(f'{scnx_sourceprocessname} ({', '.join(new2)}) {stats} {scnx_source_process_name_only} {command_line_only}\n')
+                print(f'{scnx_sourceprocessname} ({', '.join(new1)}) {stats} {scnx_source_process_name_only} {command_line_only}\n')
 
-            print(f'{scnx_destination_process_name} ({', '.join(new1)}) {stats} {scnx_destination_process_name_only} {command_line_only}\n')
+                print(f'{scnx_sourceprocessname} ({', '.join(new2)}) {stats} {scnx_source_process_name_only} {command_line_only}\n')
 
-            print(f'{scnx_destination_process_name} ({', '.join(new2)}) {stats} {scnx_destination_process_name_only} {command_line_only}\n')
+                print(f'{scnx_destination_process_name} ({', '.join(new1)}) {stats} {scnx_destination_process_name_only} {command_line_only}\n')
+
+                print(f'{scnx_destination_process_name} ({', '.join(new2)}) {stats} {scnx_destination_process_name_only} {command_line_only}\n')
+
+                break
+
+            if len(found_artifact) < 2:                    
+                print(colorama.Fore.RED + 'The -l or --l argument only accepts values ​​equal to or greater than 2, possibly the source does not have more than one value or cannot be extracted correctly\n' + colorama.Style.RESET_ALL)
 
         
     elif arguments.input and arguments.artifact and arguments.rsa and arguments.l:
@@ -641,17 +712,24 @@ def option(arguments):
             scnx_old_file_hash = siem.scnx_old_file_hash()
             found_md5 = md5(args.input)
 
-            for index in found_md5:
-                records_md5.append(index)
-                meadle = len(records_md5) // 2
-                new1 = records_md5[:meadle]
-                new2 = records_md5[meadle:]
+            while len(found_md5) >= 2:
 
-            print('[AVs / EDRs]:\n')
+                for index in found_md5:
+                    records_md5.append(index)
+                    meadle = len(records_md5) // 2
+                    new1 = records_md5[:meadle]
+                    new2 = records_md5[meadle:]
 
-            print(f'{scnx_old_file_hash} ({', '.join(new1)})\n')
+                print('[AVs / EDRs]:\n')
 
-            print(f'{scnx_old_file_hash} ({', '.join(new2)})')
+                print(f'{scnx_old_file_hash} ({', '.join(new1)})\n')
+
+                print(f'{scnx_old_file_hash} ({', '.join(new2)})')
+
+                break
+
+            if len(found_md5) < 2:                    
+                print(colorama.Fore.RED + 'The -l or --l argument only accepts values ​​equal to or greater than 2, possibly the source does not have more than one value or cannot be extracted correctly\n' + colorama.Style.RESET_ALL)
 
     
     elif arguments.input and arguments.md5 and arguments.rsa and arguments.l:
@@ -751,19 +829,26 @@ def option(arguments):
             records_sha1 = []
             scnx_old_file_hash = siem.scnx_old_file_hash()
             found_sha1 = sha1(args.input)
+
+            while len(found_sha1) >= 2:
             
-            for index in found_sha1:
-                records_sha1.append(index)
-                meadle = len(records_sha1) // 2
-                new1 = records_sha1[:meadle]
-                new2 = records_sha1[meadle:]
+                for index in found_sha1:
+                    records_sha1.append(index)
+                    meadle = len(records_sha1) // 2
+                    new1 = records_sha1[:meadle]
+                    new2 = records_sha1[meadle:]
 
 
-            print('[AVs / EDRs]:\n')
+                print('[AVs / EDRs]:\n')
 
-            print(f'{scnx_old_file_hash} ({', '.join(new1)})\n')
+                print(f'{scnx_old_file_hash} ({', '.join(new1)})\n')
 
-            print(f'{scnx_old_file_hash} ({', '.join(new2)})')
+                print(f'{scnx_old_file_hash} ({', '.join(new2)})')
+
+                break
+
+            if len(found_sha1) < 2:                    
+                print(colorama.Fore.RED + 'The -l or --l argument only accepts values ​​equal to or greater than 2, possibly the source does not have more than one value or cannot be extracted correctly\n' + colorama.Style.RESET_ALL)
 
 
     elif arguments.input and arguments.sha1 and arguments.rsa and arguments.l:
@@ -863,17 +948,24 @@ def option(arguments):
             scnx_old_file_hash = siem.scnx_old_file_hash()
             found_sha256 = sha256(arguments.input)
 
-            for index in set(found_sha256):
-                records_sha256.append(index)
-                meadle = len(records_sha256) // 2
-                new1 = records_sha256[:meadle]
-                new2 = records_sha256[meadle:]
+            while len(found_sha256) >= 2:
 
-            print('[AVs / EDRs]:\n')
+                for index in set(found_sha256):
+                    records_sha256.append(index)
+                    meadle = len(records_sha256) // 2
+                    new1 = records_sha256[:meadle]
+                    new2 = records_sha256[meadle:]
 
-            print(f'{scnx_old_file_hash} ({', '.join(new1)})\n')   
+                print('[AVs / EDRs]:\n')
 
-            print(f'{scnx_old_file_hash} ({', '.join(new2)})') 
+                print(f'{scnx_old_file_hash} ({', '.join(new1)})\n')   
+
+                print(f'{scnx_old_file_hash} ({', '.join(new2)})')
+
+                break
+
+            if len(found_sha256) < 2:                    
+                print(colorama.Fore.RED + 'The -l or --l argument only accepts values ​​equal to or greater than 2, possibly the source does not have more than one value or cannot be extracted correctly\n' + colorama.Style.RESET_ALL)
 
 
     elif arguments.input and arguments.sha256 and arguments.rsa and arguments.l:
@@ -977,40 +1069,57 @@ def option(arguments):
             scnx_workemail_without = siem.scnx_workemail_without() 
             scnx_accountname = siem.scnx_accountname()
             scnx_accountname_without = siem.scnx_accountname_without()
+            scnx_email_recipient = siem.scnx_email_recipient()
+            scnx_email_recipient_only = siem.scnx_email_recipient_domain_only()
             found_email = email(arguments.input)
             stats = siem.scnx_stats()
 
-            for index in set(found_email):
-                records_email.append(index)
-                meadle = len(records_email) // 2
-                new1 = records_email[:meadle]
-                new2 = records_email[meadle:]
+            while len(found_email) >= 2:
 
-            print('[EXCHANGE]:\n')
+                for index in set(found_email):
+                    records_email.append(index)
+                    meadle = len(records_email) // 2
+                    new1 = records_email[:meadle]
+                    new2 = records_email[meadle:]
 
-            print(f'{scnx_mailboxownerupn} ({', '.join(new1)})\n')   
+                print('[EXCHANGE]:\n')
 
-            print(f'{scnx_mailboxownerupn} ({', '.join(new2)})\n')
+                print(f'{scnx_mailboxownerupn} ({', '.join(new1)})\n')   
 
-            print(f'{scnx_accountname} ({', '.join(new1)})\n')   
+                print(f'{scnx_mailboxownerupn} ({', '.join(new2)})\n')
 
-            print(f'{scnx_accountname} ({', '.join(new2)})\n')
+                print(f'{scnx_accountname} ({', '.join(new1)})\n')   
 
-            print(f'{scnx_workemail} ({', '.join(new1)})\n') 
+                print(f'{scnx_accountname} ({', '.join(new2)})\n')
 
-            print(f'{scnx_workemail} ({', '.join(new2)})\n') 
+                print(f'{scnx_workemail} ({', '.join(new1)})\n') 
 
-            print(f'{scnx_mailboxownerupn} ({', '.join(new1)}) {stats} {scnx_mailboxownerupn_without}\n')   
+                print(f'{scnx_workemail} ({', '.join(new2)})\n')
 
-            print(f'{scnx_mailboxownerupn} ({', '.join(new2)}) {stats} {scnx_mailboxownerupn_without}\n')
+                print(f'{scnx_email_recipient} ({', '.join(new1)})\n') 
 
-            print(f'{scnx_accountname} ({', '.join(new1)}) {stats} {scnx_accountname_without}\n')   
+                print(f'{scnx_email_recipient} ({', '.join(new2)})\n')
 
-            print(f'{scnx_accountname} ({', '.join(new2)}) {stats} {scnx_accountname_without}\n')
+                print(f'{scnx_mailboxownerupn} ({', '.join(new1)}) {stats} {scnx_mailboxownerupn_without}\n')   
 
-            print(f'{scnx_workemail} ({', '.join(new1)}) {stats} {scnx_workemail_without}\n')   
+                print(f'{scnx_mailboxownerupn} ({', '.join(new2)}) {stats} {scnx_mailboxownerupn_without}\n')
 
-            print(f'{scnx_workemail} ({', '.join(new2)}) {stats} {scnx_workemail_without}\n')
+                print(f'{scnx_accountname} ({', '.join(new1)}) {stats} {scnx_accountname_without}\n')   
+
+                print(f'{scnx_accountname} ({', '.join(new2)}) {stats} {scnx_accountname_without}\n')
+
+                print(f'{scnx_workemail} ({', '.join(new1)}) {stats} {scnx_workemail_without}\n')   
+
+                print(f'{scnx_workemail} ({', '.join(new2)}) {stats} {scnx_workemail_without}\n')
+
+                print(f'{scnx_email_recipient} ({', '.join(new1)}) {stats} {scnx_email_recipient_only}\n')   
+
+                print(f'{scnx_email_recipient} ({', '.join(new2)}) {stats} {scnx_email_recipient_only}\n')
+
+                break
+
+            if len(found_email) < 2:                    
+                print(colorama.Fore.RED + 'The -l or --l argument only accepts values ​​equal to or greater than 2, possibly the source does not have more than one value or cannot be extracted correctly\n' + colorama.Style.RESET_ALL)
 
 
     elif arguments.input and arguments.email and arguments.rsa and arguments.l:
@@ -1022,19 +1131,26 @@ def option(arguments):
             rsa_email = siem.rsa_email()
             found_email = email(args.input)
 
-            for index in found_email:
-                records_email.append("'" + index + "'")
-                meadle = len(records_email) // 2
-                new1 = records_email[:meadle]
-                new2 = records_email[meadle:]
+            while len(found_email) >= 2:
 
-            print('[EXCHANGE]\n')
+                for index in found_email:
+                    records_email.append("'" + index + "'")
+                    meadle = len(records_email) // 2
+                    new1 = records_email[:meadle]
+                    new2 = records_email[meadle:]
 
-            color = ' || ' + colorama.Fore.BLUE + ' email = ' + colorama.Style.RESET_ALL
-            print(f'{rsa_email} {color.join(new1)}\n')  
+                print('[EXCHANGE]\n')
 
-            color = ' || ' + colorama.Fore.BLUE + ' email = ' + colorama.Style.RESET_ALL
-            print(f'{rsa_email} {color.join(new2)}\n')
+                color = ' || ' + colorama.Fore.BLUE + ' email = ' + colorama.Style.RESET_ALL
+                print(f'{rsa_email} {color.join(new1)}\n')  
+
+                color = ' || ' + colorama.Fore.BLUE + ' email = ' + colorama.Style.RESET_ALL
+                print(f'{rsa_email} {color.join(new2)}\n')
+
+                break
+
+            if len(found_email) < 2:                    
+                print(colorama.Fore.RED + 'The -l or --l argument only accepts values ​​equal to or greater than 2, possibly the source does not have more than one value or cannot be extracted correctly\n' + colorama.Style.RESET_ALL)
 
 
     elif arguments.input and arguments.email == True and arguments.scnx == True:
@@ -1049,6 +1165,8 @@ def option(arguments):
             scnx_workemail_without = siem.scnx_workemail_without() 
             scnx_accountname = siem.scnx_accountname()
             scnx_accountname_without = siem.scnx_accountname_without()
+            scnx_email_recipient = siem.scnx_email_recipient()
+            scnx_email_recipient_only = siem.scnx_email_recipient_domain_only()
             found_email = email(arguments.input)
             stats = siem.scnx_stats()
 
@@ -1063,11 +1181,15 @@ def option(arguments):
 
             print(f'{scnx_accountname} ({', '.join(records_email)})\n') 
 
+            print(f'{scnx_email_recipient} ({', '.join(records_email)})\n')
+
             print(f'{scnx_mailboxownerupn} ({', '.join(records_email)}) {stats} {scnx_mailboxownerupn_without}\n') 
 
             print(f'{scnx_workemail} ({', '.join(records_email)}) {stats} {scnx_workemail_without}\n') 
 
             print(f'{scnx_accountname} ({', '.join(records_email)}) {stats} {scnx_accountname_without}\n')
+
+            print(f'{scnx_email_recipient} ({', '.join(records_email)}) {stats} {scnx_email_recipient_only}\n')
 
     
     elif arguments.input and arguments.email == True and arguments.rsa == True:

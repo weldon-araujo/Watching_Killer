@@ -50,6 +50,16 @@ def scnx_email_recipient_domain_only():
     return email_recipient_domain_only
 
 
+def scnx_email_recipient():
+    email_recipient = colorama.Fore.BLUE + 'emailrecipient in' + colorama.Style.RESET_ALL
+    return email_recipient
+
+
+def scnx_email_recipient_only():
+    email_recipient_only = colorama.Fore.BLUE + 'emailrecipient' + colorama.Style.RESET_ALL
+    return email_recipient_only
+
+
 def scnx_source_process_name():
     source_process_name = colorama.Fore.BLUE + 'sourceprocessname in' + colorama.Style.RESET_ALL
     return source_process_name
@@ -108,6 +118,26 @@ def scnx_command_line():
 def scnx_command_line_only():
     scnx_command_line_only = colorama.Fore.BLUE + 'commandline' + colorama.Style.RESET_ALL 
     return scnx_command_line_only
+
+
+def scnx_fqdn():
+    scnx_fqdn = colorama.Fore.BLUE + 'fqdn in' + colorama.Style.RESET_ALL
+    return scnx_fqdn
+
+
+def scnx_fqdn_only():
+    scnx_fqdn_only = colorama.Fore.BLUE + 'fqdn' + colorama.Style.RESET_ALL
+    return scnx_fqdn_only
+
+
+def scnx_root_domain():
+    scnx_root_domain = colorama.Fore.BLUE + 'rootdomain in' + colorama.Style.RESET_ALL
+    return scnx_root_domain
+
+
+def scnx_root_domain_only():
+    scnx_root_domain_only = colorama.Fore.BLUE + 'rootdomain' + colorama.Style.RESET_ALL
+    return scnx_root_domain_only
 
 
 def rsa_email():
