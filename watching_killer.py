@@ -36,7 +36,7 @@ def cve(arq):
         reader = csv.reader(outfile)
         for raw in reader:
             for cell in raw:
-                matches = re.findall(r'CVE-[\d]{4}-[\d]{,5}', cell)
+                matches = re.findall(r'CVE-[\d]{4}-[\d]{,5}|cve-[\d]{4}-[\d]{,5}', cell)
                 cve.extend(matches)
     return set (cve)
 
