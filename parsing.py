@@ -24,4 +24,4 @@ def arguments():
     return parser.parse_args()
 
 if __name__ == "__main__":
-    print('Error, this not main executable, please execute python watching_killer.py -h or --help')
+    print('Error: This is not the main executable. Please execute python watching_killer.py -h or python watching_killer.py --help\n')

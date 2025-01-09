@@ -29,14 +29,14 @@ def reg(arq):
     return set(reg)
 
 
-
 def cve(arq):
     cve = []
     with open(arq, 'r', encoding="utf8") as outfile:
-        reader = csv.reader(outfile)
-        for raw in reader:
+        full = outfile.read()
+        full = full.replace('\n', '')
+        for raw in full:
             for cell in raw:
-                matches = re.findall(r'CVE-[\d]{4}-[\d]{,5}|cve-[\d]{4}-[\d]{,5}', cell)
+                matches = re.findall(r'CVE-[\d]{4}-[\d]{,5}|cve-[\d]{4}-[\d]{,5}', full)
                 cve.extend(matches)
     return set (cve)
 
@@ -111,7 +111,7 @@ def domain(arq):
 
 def artifact(arq):
     process = []
-    process_extension = ['.exe','dll','.py','.vbs','.ps1','.bin','.bat','.wsf']
+    process_extension = ['.exe','dll','.py','.vbs','.ps1','.bin','.bat','.wsf','.bk']
     with open(arq, 'r', encoding="utf8") as outfile:
         reader = csv.reader(outfile)
         for raw in reader:

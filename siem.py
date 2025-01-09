@@ -193,3 +193,7 @@ def process_contains():
 def rsa_src_process():
     src_process = colorama.Fore.BLUE + 'process.src =' + colorama.Style.RESET_ALL
     return src_process
+
+
+if __name__ == "__main__":
+    print('Error: This is not the main executable. Please execute python watching_killer.py -h or python watching_killer.py --help\n')
