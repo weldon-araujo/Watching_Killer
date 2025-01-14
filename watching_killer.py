@@ -95,7 +95,7 @@ def sha256(arq):
 
 def domain(arq):
     domains = []
-    tld = ['.com','.net','.br','.onion','.org','.gov', '.de', '.at', '.co','.link','.sh','.nz','.ua','.ch']
+    tld = ['.com','.net','.br','.onion','.org','.gov', '.de', '.at', '.co','.link','.sh','.nz','.ua','.ch','.us']
     with open(arq, 'r', encoding="utf8") as outfile:
         reader = csv.reader(outfile)
         for raw in reader:
@@ -1365,6 +1365,10 @@ class CVEReport(FPDF):
 def generator_report(cves_analyzed, cves_pending):
     pdf = CVEReport()
 
+    pdf.add_page()
+    pdf.image('./cover/cover.png', x=0, y=0, w=210, h=297)
+    pdf.ln(10)
+
 
     for cve_id, data in cves_analyzed.items():
         pdf.add_page() 
@@ -1382,7 +1386,7 @@ def generator_report(cves_analyzed, cves_pending):
         pdf.cell(0, 10, 'Sugestões de Queries para Hunting:', ln=True)
         pdf.set_font('Arial', '', 12)
         for query in data.get('queries', []):
-            pdf.multi_cell(0, 10, f'- {query}')
+            pdf.multi_cell(0, 10, f' {query}')
             pdf.ln(2)
         pdf.ln(10)
         
@@ -1407,7 +1411,7 @@ def generator_report(cves_analyzed, cves_pending):
         for cve in cves_pending:
             pdf.cell(0, 10, f'- {cve}', ln=True)
     
-    file_name = f"Relatório.pdf"
+    file_name = f"Watching_Killer_CVE_Report.pdf"
     pdf.output(file_name)
     print(f"Relatório gerado: {file_name}")
 

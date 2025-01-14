@@ -2,7 +2,7 @@ import argparse
 
 def arguments():
     
-    parser = argparse.ArgumentParser(description='Tool for parsing IOCs')
+    parser = argparse.ArgumentParser(description='Tool for parsing IOCs on unstructured fonts like csv, txt, json, xml, files')      
 
     parser.add_argument('input', help='Path of file to parser')
     parser.add_argument('--scnx','-scnx', action='store_true',help='This option select type output query to target siem securonix')
