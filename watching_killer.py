@@ -111,7 +111,7 @@ def domain(arq):
 
 def artifact(arq):
     process = []
-    process_extension = ['.exe','dll','.py','.vbs','.ps1','.bin','.bat','.wsf','.bk']
+    process_extension = ['.exe','dll','.py','.vbs','.ps1','.bin','.bat','.wsf','.bk','.sys']
     with open(arq, 'r', encoding="utf8") as outfile:
         reader = csv.reader(outfile)
         for raw in reader:
@@ -159,26 +159,16 @@ def option(arguments):
                         new1 = records_ip[:meadle]
                         new2 = records_ip[meadle:]
 
-                    print('[AVs / EDRs / SOs]:\n')
-
+                    print(colorama.Fore.GREEN + '[+] AV / EDR / SO\n' + colorama.Style.RESET_ALL)
                     print(f'{scnx_source_address} ({', '.join(new1)})\n')
-
                     print(f'{scnx_source_address} ({', '.join(new2)})\n')
-
                     print(f'{scnx_destination_address} ({', '.join(new1)})\n')
-
                     print(f'{scnx_destination_address} ({', '.join(new2)})\n')
-
                     print(f'{scnx_source_address} ({', '.join(new1)}) {colorama.Fore.BLUE}OR{colorama.Style.RESET_ALL} {scnx_destination_address} ({', '.join(new1)})\n')
-
                     print(f'{scnx_source_address} ({', '.join(new2)}) {colorama.Fore.BLUE}OR{colorama.Style.RESET_ALL} {scnx_destination_address} ({', '.join(new2)})\n')
-
                     print(f'{scnx_source_address} ({', '.join(new1)}) {colorama.Fore.BLUE}OR{colorama.Style.RESET_ALL} {scnx_destination_address} ({', '.join(new1)}) {stats}{source_only}\n')
-
                     print(f'{scnx_source_address} ({', '.join(new2)}) {colorama.Fore.BLUE}OR{colorama.Style.RESET_ALL} {scnx_destination_address} ({', '.join(new2)}) {stats}{source_only}\n')
-
                     print(f'{scnx_source_address} ({', '.join(new1)}) {colorama.Fore.BLUE}OR{colorama.Style.RESET_ALL} {scnx_destination_address} ({', '.join(new1)}) {stats}{destination_only}\n')
-
                     print(f'{scnx_source_address} ({', '.join(new2)}) {colorama.Fore.BLUE}OR{colorama.Style.RESET_ALL} {scnx_destination_address} ({', '.join(new2)}) {stats}{destination_only}\n')
                 
                     break
@@ -206,7 +196,7 @@ def option(arguments):
                     new1 = records_ip[:meadle]
                     new2 = records_ip[meadle:]
 
-                print('[AVs / EDRs / SOs]:\n')
+                print(colorama.Fore.GREEN + '[+] AV / EDR / SO\n' + colorama.Style.RESET_ALL)
 
                 color = ' ||' + colorama.Fore.BLUE + ' ip.src = ' + colorama.Style.RESET_ALL
                 print(f'{rsa_src_adress} {color.join(new1)} \n')
@@ -253,16 +243,11 @@ def option(arguments):
             for index in found_ip:
                 records_ip.append(index)
 
-            print('[AVs / EDRs / SOs]:\n')
-
+            print(colorama.Fore.GREEN + '[+] AV / EDR / SO\n' + colorama.Style.RESET_ALL)
             print(f'{scnx_source_address} ({', '.join(records_ip)})\n')
-
             print(f'{scnx_destination_address} ({', '.join(records_ip)})\n')
-
-            print(f'{scnx_source_address} ({', '.join(records_ip)}) {colorama.Fore.BLUE}OR{colorama.Style.RESET_ALL} {scnx_destination_address} ({', '.join(records_ip)})\n')
-                    
+            print(f'{scnx_source_address} ({', '.join(records_ip)}) {colorama.Fore.BLUE}OR{colorama.Style.RESET_ALL} {scnx_destination_address} ({', '.join(records_ip)})\n')  
             print(f'{scnx_source_address} ({', '.join(records_ip)}) {colorama.Fore.BLUE}OR{colorama.Style.RESET_ALL} {scnx_destination_address} ({', '.join(records_ip)}) {stats}{source_only}\n')  
-
             print(f'{scnx_source_address} ({', '.join(records_ip)}) {colorama.Fore.BLUE}OR{colorama.Style.RESET_ALL} {scnx_destination_address} ({', '.join(records_ip)}) {stats}{destination_only}\n')
                  
             
@@ -279,7 +264,7 @@ def option(arguments):
             for index in found_ip:
                 records_ip.append(index)
 
-            print('[AVs / EDRs / SOs]:\n')
+            print(colorama.Fore.GREEN + '[+] AV / EDR / SO\n' + colorama.Style.RESET_ALL)
 
             color = ' ||' + colorama.Fore.BLUE + ' ip.src = ' + colorama.Style.RESET_ALL
             print(f'{rsa_src_adress} {color.join(records_ip)} \n')
@@ -400,38 +385,22 @@ def option(arguments):
                 new1 = records_domain[:meadle]
                 new2 = records_domain[meadle:]                
             
-            print('[NGFW / WAF / PROXY / EXCHANGE]:\n')
-            
+            print(colorama.Fore.GREEN + '[+] NGFW / WAF / PROXY / EXCHANGE\n' + colorama.Style.RESET_ALL)        
             print(f'{scnx_request_url} ({', '.join(new1)})\n')
-
             print(f'{scnx_request_url} ({', '.join(new2)})\n')
-
             print(f'{scnx_email_recipient_domain} ({', '.join(new1)})\n')
-
             print(f'{scnx_email_recipient_domain} ({', '.join(new2)})\n')
-
             print(f'{scnx_fqdn} ({', '.join(new1)})\n')
-
             print(f'{scnx_fqdn} ({', '.join(new2)})\n')
-
             print(f'{scnx_root_domain} ({', '.join(new1)})\n')
-
             print(f'{scnx_root_domain} ({', '.join(new2)})\n')            
-
             print(f'{scnx_request_url} ({', '.join(new1)}) {stats}{scnx_request_only}\n')
-
             print(f'{scnx_request_url} ({', '.join(new2)}) {stats}{scnx_request_only}\n')
-
             print(f'{scnx_email_recipient_domain} ({', '.join(new1)}) {stats}{scnx_email_recipient_domain_only}\n')
-
             print(f'{scnx_email_recipient_domain} ({', '.join(new2)}) {stats}{scnx_email_recipient_domain_only}\n')
-
             print(f'{scnx_fqdn} ({', '.join(new1)}) {stats}{scnx_fqdn_only}\n')
-
             print(f'{scnx_fqdn} ({', '.join(new2)}) {stats}{scnx_fqdn_only}\n')
-
             print(f'{scnx_root_domain} ({', '.join(new1)}) {stats}{scnx_root_domain_only}\n')
-
             print(f'{scnx_root_domain} ({', '.join(new2)}) {stats}{scnx_root_domain_only}\n')
 
             domain_request_url_without = f' OR {scnx_request_only} contains '
@@ -443,26 +412,15 @@ def option(arguments):
             domain_email_recipient_domain_without = f' OR {scnx_email_recipient_domain_only} contains '
 
             print(f'{scnx_request_only} contains {domain_request_url_without.join(new1)}\n')
-
             print(f'{scnx_request_only} contains {domain_request_url_without.join(new2)}\n')
-
             print(f'{scnx_email_recipient_domain_only} contains {domain_email_recipient_domain_without.join(new1)}\n')
-
             print(f'{scnx_email_recipient_domain_only} contains {domain_email_recipient_domain_without.join(new2)}\n')
-
             print(f'{scnx_fqdn_only} contains {domain_fqdn_without.join(new1)}\n')
-
             print(f'{scnx_fqdn_only} contains {domain_fqdn_without.join(new2)}\n')
-
             print(f'{scnx_root_domain_only} contains {domain_root_domain_without.join(new1)}\n')
-
             print(f'{scnx_root_domain_only} contains {domain_root_domain_without.join(new2)}\n')
-
             print(f'{scnx_email_recipient_domain_only} contains {domain_email_recipient_domain_without.join(new1)}\n')
-
             print(f'{scnx_email_recipient_domain_only} contains {domain_email_recipient_domain_without.join(new2)}\n')
-
-            #print(f'{scnx_request_only} contains {domain_without.join(new1)} OR {scnx_email_recipient_domain_only} contains {domain_without.join(new1)}\n')
 
 
     elif arguments.input and arguments.domain == True and arguments.scnx == True:
@@ -485,7 +443,7 @@ def option(arguments):
             for index in found_domain:
                 records_domain.append(index)
 
-            print('[NGFW / WAF / PROXY / EXCHANGE]:\n')
+            print(colorama.Fore.GREEN + '[+] NGFW / WAF / PROXY / EXCHANGE\n' + colorama.Style.RESET_ALL)
 
             print(f'{scnx_request_url} ({', '.join(records_domain)})\n')
 
@@ -536,7 +494,7 @@ def option(arguments):
                 new2 = records_domain[meadle:]
 
                 
-            print('[NGFW / WAF / PROXY]:\n')
+            print(colorama.Fore.GREEN + '[+] NGFW / WAF / PROXY\n' + colorama.Style.RESET_ALL)
 
             color = ' ||' + colorama.Fore.BLUE + ' url = ' + colorama.Style.RESET_ALL 
             print(f'{rsa_url} {color.join(new1)}\n')
@@ -557,7 +515,7 @@ def option(arguments):
             for index in found_domain:
                 records_domain.append("'" + index + "'")
                 
-            print('[NGFW / WAF / PROXY]:\n')
+            print(colorama.Fore.GREEN + '[+] NGFW / WAF / PROXY\n' + colorama.Style.RESET_ALL)
 
             color = ' ||' + colorama.Fore.BLUE + ' url = ' + colorama.Style.RESET_ALL
             print(f'{rsa_url} {color.join(records_domain)}')
@@ -590,41 +548,34 @@ def option(arguments):
             stats = siem.scnx_stats()
 
             while len(found_artifact) >= 2:
-
+                
+                found_artifact = artifact(args.input)
                 for index in found_artifact:
                     records_artifact.append(index)
+
+                    if args.include:
+                        records_artifact.extend(args.include)
+                        records_artifact = list(set(records_artifact))
+
                     meadle = len(records_artifact) // 2
                     new1 = records_artifact[:meadle]
                     new2 = records_artifact[meadle:]
 
-                print('[AVS / EDRS / Windows / Linux]:\n')
+                print(colorama.Fore.GREEN + '[+] AV / EDR / Windows / Linux\n' + colorama.Style.RESET_ALL)
 
                 print(f'{scnx_sourceprocessname} ({', '.join(new1)})\n')
-
                 print(f'{scnx_sourceprocessname} ({', '.join(new2)})\n')
-
                 print(f'{scnx_destination_process_name} ({', '.join(new1)})\n')
-
                 print(f'{scnx_destination_process_name} ({', '.join(new2)})\n')
-
                 print(f'{scnx_sourceprocessname} ({', '.join(new1)}) {colorama.Fore.BLUE}OR{colorama.Style.RESET_ALL} {scnx_destination_process_name} ({', '.join(new1)})\n')
-
                 print(f'{scnx_sourceprocessname} ({', '.join(new2)}) {colorama.Fore.BLUE}OR{colorama.Style.RESET_ALL} {scnx_destination_process_name} ({', '.join(new2)})\n')
-
                 print(f'{scnx_filename} ({', '.join(new1)})\n')
-
                 print(f'{scnx_filename} ({', '.join(new2)})\n')
-
                 print(f'{scnx_filename} ({', '.join(new1)}) {stats} {scnx_file_name_only}\n')
-
                 print(f'{scnx_filename} ({', '.join(new2)}) {stats} {scnx_file_name_only}\n')
-
                 print(f'{scnx_sourceprocessname} ({', '.join(new1)}) {stats} {scnx_source_process_name_only} {command_line_only}\n')
-
                 print(f'{scnx_sourceprocessname} ({', '.join(new2)}) {stats} {scnx_source_process_name_only} {command_line_only}\n')
-
                 print(f'{scnx_destination_process_name} ({', '.join(new1)}) {stats} {scnx_destination_process_name_only} {command_line_only}\n')
-
                 print(f'{scnx_destination_process_name} ({', '.join(new2)}) {stats} {scnx_destination_process_name_only} {command_line_only}\n')
 
                 break
@@ -650,7 +601,7 @@ def option(arguments):
                 new2 = records_artifact[meadle:]
 
 
-            print('[AVS / EDRS / Windows / Linux]:\n')
+            print(colorama.Fore.GREEN + '[+] AV / EDR / Windows / Linux\n' + colorama.Style.RESET_ALL)
 
             color = ' ||' + colorama.Fore.BLUE + ' process contains ' + colorama.Style.RESET_ALL
             print(f'{rsa_process} {color.join(new1)}\n')
@@ -674,27 +625,25 @@ def option(arguments):
             found_artifact = artifact(args.input)
             command_line_only = siem.scnx_command_line_only()
             stats = siem.scnx_stats()
-
+            
+            found_artifact = artifact(args.input)
             for index in found_artifact:
                 records_artifact.append(index)
+
+            if args.include:
+                records_artifact.extend(args.include)
+                records_artifact = list(set(records_artifact))
                 
-            print('[AVS / EDRS / Windows / Linux]:\n')
-
+            print(colorama.Fore.GREEN + '[+] AV / EDR / Windows / Linux\n' + colorama.Style.RESET_ALL)
             print(f'{scnx_sourceprocessname} ({', '.join(records_artifact)})\n')
-
             print(f'{scnx_destination_process_name} ({', '.join(records_artifact)})\n')
-
             print(f'{scnx_sourceprocessname} ({', '.join(records_artifact)}) {colorama.Fore.BLUE}OR{colorama.Style.RESET_ALL} {scnx_destination_process_name} ({', '.join(records_artifact)})\n')
-
             print(f'{scnx_filename} ({', '.join(records_artifact)})\n')
-
             print(f'{scnx_filename} ({', '.join(records_artifact)}) {stats} {scnx_file_name_only}\n')
-
             print(f'{scnx_sourceprocessname} ({', '.join(records_artifact)}) {stats} {scnx_source_process_name_only} {command_line_only}\n')
-
             print(f'{scnx_destination_process_name} ({', '.join(records_artifact)}) {stats} {scnx_destination_process_name_only} {command_line_only}\n')
-
             print(f'{scnx_sourceprocessname} ({', '.join(records_artifact)}) {stats} {scnx_source_process_name_only} {scnx_destination_process_name_only} {command_line_only}\n')
+            print(f'{scnx_sourceprocessname} ({', '.join(records_artifact)}) {colorama.Fore.BLUE}OR{colorama.Style.RESET_ALL} {scnx_destination_process_name} ({', '.join(records_artifact)} {stats} {scnx_source_process_name_only} {scnx_destination_process_name_only} {command_line_only}\n')
             
            
     elif arguments.input and arguments.artifact == True and arguments.rsa == True:
@@ -710,7 +659,7 @@ def option(arguments):
             for index in found_artifact:
                 records_artifact.append("'" + index + "'")
 
-            print('[AVS / EDRS / Windows / Linux]:\n')
+            print(colorama.Fore.GREEN + '[+] AV / EDR / Windows / Linux\n' + colorama.Style.RESET_ALL)
 
             color = ' ||' + colorama.Fore.BLUE + ' process contains ' + colorama.Style.RESET_ALL
             print(f'{rsa_process} {color.join(records_artifact)}')
@@ -734,6 +683,8 @@ def option(arguments):
             records_md5 = []
             scnx_old_file_hash = siem.scnx_old_file_hash()
             scnx_old_file_hash_only = siem.scnx_old_file_hash_only()
+            scnx_file_hash = siem.scnx_file_hash()
+            scnx_file_hash_only = siem.scnx_file_hash_only()
             found_md5 = md5(args.input)
             stats = siem.scnx_stats()
 
@@ -745,15 +696,15 @@ def option(arguments):
                     new1 = records_md5[:meadle]
                     new2 = records_md5[meadle:]
 
-                print('[AVs / EDRs]:\n')
-
+                print(colorama.Fore.GREEN + '[+] AV / EDR / NGFW\n' + colorama.Style.RESET_ALL)
                 print(f'{scnx_old_file_hash} ({', '.join(new1)})\n')
-
                 print(f'{scnx_old_file_hash} ({', '.join(new2)})\n')
-
+                print(f'{scnx_file_hash} ({', '.join(new1)})\n')
+                print(f'{scnx_file_hash} ({', '.join(new2)})\n')
                 print(f'{scnx_old_file_hash} ({', '.join(new1)}) {stats} {scnx_old_file_hash_only}\n')
-
                 print(f'{scnx_old_file_hash} ({', '.join(new2)}) {stats} {scnx_old_file_hash_only}\n')
+                print(f'{scnx_file_hash} ({', '.join(new1)}) {stats} {scnx_file_hash_only}\n')
+                print(f'{scnx_file_hash} ({', '.join(new2)}) {stats} {scnx_file_hash_only}\n')
 
                 break
 
@@ -778,7 +729,7 @@ def option(arguments):
                     new1 = records_md5[:meadle]
                     new2 = records_md5[meadle:]
 
-                print('[AVs / EDRs]:\n')
+                print(colorama.Fore.GREEN + '[+] AV / EDR\n' + colorama.Style.RESET_ALL)
 
                 color = ' ||' + colorama.Fore.BLUE + ' checksum = ' + colorama.Style.RESET_ALL + "'"
                 records_md5_two = [f"{sha256}'" for sha256 in new1]
@@ -788,7 +739,7 @@ def option(arguments):
                 records_md5_two = [f"{sha256}'" for sha256 in new2]
                 print(f'{rsa_checksum} {color.join(records_md5_two)} \n') 
 
-                print('[Sysmon]\n')
+                print(colorama.Fore.GREEN + '[SYSMON]\n' + colorama.Style.RESET_ALL)
 
                 color = ' ||' + colorama.Fore.BLUE + ' checksum = ' + colorama.Style.RESET_ALL + "'md5="
                 records_md5_two = [f"{md5}'" for md5 in new1]        
@@ -804,7 +755,6 @@ def option(arguments):
                 print(colorama.Fore.RED + 'The -l or --l argument only accepts values ​​equal to or greater than 2, possibly the source does not have more than one value or cannot be extracted correctly\n' + colorama.Style.RESET_ALL)
 
 
-
     elif arguments.input and arguments.md5 == True and arguments.scnx == True:
 
         if not md5(arguments.input):
@@ -813,17 +763,19 @@ def option(arguments):
             records_md5 = []
             scnx_old_file_hash = siem.scnx_old_file_hash()
             scnx_old_file_hash_only = siem.scnx_old_file_hash_only()
+            scnx_file_hash = siem.scnx_file_hash()
+            scnx_file_hash_only = siem.scnx_file_hash_only()            
             found_md5 = md5(args.input)
             stats = siem.scnx_stats()
 
             for index in found_md5:
                 records_md5.append(index)
 
-            print('[AVs / EDRs]:\n')
-
+            print(colorama.Fore.GREEN + '[+] AV / EDR \n' + colorama.Style.RESET_ALL)
             print(f'{scnx_old_file_hash} ({', '.join(records_md5)})\n')
-
+            print(f'{scnx_file_hash} ({', '.join(records_md5)})\n')
             print(f'{scnx_old_file_hash} ({', '.join(records_md5)}) {stats} {scnx_old_file_hash_only}\n')
+            print(f'{scnx_file_hash} ({', '.join(records_md5)}) {stats} {scnx_file_hash_only}\n')
 
 
     elif arguments.input and arguments.md5 == True and arguments.rsa == True:
@@ -838,18 +790,15 @@ def option(arguments):
             for index in found_checksum:
                 records_md5.append(index)
 
-            print('[AVs / EDRs]:\n')
-
+            print(colorama.Fore.GREEN + '[+] AV / EDR\n' + colorama.Style.RESET_ALL)
             color = ' ||' + colorama.Fore.BLUE + ' checksum = ' + colorama.Style.RESET_ALL + "'"
             records_md5_two = [f"{md5}'" for md5 in records_md5]
             print(f'{rsa_checksum} \'{color.join(records_md5_two)} \n') 
-
-            print('[Sysmon]\n')
+            print(colorama.Fore.GREEN + '[+] SYSMON\n')
 
             color = ' ||' + colorama.Fore.BLUE + ' checksum = ' + colorama.Style.RESET_ALL + "'md5="
             records_md5 = [f"{md5}'" for md5 in records_md5]        
-            print(f"{rsa_checksum} 'md5={color.join(records_md5)}")
-                        
+            print(f"{rsa_checksum} 'md5={color.join(records_md5)}")                        
            
  
     elif arguments.input and arguments.md5 == True:
@@ -871,6 +820,8 @@ def option(arguments):
             records_sha1 = []
             scnx_old_file_hash = siem.scnx_old_file_hash()
             scnx_old_file_hash_only = siem.scnx_old_file_hash_only()
+            scnx_file_hash = siem.scnx_file_hash()
+            scnx_file_hash_only = siem.scnx_file_hash_only()
             found_sha1 = sha1(args.input)
             stats = siem.scnx_stats()
 
@@ -883,15 +834,15 @@ def option(arguments):
                     new2 = records_sha1[meadle:]
 
 
-                print('[AVs / EDRs]:\n')
-
+                print(colorama.Fore.GREEN + '[+] AV / EDR\n' + colorama.Style.RESET_ALL)
                 print(f'{scnx_old_file_hash} ({', '.join(new1)})\n')
-
                 print(f'{scnx_old_file_hash} ({', '.join(new2)})\n')
-
+                print(f'{scnx_file_hash} ({', '.join(new1)})\n')
+                print(f'{scnx_file_hash} ({', '.join(new2)})\n')
                 print(f'{scnx_old_file_hash} ({', '.join(new1)}) {stats} {scnx_old_file_hash_only}\n')
-
                 print(f'{scnx_old_file_hash} ({', '.join(new2)}) {stats} {scnx_old_file_hash_only}\n')
+                print(f'{scnx_file_hash} ({', '.join(new1)}) {stats} {scnx_file_hash_only}\n')
+                print(f'{scnx_file_hash} ({', '.join(new2)}) {stats} {scnx_file_hash_only}\n')
 
                 break
 
@@ -916,7 +867,7 @@ def option(arguments):
                     new1 = records_sha1[:meadle]
                     new2 = records_sha1[meadle:]
 
-                print('[AVs / EDRs]:\n')
+                print(colorama.Fore.GREEN + '[+] AV / EDR\n' + colorama.Style.RESET_ALL)
                 
                 color = ' || ' + colorama.Fore.BLUE + ' checksum = ' + colorama.Style.RESET_ALL + "'"
                 records_sha1_two = [f"{sha1}'" for sha1 in new1]
@@ -926,7 +877,7 @@ def option(arguments):
                 records_sha1_two = [f"{sha1}'" for sha1 in new2]
                 print(f'{rsa_checksum} {color.join(records_sha1_two)}\n')
 
-                print('[Sysmon]\n')
+                print('colorama.Fore.GREEN + [+] SYSMON\n')
 
                 color = ' ||' + colorama.Fore.BLUE + ' checksum = ' + colorama.Style.RESET_ALL + "'sha1="
                 records_sha1_two = [f"{sha1}'" for sha1 in new1]
@@ -950,17 +901,19 @@ def option(arguments):
             records_sha1 = []
             scnx_old_file_hash = siem.scnx_old_file_hash()
             scnx_old_file_hash_only = siem.scnx_old_file_hash_only()
+            scnx_file_hash = siem.scnx_file_hash()
+            scnx_file_hash_only = siem.scnx_file_hash_only()
             found_sha1 = sha1(args.input)
             stats = siem.scnx_stats()
 
             for index in found_sha1:
                 records_sha1.append(index)
 
-            print('[AVs / EDRs]:\n')
-
+            print(colorama.Fore.GREEN + '[+] AV / EDR\n' + colorama.Style.RESET_ALL)
             print(f'{scnx_old_file_hash} ({', '.join(records_sha1)})\n')
-
+            print(f'{scnx_file_hash} ({', '.join(records_sha1)})\n')
             print(f'{scnx_old_file_hash} ({', '.join(records_sha1)}) {stats} {scnx_old_file_hash_only}\n')
+            print(f'{scnx_file_hash} ({', '.join(records_sha1)}) {stats} {scnx_file_hash_only}\n')
 
     
     elif arguments.input and arguments.sha1 == True and arguments.rsa == True:
@@ -975,13 +928,13 @@ def option(arguments):
             for index in found_checksum:
                 records_sha1.append(index)
 
-            print('[AVs / EDRs]:\n')
+            print(colorama.Fore.GREEN + '[+] AV / EDR\n' + colorama.Style.RESET_ALL)
             
             color = ' || ' + colorama.Fore.BLUE + ' checksum = ' + colorama.Style.RESET_ALL + "'"
             records_sha1_two = [f"{sha1}'" for sha1 in records_sha1]
             print(f'{rsa_checksum} \'{color.join(records_sha1_two)}\n')  
 
-            print('[Sysmon]\n')
+            print(colorama.Fore.GREEN + '[+] SYSMON\n')
 
             color = ' ||' + colorama.Fore.BLUE + ' checksum = ' + colorama.Style.RESET_ALL + "'sha1="
             records_sha1 = [f"{sha1}'" for sha1 in records_sha1]
@@ -1006,6 +959,8 @@ def option(arguments):
             records_sha256 = []
             scnx_old_file_hash = siem.scnx_old_file_hash()
             scnx_old_file_hash_only = siem.scnx_old_file_hash_only()
+            scnx_file_hash = siem.scnx_file_hash()
+            scnx_file_hash_only = siem.scnx_file_hash_only()
             found_sha256 = sha256(arguments.input)
             stats = siem.scnx_stats()
 
@@ -1017,15 +972,15 @@ def option(arguments):
                     new1 = records_sha256[:meadle]
                     new2 = records_sha256[meadle:]
 
-                print('[AVs / EDRs]:\n')
-
+                print(colorama.Fore.GREEN + '[+] AV / EDR\n' + colorama.Style.RESET_ALL)
                 print(f'{scnx_old_file_hash} ({', '.join(new1)})\n')   
-
-                print(f'{scnx_old_file_hash} ({', '.join(new2)})')
-
+                print(f'{scnx_old_file_hash} ({', '.join(new2)})\n')
+                print(f'{scnx_file_hash} ({', '.join(new1)})\n')   
+                print(f'{scnx_file_hash} ({', '.join(new2)})\n')
                 print(f'{scnx_old_file_hash} ({', '.join(new1)}) {stats} {scnx_old_file_hash_only}\n')
-
                 print(f'{scnx_old_file_hash} ({', '.join(new2)}) {stats} {scnx_old_file_hash_only}\n')
+                print(f'{scnx_file_hash} ({', '.join(new1)}) {stats} {scnx_file_hash_only}\n')
+                print(f'{scnx_file_hash} ({', '.join(new2)}) {stats} {scnx_file_hash_only}\n')
 
                 break
 
@@ -1050,7 +1005,7 @@ def option(arguments):
                     new1 = records_sha256[:meadle]
                     new2 = records_sha256[meadle:]
 
-                print('[AVs / EDRs]:\n')
+                print(colorama.Fore.GREEN + '[+] AV / EDR\n' + colorama.Style.RESET_ALL)
 
                 color = ' || ' + colorama.Fore.BLUE + ' checksum = ' + colorama.Style.RESET_ALL + "'"
                 records_sha256_two = [f"{sha256}'" for sha256 in new1]
@@ -1060,7 +1015,7 @@ def option(arguments):
                 records_sha256_two = [f"{sha256}'" for sha256 in new2]
                 print(f'{rsa_checksum} {color.join(records_sha256_two)}\n')
 
-                print('[Sysmon]\n')
+                print('[+] SYSMON\n')
 
                 color = ' ||' + colorama.Fore.BLUE + ' checksum = ' + colorama.Style.RESET_ALL + "'sha256="
                 records_sha256_two = [f"{sha256}'" for sha256 in new1]
@@ -1090,10 +1045,8 @@ def option(arguments):
             for index in set(found_sha256):
                 records_sha256.append(index)
 
-            print('[AVs / EDRs]:\n')
-
+            print(colorama.Fore.GREEN + '[+] AV / EDR\n' + colorama.Style.RESET_ALL)
             print(f'{scnx_old_file_hash} ({', '.join(records_sha256)})\n')  
-
             print(f'{scnx_old_file_hash} ({', '.join(records_sha256)}) {stats} {scnx_old_file_hash_only}\n') 
         
     
@@ -1110,13 +1063,13 @@ def option(arguments):
                 records_sha256.append(index)
                 
 
-            print('[AVs / EDRs]:\n')
+            print(colorama.Fore.GREEN + '[+] AV / EDR\n' + colorama.Style.RESET_ALL)
 
             color = ' || ' + colorama.Fore.BLUE + ' checksum = ' + colorama.Style.RESET_ALL + "'"
             records_sha256_two = [f"{sha256}'" for sha256 in records_sha256]
             print(f'{rsa_checksum} \'{color.join(records_sha256_two)}\n')  
 
-            print('[Sysmon]\n')
+            print(colorama.Fore.GREEN + '[SYSMON]\n' + colorama.Style.RESET_ALL)
 
             color = ' ||' + colorama.Fore.BLUE + ' checksum = ' + colorama.Style.RESET_ALL + "'sha256="
             records_sha256 = [f"{sha256}'" for sha256 in records_sha256]
@@ -1158,38 +1111,22 @@ def option(arguments):
                     new1 = records_email[:meadle]
                     new2 = records_email[meadle:]
 
-                print('[EXCHANGE]:\n')
-
+                print(colorama.Fore.GREEN + '[+] EXCHANGE\n' + colorama.Style.RESET_ALL)
                 print(f'{scnx_mailboxownerupn} ({', '.join(new1)})\n')   
-
                 print(f'{scnx_mailboxownerupn} ({', '.join(new2)})\n')
-
                 print(f'{scnx_accountname} ({', '.join(new1)})\n')   
-
                 print(f'{scnx_accountname} ({', '.join(new2)})\n')
-
                 print(f'{scnx_workemail} ({', '.join(new1)})\n') 
-
                 print(f'{scnx_workemail} ({', '.join(new2)})\n')
-
                 print(f'{scnx_email_recipient} ({', '.join(new1)})\n') 
-
                 print(f'{scnx_email_recipient} ({', '.join(new2)})\n')
-
                 print(f'{scnx_mailboxownerupn} ({', '.join(new1)}) {stats} {scnx_mailboxownerupn_without}\n')   
-
                 print(f'{scnx_mailboxownerupn} ({', '.join(new2)}) {stats} {scnx_mailboxownerupn_without}\n')
-
                 print(f'{scnx_accountname} ({', '.join(new1)}) {stats} {scnx_accountname_without}\n')   
-
                 print(f'{scnx_accountname} ({', '.join(new2)}) {stats} {scnx_accountname_without}\n')
-
                 print(f'{scnx_workemail} ({', '.join(new1)}) {stats} {scnx_workemail_without}\n')   
-
                 print(f'{scnx_workemail} ({', '.join(new2)}) {stats} {scnx_workemail_without}\n')
-
                 print(f'{scnx_email_recipient} ({', '.join(new1)}) {stats} {scnx_email_recipient_only}\n')   
-
                 print(f'{scnx_email_recipient} ({', '.join(new2)}) {stats} {scnx_email_recipient_only}\n')
 
                 break
@@ -1215,7 +1152,7 @@ def option(arguments):
                     new1 = records_email[:meadle]
                     new2 = records_email[meadle:]
 
-                print('[EXCHANGE]\n')
+                print(colorama.Fore.GREEN + '[+] EXCHANGE\n' + colorama.Style.RESET_ALL)
 
                 color = ' || ' + colorama.Fore.BLUE + ' email = ' + colorama.Style.RESET_ALL
                 print(f'{rsa_email} {color.join(new1)}\n')  
@@ -1249,22 +1186,15 @@ def option(arguments):
             for index in set(found_email):
                 records_email.append(index)
 
-            print('[EXCHANGE]:\n')
+            print(colorama.Fore.GREEN + '[+] EXCHANGE\n' + colorama.Style.RESET_ALL)
 
             print(f'{scnx_mailboxownerupn} ({', '.join(records_email)})\n') 
-
             print(f'{scnx_workemail} ({', '.join(records_email)})\n') 
-
             print(f'{scnx_accountname} ({', '.join(records_email)})\n') 
-
             print(f'{scnx_email_recipient} ({', '.join(records_email)})\n')
-
             print(f'{scnx_mailboxownerupn} ({', '.join(records_email)}) {stats} {scnx_mailboxownerupn_without}\n') 
-
             print(f'{scnx_workemail} ({', '.join(records_email)}) {stats} {scnx_workemail_without}\n') 
-
             print(f'{scnx_accountname} ({', '.join(records_email)}) {stats} {scnx_accountname_without}\n')
-
             print(f'{scnx_email_recipient} ({', '.join(records_email)}) {stats} {scnx_email_recipient_only}\n')
 
     
@@ -1280,7 +1210,7 @@ def option(arguments):
             for index in found_email:
                 records_email.append("'" + index + "'")
 
-            print('[EXCHANGE]:\n')
+            print(colorama.Fore.GREEN + '[+] EXCHANGE\n' + colorama.Style.RESET_ALL)
 
             color = ' || ' + colorama.Fore.BLUE + ' email = ' + colorama.Style.RESET_ALL
             print(f'{rsa_email} {color.join(records_email)}\n')  

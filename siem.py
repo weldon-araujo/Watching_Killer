@@ -35,6 +35,16 @@ def scnx_old_file_hash_only():
     return old_file_hash_only 
 
 
+def scnx_file_hash():
+    file_hash = colorama.Fore.BLUE + 'filehash in' + colorama.Style.RESET_ALL
+    return file_hash
+
+
+def scnx_file_hash_only():
+    file_hash_only = colorama.Fore.BLUE + 'filehash' + colorama.Style.RESET_ALL
+    return file_hash_only
+
+
 def scnx_request_url():
     request_url = colorama.Fore.BLUE + 'requesturl in' + colorama.Style.RESET_ALL
     return request_url

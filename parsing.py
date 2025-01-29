@@ -16,9 +16,10 @@ def arguments():
     parser.add_argument('--email', '-email', action='store_true', help='This option try capture all email addresses')
     parser.add_argument('--reg','-r', action='store_true', help='This option try capture Windows registry')
     parser.add_argument('--artifact', '-artifact', action='store_true', help='This option try to capture all artifact like tools and process')
-    parser.add_argument('--report', '-re', action='store_true', help='This option will generat report with argument --cve')
-    parser.add_argument('--reputation', '-reputation', action='store_true', help='This option verifies the reputation of address ip, necessary to use with -ip or --ip option')
-    parser.add_argument('-l', action='store_true', help='This option divides the results query in two parts')
+    parser.add_argument('--report', '-re', action='store_true', help='This option will generat report with public exploits analisys from publica databases like ExploitDB and Packet Storm, only use with argument --cve EX: \watching_killer.py source.txt" --cve --report')
+    parser.add_argument('--reputation', '-reputation', action='store_true', help='This option verifies the reputation of address ip, necessary to use with argument -ip or --ip option EX: \watching_killer.py source.txt" --scnx -ip --reputation')
+    parser.add_argument('-l', action='store_true', help='This option divides the results query in two parts EX: \watching_killer.py source.txt" --scnx --sha1 -l')
+    parser.add_argument('-i', '--include', nargs='*', help='Add additional values separated by space to be included in the query only argument --artifact EX: python.exe .\watching_killer.py source.txt" --scnx -artifact -l -i cmd.exe malware.py')
     
 
     return parser.parse_args()
