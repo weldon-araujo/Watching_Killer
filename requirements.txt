@@ -3,7 +3,5 @@ colorama
 python-dotenv
 fpdf
 ipaddress
-csv
 requests
-json
 argparse
