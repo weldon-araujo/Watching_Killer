@@ -50,7 +50,7 @@ python.exe .\Watching_Killer.py --help
 
 </h4>
 
-* Como demonstrado no exemplo abaixo com o argumento "--p", a usabilidade é a mesma para os demais argumentos --md5, --sha1, --sha256, --domain, --cve, --email, --reg e --artifact 
+* Como demonstrado no exemplo abaixo com o argumento "--ip", a usabilidade é a mesma para os demais argumentos --md5, --sha1, --sha256, --domain, --cve, --email, --reg e --artifact 
 
 <h4 align="center">
 
