@@ -1,5 +1,10 @@
 import colorama
 
+def scnx_eventdata_only():
+    eventdata = colorama.Fore.BLUE + 'eventdata' + colorama.Style.RESET_ALL
+    return eventdata
+
+
 def scnx_source_address():
     source_adress = colorama.Fore.BLUE + 'sourceaddress in' + colorama.Style.RESET_ALL
     return source_adress
@@ -168,6 +173,11 @@ def scnx_file_name():
 def scnx_file_name_only():
     file_name_only = colorama.Fore.BLUE + 'filename' + colorama.Style.RESET_ALL
     return file_name_only
+
+
+def rsa_object_name():
+    object_name = colorama.Fore.BLUE + 'object.name =' + colorama.Style.RESET_ALL
+    return object_name
 
 
 def rsa_source_address():

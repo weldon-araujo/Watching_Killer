@@ -446,11 +446,8 @@ def option(arguments):
             print(colorama.Fore.GREEN + '[+] NGFW / WAF / PROXY / EXCHANGE\n' + colorama.Style.RESET_ALL)
 
             print(f'{scnx_request_url} ({', '.join(records_domain)})\n')
-
             print(f'{scnx_email_recipient_domain} ({', '.join(records_domain)})\n')
-
             print(f'{scnx_fqdn} ({', '.join(records_domain)})\n')
-
             print(f'{scnx_root_domain} ({', '.join(records_domain)})\n')
 
             domain_request_url_without = f' OR {scnx_request_only} contains '
@@ -462,19 +459,12 @@ def option(arguments):
             domain_email_recipient_domain_without = f' OR {scnx_email_recipient_domain_only} contains '
 
             print(f'{scnx_request_only} contains {domain_request_url_without.join(records_domain)}\n')
-
             print(f'{scnx_fqdn_only} contains {domain_fqdn_without.join(records_domain)}\n')
-
             print(f'{scnx_root_domain_only} contains {domain_root_domain_without.join(records_domain)}\n')
-
             print(f'{scnx_email_recipient_domain_only} contains {domain_email_recipient_domain_without.join(records_domain)}\n')
-
             print(f'{scnx_request_url} ({', '.join(records_domain)}) {stats}{scnx_request_only}\n')
-
             print(f'{scnx_fqdn} ({', '.join(records_domain)}) {stats}{scnx_fqdn_only}\n')
-
             print(f'{scnx_root_domain} ({', '.join(records_domain)}) {stats}{scnx_root_domain_only}\n')
-
             print(f'{scnx_email_recipient_domain} ({', '.join(records_domain)}) {stats}{scnx_email_recipient_domain_only}\n')
 
 
@@ -495,10 +485,8 @@ def option(arguments):
 
                 
             print(colorama.Fore.GREEN + '[+] NGFW / WAF / PROXY\n' + colorama.Style.RESET_ALL)
-
             color = ' ||' + colorama.Fore.BLUE + ' url = ' + colorama.Style.RESET_ALL 
             print(f'{rsa_url} {color.join(new1)}\n')
-
             color = ' ||' + colorama.Fore.BLUE + ' url = ' + colorama.Style.RESET_ALL
             print(f'{rsa_url} {color.join(new2)}')
 
@@ -516,7 +504,6 @@ def option(arguments):
                 records_domain.append("'" + index + "'")
                 
             print(colorama.Fore.GREEN + '[+] NGFW / WAF / PROXY\n' + colorama.Style.RESET_ALL)
-
             color = ' ||' + colorama.Fore.BLUE + ' url = ' + colorama.Style.RESET_ALL
             print(f'{rsa_url} {color.join(records_domain)}')
 
@@ -602,10 +589,8 @@ def option(arguments):
 
 
             print(colorama.Fore.GREEN + '[+] AV / EDR / Windows / Linux\n' + colorama.Style.RESET_ALL)
-
             color = ' ||' + colorama.Fore.BLUE + ' process contains ' + colorama.Style.RESET_ALL
             print(f'{rsa_process} {color.join(new1)}\n')
-
             color = ' ||' + colorama.Fore.BLUE + ' process contains ' + colorama.Style.RESET_ALL
             print(f'{rsa_process} {color.join(new2)}')
 
@@ -660,7 +645,6 @@ def option(arguments):
                 records_artifact.append("'" + index + "'")
 
             print(colorama.Fore.GREEN + '[+] AV / EDR / Windows / Linux\n' + colorama.Style.RESET_ALL)
-
             color = ' ||' + colorama.Fore.BLUE + ' process contains ' + colorama.Style.RESET_ALL
             print(f'{rsa_process} {color.join(records_artifact)}')
 
@@ -734,7 +718,6 @@ def option(arguments):
                 color = ' ||' + colorama.Fore.BLUE + ' checksum = ' + colorama.Style.RESET_ALL + "'"
                 records_md5_two = [f"{sha256}'" for sha256 in new1]
                 print(f'{rsa_checksum} {color.join(records_md5_two)} \n')
-
                 color = ' ||' + colorama.Fore.BLUE + ' checksum = ' + colorama.Style.RESET_ALL + "'"
                 records_md5_two = [f"{sha256}'" for sha256 in new2]
                 print(f'{rsa_checksum} {color.join(records_md5_two)} \n') 
@@ -744,7 +727,6 @@ def option(arguments):
                 color = ' ||' + colorama.Fore.BLUE + ' checksum = ' + colorama.Style.RESET_ALL + "'md5="
                 records_md5_two = [f"{md5}'" for md5 in new1]        
                 print(f"{rsa_checksum} 'md5={color.join(records_md5_two)}\n")
-
                 color = ' ||' + colorama.Fore.BLUE + ' checksum = ' + colorama.Style.RESET_ALL + "'md5="
                 records_md5_two = [f"{md5}'" for md5 in new2]        
                 print(f"{rsa_checksum} 'md5={color.join(records_md5_two)}")
@@ -1009,18 +991,14 @@ def option(arguments):
 
                 color = ' || ' + colorama.Fore.BLUE + ' checksum = ' + colorama.Style.RESET_ALL + "'"
                 records_sha256_two = [f"{sha256}'" for sha256 in new1]
-                print(f'{rsa_checksum} {color.join(records_sha256_two)}\n')  
-
+                print(f'{rsa_checksum} {color.join(records_sha256_two)}\n')
                 color = ' || ' + colorama.Fore.BLUE + ' checksum = ' + colorama.Style.RESET_ALL+ "'"
                 records_sha256_two = [f"{sha256}'" for sha256 in new2]
                 print(f'{rsa_checksum} {color.join(records_sha256_two)}\n')
-
                 print('[+] SYSMON\n')
-
                 color = ' ||' + colorama.Fore.BLUE + ' checksum = ' + colorama.Style.RESET_ALL + "'sha256="
                 records_sha256_two = [f"{sha256}'" for sha256 in new1]
-                print(f"{rsa_checksum} 'sha256={color.join(records_sha256_two)}\n") 
-
+                print(f"{rsa_checksum} 'sha256={color.join(records_sha256_two)}\n")
                 color = ' ||' + colorama.Fore.BLUE + ' checksum = ' + colorama.Style.RESET_ALL + "'sha256="
                 records_sha256_two = [f"{sha256}'" for sha256 in new2]
                 print(f"{rsa_checksum} 'sha256={color.join(records_sha256_two)}") 
@@ -1067,10 +1045,8 @@ def option(arguments):
 
             color = ' || ' + colorama.Fore.BLUE + ' checksum = ' + colorama.Style.RESET_ALL + "'"
             records_sha256_two = [f"{sha256}'" for sha256 in records_sha256]
-            print(f'{rsa_checksum} \'{color.join(records_sha256_two)}\n')  
-
+            print(f'{rsa_checksum} \'{color.join(records_sha256_two)}\n')
             print(colorama.Fore.GREEN + '[SYSMON]\n' + colorama.Style.RESET_ALL)
-
             color = ' ||' + colorama.Fore.BLUE + ' checksum = ' + colorama.Style.RESET_ALL + "'sha256="
             records_sha256 = [f"{sha256}'" for sha256 in records_sha256]
             print(f"{rsa_checksum} 'sha256={color.join(records_sha256)}") 
@@ -1153,10 +1129,8 @@ def option(arguments):
                     new2 = records_email[meadle:]
 
                 print(colorama.Fore.GREEN + '[+] EXCHANGE\n' + colorama.Style.RESET_ALL)
-
                 color = ' || ' + colorama.Fore.BLUE + ' email = ' + colorama.Style.RESET_ALL
                 print(f'{rsa_email} {color.join(new1)}\n')  
-
                 color = ' || ' + colorama.Fore.BLUE + ' email = ' + colorama.Style.RESET_ALL
                 print(f'{rsa_email} {color.join(new2)}\n')
 
@@ -1211,7 +1185,6 @@ def option(arguments):
                 records_email.append("'" + index + "'")
 
             print(colorama.Fore.GREEN + '[+] EXCHANGE\n' + colorama.Style.RESET_ALL)
-
             color = ' || ' + colorama.Fore.BLUE + ' email = ' + colorama.Style.RESET_ALL
             print(f'{rsa_email} {color.join(records_email)}\n')  
 
@@ -1225,6 +1198,108 @@ def option(arguments):
             for index in set(found_email):
                 print(index)
 
+
+# AQUI TO CONSTRUINDO AS QUERIES DE REGISTROS
+
+
+    elif arguments.input and arguments.reg and arguments.scnx and arguments.l:
+
+        if not reg(arguments.input):
+            print(colorama.Fore.RED + 'Not found windows registry' + colorama.Style.RESET_ALL)
+        else:
+            records_registry = []
+            scnx_eventdata_only = siem.scnx_eventdata_only()
+            found_registry = reg(arguments.input)
+            stats = siem.scnx_stats()
+
+            while len(found_registry) >= 2:
+
+                for index in set(found_registry):
+                    records_registry.append(index)
+                    meadle = len(records_registry) // 2
+                    new1 = records_registry[:meadle]
+                    new2 = records_registry[meadle:]
+
+                print(colorama.Fore.GREEN + '[+] Windows\n' + colorama.Style.RESET_ALL)
+
+                eventdata_without = f' OR {scnx_eventdata_only} contains '
+
+                print(f'{scnx_eventdata_only} contains {eventdata_without.join(new1)}\n')
+                print(f'{scnx_eventdata_only} contains {eventdata_without.join(new2)}\n')
+                print(f'{scnx_eventdata_only} contains {eventdata_without.join(new1)}) {stats} {scnx_eventdata_only}\n')
+                print(f'{scnx_eventdata_only} contains {eventdata_without.join(new2)}) {stats} {scnx_eventdata_only}\n')
+
+                break
+
+            if len(found_registry) < 2:                    
+                print(colorama.Fore.RED + 'The -l or --l argument only accepts values ​​equal to or greater than 2, possibly the source does not have more than one value or cannot be extracted correctly\n'+ colorama.Style.RESET_ALL)
+
+
+    elif arguments.input and arguments.reg and arguments.rsa and arguments.l:
+            
+        if not reg(arguments.input):
+            print(colorama.Fore.RED + 'Not found windows registry' + colorama.Style.RESET_ALL)
+        else:
+            records_registry = []
+            rsa_registry = siem.rsa_object_name()
+            found_registry = reg(arguments.input)
+
+            while len(found_registry) >= 2:
+
+                for index in found_registry:
+                    records_registry.append("'" + index + "'")
+                    meadle = len(records_registry) // 2
+                    new1 = records_registry[:meadle]
+                    new2 = records_registry[meadle:]
+
+                print(colorama.Fore.GREEN + '[+] Windows\n' + colorama.Style.RESET_ALL)
+                color = ' || ' + colorama.Fore.BLUE + ' registry = ' + colorama.Style.RESET_ALL
+                print(f'{rsa_registry} {color.join(new1)}\n')
+                color = ' || ' + colorama.Fore.BLUE + ' registry = ' + colorama.Style.RESET_ALL
+                print(f'{rsa_registry} {color.join(new2)}\n')
+
+                break
+
+            if len(found_registry) < 2:                    
+                print(colorama.Fore.RED + 'The -l or --l argument only accepts values ​​equal to or greater than 2, possibly the source does not have more than one value or cannot be extracted correctly\n' + colorama.Style.RESET_ALL)
+
+
+    elif arguments.input and arguments.reg and arguments.rsa:
+                
+        if not reg(arguments.input):
+            print(colorama.Fore.RED + 'Not found windows registry' + colorama.Style.RESET_ALL)
+        else:
+            records_registry = []
+            rsa_registry = siem.rsa_object_name()
+            found_registry = reg(arguments.input)
+
+            for index in set(found_registry):
+                records_registry.append(index)
+
+            print(colorama.Fore.GREEN + '[+] Windows\n' + colorama.Style.RESET_ALL)
+            color = ' || ' + colorama.Fore.BLUE + ' registry = ' + colorama.Style.RESET_ALL
+            records_registry_two = [f"{registry}'" for registry in records_registry]
+            print(f'{rsa_registry} {color.join(records_registry_two)}\n')
+
+
+    elif arguments.input and arguments.reg and arguments.scnx:
+            
+            if not reg(arguments.input):
+                print(colorama.Fore.RED + 'Not found windows registry' + colorama.Style.RESET_ALL)
+            else:
+                records_registry = []
+                scnx_eventdata_only = siem.scnx_eventdata_only()
+                found_registry = reg(arguments.input)
+                stats = siem.scnx_stats()
+    
+                for index in set(found_registry):
+                    records_registry.append(index)
+    
+                print(colorama.Fore.GREEN + '[+] Windows\n' + colorama.Style.RESET_ALL)    
+                eventdata_without = f' OR {scnx_eventdata_only} contains '    
+                print(f'{scnx_eventdata_only} contains {eventdata_without.join(records_registry)}\n')
+                print(f'{scnx_eventdata_only} contains {eventdata_without.join(records_registry)}) {stats} {scnx_eventdata_only}\n')
+                
 
     elif arguments.input and arguments.reg == True:
          if not reg(arguments.input):
