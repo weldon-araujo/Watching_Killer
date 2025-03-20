@@ -5,6 +5,36 @@ def scnx_eventdata_only():
     return eventdata
 
 
+def scnx_status():
+    status = colorama.Fore.BLUE + 'status in' + colorama.Style.RESET_ALL    
+    return status
+
+
+def scnx_status_only():
+    status_only = colorama.Fore.BLUE + 'status' + colorama.Style.RESET_ALL
+    return status_only
+
+
+def scnx_host():
+    host = colorama.Fore.BLUE + 'host in' + colorama.Style.RESET_ALL
+    return host
+
+
+def scnx_host_only():
+    host_only = colorama.Fore.BLUE + 'host' + colorama.Style.RESET_ALL
+    return host_only
+
+
+def scnx_uri():
+    uri = colorama.Fore.BLUE + 'uri in' + colorama.Style.RESET_ALL
+    return uri
+
+
+def scnx_uri_only():
+    uri_only = colorama.Fore.BLUE + 'uri' + colorama.Style.RESET_ALL
+    return uri_only
+
+
 def scnx_source_address():
     source_adress = colorama.Fore.BLUE + 'sourceaddress in' + colorama.Style.RESET_ALL
     return source_adress
@@ -168,6 +198,16 @@ def rsa_email():
 def scnx_file_name():
     file_name = colorama.Fore.BLUE + 'filename in' + colorama.Style.RESET_ALL
     return file_name
+
+
+def childprocesscommandline():
+    childprocesscommandline = colorama.Fore.BLUE + 'childprocesscommandline in' + colorama.Style.RESET_ALL   
+    return childprocesscommandline
+
+
+def childprocesscommandline_only():
+    childprocesscommandline_only = colorama.Fore.BLUE + 'childprocesscommandline' + colorama.Style.RESET_ALL
+    return childprocesscommandline_only
 
 
 def scnx_file_name_only():

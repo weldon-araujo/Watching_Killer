@@ -9,6 +9,7 @@ import siem
 import colorama
 import ipaddress
 from fpdf import FPDF
+from io import StringIO
 
 
 load_dotenv(override=True)
@@ -24,7 +25,9 @@ def reg(arq):
         reader = csv.reader(outfile)
         for raw in reader:
             for cell in raw: 
-                matches = re.findall(r'((?:HKEY_LOCAL_MACHINE|HKEY_CURRENT_USER|HKEY_CLASSES_ROOT|HKEY_USERS|HKEY_CURRENT_CONFIG|HKLM|HKCU|HKCR|HKU|HKCC)(?:\\[\w\dçÇ]+)*(?:\\[\w\dçÇ]*(?:\r?\n[\w\d\\\\]+)*))', cell)
+                #matches = re.findall(r'((?:HKEY_LOCAL_MACHINE|HKEY_CURRENT_USER|HKEY_CLASSES_ROOT|HKEY_USERS|HKEY_CURRENT_CONFIG|HKLM|HKCU|HKCR|HKU|HKCC)(?:\\[\w\dçÇ{}$.\- ]*)+)', cell, re.DOTALL)
+                matches = re.findall(r'((?:HKEY_LOCAL_MACHINE|HKEY_CURRENT_USER|HKEY_CLASSES_ROOT|HKEY_USERS|HKEY_CURRENT_CONFIG|HKLM|HKCU|HKCR|HKU|HKCC)(?:\\[\w\dçÇ{}$.\- ]*)*(?:\s*\n\s*\\[\w\dçÇ{}$.\- ]*)*)', cell, re.DOTALL)
+
                 reg.extend(matches)
     return set(reg)
 
@@ -95,7 +98,7 @@ def sha256(arq):
 
 def domain(arq):
     domains = []
-    tld = ['.com','.net','.br','.onion','.org','.gov', '.de', '.at', '.co','.link','.sh','.nz','.ua','.ch','.us','.pl']
+    tld = ['.com','.net','.br','.onion','.org','.gov', '.de', '.at', '.co','.link','.sh','.nz','.ua','.ch','.us','.pl', 'xyz','io','uk']
     with open(arq, 'r', encoding="utf8") as outfile:
         reader = csv.reader(outfile)
         for raw in reader:
@@ -355,7 +358,8 @@ def option(arguments):
 
         if not ip(arguments.input):
             print(colorama.Fore.RED + 'Not found ip address' + colorama.Style.RESET_ALL)
-        else:        
+        else:     
+            print(colorama.Fore.GREEN + '[+] IPs\n' + colorama.Style.RESET_ALL)   
             found_ip = ip(args.input)
             for index in set(found_ip):
                 print(index)
@@ -512,7 +516,8 @@ def option(arguments):
 
         if not domain(arguments.input):
             print(colorama.Fore.RED + 'Not found domain address' + colorama.Style.RESET_ALL)
-        else:        
+        else:   
+            print(colorama.Fore.GREEN + '[+] Domains\n' + colorama.Style.RESET_ALL)   
             found_domain = domain(args.input)
             for index in set(found_domain):
                 print(index)
@@ -532,6 +537,7 @@ def option(arguments):
             scnx_file_name_only = siem.scnx_file_name_only()
             found_artifact = artifact(args.input)
             command_line_only = siem.scnx_command_line_only()
+            childprocesscommandline_only = siem.childprocesscommandline_only()
             stats = siem.scnx_stats()
 
             while len(found_artifact) >= 2:
@@ -560,6 +566,8 @@ def option(arguments):
                 print(f'{scnx_filename} ({', '.join(new2)})\n')
                 print(f'{scnx_filename} ({', '.join(new1)}) {stats} {scnx_file_name_only}\n')
                 print(f'{scnx_filename} ({', '.join(new2)}) {stats} {scnx_file_name_only}\n')
+                print(f'{scnx_filename} ({', '.join(new1)}) {stats} {scnx_file_name_only} {childprocesscommandline_only}\n')
+                print(f'{scnx_filename} ({', '.join(new2)}) {stats} {scnx_file_name_only} {childprocesscommandline_only}\n')
                 print(f'{scnx_sourceprocessname} ({', '.join(new1)}) {stats} {scnx_source_process_name_only} {command_line_only}\n')
                 print(f'{scnx_sourceprocessname} ({', '.join(new2)}) {stats} {scnx_source_process_name_only} {command_line_only}\n')
                 print(f'{scnx_destination_process_name} ({', '.join(new1)}) {stats} {scnx_destination_process_name_only} {command_line_only}\n')
@@ -609,6 +617,7 @@ def option(arguments):
             scnx_file_name_only = siem.scnx_file_name_only()
             found_artifact = artifact(args.input)
             command_line_only = siem.scnx_command_line_only()
+            childprocesscommandline_only = siem.childprocesscommandline_only()
             stats = siem.scnx_stats()
             
             found_artifact = artifact(args.input)
@@ -625,10 +634,11 @@ def option(arguments):
             print(f'{scnx_sourceprocessname} ({', '.join(records_artifact)}) {colorama.Fore.BLUE}OR{colorama.Style.RESET_ALL} {scnx_destination_process_name} ({', '.join(records_artifact)})\n')
             print(f'{scnx_filename} ({', '.join(records_artifact)})\n')
             print(f'{scnx_filename} ({', '.join(records_artifact)}) {stats} {scnx_file_name_only}\n')
+            print(f'{scnx_filename} ({', '.join(records_artifact)}) {stats} {scnx_file_name_only} {childprocesscommandline_only}\n')
             print(f'{scnx_sourceprocessname} ({', '.join(records_artifact)}) {stats} {scnx_source_process_name_only} {command_line_only}\n')
             print(f'{scnx_destination_process_name} ({', '.join(records_artifact)}) {stats} {scnx_destination_process_name_only} {command_line_only}\n')
             print(f'{scnx_sourceprocessname} ({', '.join(records_artifact)}) {stats} {scnx_source_process_name_only} {scnx_destination_process_name_only} {command_line_only}\n')
-            print(f'{scnx_sourceprocessname} ({', '.join(records_artifact)}) {colorama.Fore.BLUE}OR{colorama.Style.RESET_ALL} {scnx_destination_process_name} ({', '.join(records_artifact)} {stats} {scnx_source_process_name_only} {scnx_destination_process_name_only} {command_line_only}\n')
+            print(f'{scnx_sourceprocessname} ({', '.join(records_artifact)}) {colorama.Fore.BLUE}OR{colorama.Style.RESET_ALL} {scnx_destination_process_name} ({', '.join(records_artifact)}) {stats} {scnx_source_process_name_only} {scnx_destination_process_name_only} {command_line_only}\n')
             
            
     elif arguments.input and arguments.artifact == True and arguments.rsa == True:
@@ -654,6 +664,7 @@ def option(arguments):
         if not artifact(arguments.input):
             print(colorama.Fore.RED + 'Not found artifact' + colorama.Style.RESET_ALL)
         else:
+            print(colorama.Fore.GREEN + '[+] Artifacts\n' + colorama.Style.RESET_ALL)
             found_artifact = artifact(args.input)
             for index in set(found_artifact):
                 print(index)
@@ -787,9 +798,9 @@ def option(arguments):
 
         if not md5(arguments.input):
             print(colorama.Fore.RED + 'Not found md5 hashes' + colorama.Style.RESET_ALL)
-        else:        
+        else:
+            print(colorama.Fore.GREEN + '[+] Hashes md5\n' + colorama.Style.RESET_ALL)
             found_md5 = md5(args.input)
-
             for index in set(found_md5):
                 print(index)
 
@@ -927,7 +938,8 @@ def option(arguments):
 
         if not sha1(arguments.input):
             print(colorama.Fore.RED + 'Not found sha1 hashes' + colorama.Style.RESET_ALL)
-        else:        
+        else: 
+            print(colorama.Fore.GREEN + '[+] Hashes sha1\n' + colorama.Style.RESET_ALL)       
             found_sha1 = sha1(args.input)
             for index in set(found_sha1):
                 print(index)
@@ -1057,6 +1069,7 @@ def option(arguments):
         if not sha256(arguments.input):
             print(colorama.Fore.RED + 'Not found sha256 hashes' + colorama.Style.RESET_ALL)
         else:
+            print(colorama.Fore.GREEN + '[+] hashes sha256\n' + colorama.Style.RESET_ALL)
             found_sha256 = sha256(args.input)
             for index in set(found_sha256):
                 print(index)
@@ -1194,12 +1207,10 @@ def option(arguments):
         if not email(arguments.input):
             print(colorama.Fore.RED + 'Not found email address' + colorama.Style.RESET_ALL)
         else:
+            print(colorama.Fore.GREEN + '[+] Emails\n' + colorama.Style.RESET_ALL)
             found_email = email(args.input)
             for index in set(found_email):
                 print(index)
-
-
-# AQUI TO CONSTRUINDO AS QUERIES DE REGISTROS
 
 
     elif arguments.input and arguments.reg and arguments.scnx and arguments.l:
@@ -1305,9 +1316,10 @@ def option(arguments):
          if not reg(arguments.input):
              print(colorama.Fore.RED + 'Not found Windows registry' + colorama.Style.RESET_ALL)
          else:
+             print(colorama.Fore.GREEN + '[+] Windows Registry Keys\n' + colorama.Style.RESET_ALL)
              found_reg = reg(arguments.input)
              for index in set(found_reg):
-                 print(index)
+                 print(index)            
                            
 
     elif arguments.input and arguments.cve == True and arguments.report == True:
@@ -1320,9 +1332,54 @@ def option(arguments):
         if not cve(arguments.input):
             print(colorama.Fore.RED + 'Not found CVEs' + colorama.Style.RESET_ALL)
         else:
+            print(colorama.Fore.GREEN + '[+] CVEs\n' + colorama.Style.RESET_ALL)
             found_cves = cve(arguments.input)
             for index in set(found_cves):
                 print(index)
+
+        if arguments.exploitdb:
+            print(colorama.Fore.YELLOW + "\n[+] Verificando exploits no Exploit-DB...\n" + colorama.Style.RESET_ALL)
+            
+            for index in set(found_cves):
+                if verificar_exploit_cve(index):  
+                    print(colorama.Fore.GREEN + f"[+] Exploit encontrado para {index}!" + colorama.Style.RESET_ALL)
+                else:
+                    print(colorama.Fore.RED + f"[-] Nenhum exploit encontrado para {index}." + colorama.Style.RESET_ALL)
+    #testar a verificação com exploit DB
+
+
+def verificar_exploit_cve(cve):
+    """Verifica se uma CVE tem exploit registrado no Exploit-DB via GitLab."""
+    url = "https://gitlab.com/exploit-database/exploitdb/-/raw/main/files_exploits.csv?ref_type=heads"
+
+    try:
+        response = requests.get(url, timeout=10)
+        response.raise_for_status()
+
+        csv_data = StringIO(response.text)
+        reader = csv.reader(csv_data)
+
+        for row in reader:
+            # Verifica se a CVE aparece como um valor exato em alguma célula
+            if any(cell.strip() == cve for cell in row):  
+                return True  
+
+        return False
+
+    except requests.RequestException as e:
+        print(f"Erro ao acessar Exploit-DB: {e}")
+        return None
+
+# Teste com CVE conhecida
+cve_exemplo = "CVE-2018-1337"
+resultado = verificar_exploit_cve(cve_exemplo)
+
+if resultado is True:
+    print(f"Exploit encontrado para {cve_exemplo}!")
+elif resultado is False:
+    print(f"Nenhum exploit encontrado para {cve_exemplo}.")
+else:
+    print("Erro ao verificar exploit.")
 
 
 def check_analysis(cves, base_path='./CVE/'):
