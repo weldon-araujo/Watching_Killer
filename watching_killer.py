@@ -139,22 +139,9 @@ def email(arq):
     return set(emails)
 
 
-def option(arguments):
-   
-    if arguments.input and arguments.cve == True and arguments.report == True:
-        conv = list(cve(arguments.input))
-        return conv    
-    
+def option(arguments):    
         
-    elif arguments.input and arguments.cve == True:
-
-        if not cve(arguments.input):
-            print(colorama.Fore.RED + 'Not found CVEs' + colorama.Style.RESET_ALL)
-        else:
-            print(colorama.Fore.GREEN + '[+] CVEs\n' + colorama.Style.RESET_ALL)
-            found_cves = cve(arguments.input)
-            for index in set(found_cves):
-                print(index)
+    
 
         if arguments.exploitdb:
             print(colorama.Fore.YELLOW + "\n[+] Checking for exploits in Exploit-DB...\n" + colorama.Style.RESET_ALL)
@@ -167,6 +154,7 @@ def option(arguments):
 
 
 def find_exploit_cve(cve):
+
     url = "https://gitlab.com/exploit-database/exploitdb/-/raw/main/files_exploits.csv?ref_type=heads"
 
     try:
@@ -187,9 +175,11 @@ def find_exploit_cve(cve):
         return None
     
 
-#TESTES DE MODULAÇÃO
+
+
 
 def ip_scnx(arguments):
+
     if not ip(arguments.input):
         print(colorama.Fore.RED + 'Not found ip address' + colorama.Style.RESET_ALL)
     else:
@@ -213,6 +203,7 @@ def ip_scnx(arguments):
 
 
 def ip_scnx_l(arguments):
+
     if not ip(arguments.input):
         print(colorama.Fore.RED + 'Not found ip address' + colorama.Style.RESET_ALL )
     else:       
@@ -250,6 +241,7 @@ def ip_scnx_l(arguments):
                 print(colorama.Fore.RED + 'The -l or --l argument only accepts values ​​equal to or greater than 2, possibly the source does not have more than one value or cannot be extracted correctly\n' + colorama.Style.RESET_ALL)
     
 def ip_rsa(arguments):
+
     if not ip(arguments.input):
         print(colorama.Fore.RED + 'Not found ip address' + colorama.Style.RESET_ALL)
     else:        
@@ -277,6 +269,7 @@ def ip_rsa(arguments):
 
 
 def ip_rsa_l(arguments):
+
     if not ip(arguments.input):
         print(colorama.Fore.RED + 'Not found ip address' + colorama.Style.RESET_ALL)
     else:
@@ -327,77 +320,79 @@ def ip_rsa_l(arguments):
 
 
 def ip_with_reputation(arguments):
-        if not ip(arguments.input):
-            print(colorama.Fore.RED + 'Not found ip address' + colorama.Style.RESET_ALL )
-        else:        
+        
+    if not ip(arguments.input):
+        print(colorama.Fore.RED + 'Not found ip address' + colorama.Style.RESET_ALL )
+    else:        
 
-            url = 'https://api.abuseipdb.com/api/v2/check'
-            
-            querystring = {
-                'ipAddress': '0.0.0.0',
-                'maxAgeInDays': '90'
-                }
-                    
-            headers = {
-                    'Accept': 'application/json',
-                    'Key': ''
-                }
-            
-            headers['Key'] = abuseip
+        url = 'https://api.abuseipdb.com/api/v2/check'
+        
+        querystring = {
+            'ipAddress': '0.0.0.0',
+            'maxAgeInDays': '90'
+            }
+                
+        headers = {
+                'Accept': 'application/json',
+                'Key': ''
+            }
+        
+        headers['Key'] = abuseip
 
-            ip_parsing = ip(args.input)   
+        ip_parsing = ip(args.input)   
 
 
-            for index in ip_parsing:
-                querystring["ipAddress"] = index
+        for index in ip_parsing:
+            querystring["ipAddress"] = index
 
-                try:
-                    response = requests.request(method='GET', url=url, headers=headers, params=querystring)
-                    decodedResponse = json.loads(response.text)
-                    address = decodedResponse['data']['ipAddress']
-                    rep = decodedResponse['data']['abuseConfidenceScore']
-                    dns = decodedResponse['data']['hostnames']
-                except KeyError:
-                    print("There's probably something wrong with the API key. Check if it's the right one and try again. Also, check if the file is named .env.",'\n')
-                    break
+            try:
+                response = requests.request(method='GET', url=url, headers=headers, params=querystring)
+                decodedResponse = json.loads(response.text)
+                address = decodedResponse['data']['ipAddress']
+                rep = decodedResponse['data']['abuseConfidenceScore']
+                dns = decodedResponse['data']['hostnames']
+            except KeyError:
+                print("There's probably something wrong with the API key. Check if it's the right one and try again. Also, check if the file is named .env.",'\n')
+                break
 
-                ip_parsing = list(set(ip_parsing))
+            ip_parsing = list(set(ip_parsing))
 
-                if not dns:
-                    if rep >= 0 and rep <= 25:   
-                        rep2 = str(rep) + '%'             
-                        print(f'{address} {colorama.Fore.GREEN + rep2 + colorama.Style.RESET_ALL }')
-
-                    elif rep >= 26 and rep <= 50:
-                        rep2 = str(rep) + '%'
-                        print(f'{address} {colorama.Fore.BLUE + rep2 + colorama.Style.RESET_ALL}')
-
-                    elif rep >= 51 and rep <= 75:
-                        rep2 = str(rep) + '%'
-                        print(f'{address} {colorama.Fore.YELLOW + rep2 + colorama.Style.RESET_ALL }')
-                    
-                    elif rep >= 76 and rep <= 100:
-                        rep2 = str(rep) + '%'
-                        print(f'{address} {colorama.Fore.RED + rep2 + colorama.Style.RESET_ALL }')
-
-                elif rep >= 0 and rep <= 25:   
+            if not dns:
+                if rep >= 0 and rep <= 25:   
                     rep2 = str(rep) + '%'             
-                    print(f'{address} {colorama.Fore.GREEN + rep2 + colorama.Style.RESET_ALL } {dns} ')
+                    print(f'{address} {colorama.Fore.GREEN + rep2 + colorama.Style.RESET_ALL }')
 
-                elif rep >= 26 and rep <= 50:   
-                    rep2 = str(rep) + '%'             
-                    print(f'{address} {colorama.Fore.BLUE + rep2 + colorama.Style.RESET_ALL } {dns} ')
+                elif rep >= 26 and rep <= 50:
+                    rep2 = str(rep) + '%'
+                    print(f'{address} {colorama.Fore.BLUE + rep2 + colorama.Style.RESET_ALL}')
 
                 elif rep >= 51 and rep <= 75:
                     rep2 = str(rep) + '%'
-                    print(f'{address} {colorama.Fore.YELLOW + rep2 + colorama.Style.RESET_ALL } {dns} ')
-                    
+                    print(f'{address} {colorama.Fore.YELLOW + rep2 + colorama.Style.RESET_ALL }')
+                
                 elif rep >= 76 and rep <= 100:
                     rep2 = str(rep) + '%'
-                    print(f'{address} {colorama.Fore.RED + rep2 + colorama.Style.RESET_ALL } {dns} ')       
+                    print(f'{address} {colorama.Fore.RED + rep2 + colorama.Style.RESET_ALL }')
+
+            elif rep >= 0 and rep <= 25:   
+                rep2 = str(rep) + '%'             
+                print(f'{address} {colorama.Fore.GREEN + rep2 + colorama.Style.RESET_ALL } {dns} ')
+
+            elif rep >= 26 and rep <= 50:   
+                rep2 = str(rep) + '%'             
+                print(f'{address} {colorama.Fore.BLUE + rep2 + colorama.Style.RESET_ALL } {dns} ')
+
+            elif rep >= 51 and rep <= 75:
+                rep2 = str(rep) + '%'
+                print(f'{address} {colorama.Fore.YELLOW + rep2 + colorama.Style.RESET_ALL } {dns} ')
+                
+            elif rep >= 76 and rep <= 100:
+                rep2 = str(rep) + '%'
+                print(f'{address} {colorama.Fore.RED + rep2 + colorama.Style.RESET_ALL } {dns} ')       
 
 
 def ip_only(arguments):
+
     if not ip(arguments.input):
         print(colorama.Fore.RED + 'Not found ip address' + colorama.Style.RESET_ALL)
     else:     
@@ -409,67 +404,68 @@ def ip_only(arguments):
 
 def domain_scnx_l(arguments):
        
-        if not domain(arguments.input):
-            print('Not found domain address' + colorama.Style.RESET_ALL)
-        else:
+    if not domain(arguments.input):
+        print('Not found domain address' + colorama.Style.RESET_ALL)
+    else:
 
-            records_domain = []
-            scnx_request_url = siem.scnx_request_url()
-            scnx_request_only = siem.scnx_request_url_only()
-            scnx_email_recipient_domain = siem.scnx_email_recipient_domain()
-            scnx_email_recipient_domain_only = siem.scnx_email_recipient_domain_only()
-            scnx_fqdn = siem.scnx_fqdn()
-            scnx_fqdn_only = siem.scnx_fqdn_only()
-            scnx_root_domain = siem.scnx_root_domain()
-            scnx_root_domain_only = siem.scnx_root_domain_only()
-            stats = siem.scnx_stats()
-            found_domain = domain(args.input)
+        records_domain = []
+        scnx_request_url = siem.scnx_request_url()
+        scnx_request_only = siem.scnx_request_url_only()
+        scnx_email_recipient_domain = siem.scnx_email_recipient_domain()
+        scnx_email_recipient_domain_only = siem.scnx_email_recipient_domain_only()
+        scnx_fqdn = siem.scnx_fqdn()
+        scnx_fqdn_only = siem.scnx_fqdn_only()
+        scnx_root_domain = siem.scnx_root_domain()
+        scnx_root_domain_only = siem.scnx_root_domain_only()
+        stats = siem.scnx_stats()
+        found_domain = domain(args.input)
 
-            for index in found_domain:
-                records_domain.append(index)
-                meadle = len(records_domain) // 2
-                new1 = records_domain[:meadle]
-                new2 = records_domain[meadle:]                
-            
-            print(colorama.Fore.GREEN + '[+] NGFW / WAF / PROXY / EXCHANGE\n' + colorama.Style.RESET_ALL)        
-            print(f'{scnx_request_url} ({', '.join(new1)})\n')
-            print(f'{scnx_request_url} ({', '.join(new2)})\n')
-            print(f'{scnx_email_recipient_domain} ({', '.join(new1)})\n')
-            print(f'{scnx_email_recipient_domain} ({', '.join(new2)})\n')
-            print(f'{scnx_fqdn} ({', '.join(new1)})\n')
-            print(f'{scnx_fqdn} ({', '.join(new2)})\n')
-            print(f'{scnx_root_domain} ({', '.join(new1)})\n')
-            print(f'{scnx_root_domain} ({', '.join(new2)})\n')            
-            print(f'{scnx_request_url} ({', '.join(new1)}) {stats}{scnx_request_only}\n')
-            print(f'{scnx_request_url} ({', '.join(new2)}) {stats}{scnx_request_only}\n')
-            print(f'{scnx_email_recipient_domain} ({', '.join(new1)}) {stats}{scnx_email_recipient_domain_only}\n')
-            print(f'{scnx_email_recipient_domain} ({', '.join(new2)}) {stats}{scnx_email_recipient_domain_only}\n')
-            print(f'{scnx_fqdn} ({', '.join(new1)}) {stats}{scnx_fqdn_only}\n')
-            print(f'{scnx_fqdn} ({', '.join(new2)}) {stats}{scnx_fqdn_only}\n')
-            print(f'{scnx_root_domain} ({', '.join(new1)}) {stats}{scnx_root_domain_only}\n')
-            print(f'{scnx_root_domain} ({', '.join(new2)}) {stats}{scnx_root_domain_only}\n')
+        for index in found_domain:
+            records_domain.append(index)
+            meadle = len(records_domain) // 2
+            new1 = records_domain[:meadle]
+            new2 = records_domain[meadle:]                
+        
+        print(colorama.Fore.GREEN + '[+] NGFW / WAF / PROXY / EXCHANGE\n' + colorama.Style.RESET_ALL)        
+        print(f'{scnx_request_url} ({', '.join(new1)})\n')
+        print(f'{scnx_request_url} ({', '.join(new2)})\n')
+        print(f'{scnx_email_recipient_domain} ({', '.join(new1)})\n')
+        print(f'{scnx_email_recipient_domain} ({', '.join(new2)})\n')
+        print(f'{scnx_fqdn} ({', '.join(new1)})\n')
+        print(f'{scnx_fqdn} ({', '.join(new2)})\n')
+        print(f'{scnx_root_domain} ({', '.join(new1)})\n')
+        print(f'{scnx_root_domain} ({', '.join(new2)})\n')            
+        print(f'{scnx_request_url} ({', '.join(new1)}) {stats}{scnx_request_only}\n')
+        print(f'{scnx_request_url} ({', '.join(new2)}) {stats}{scnx_request_only}\n')
+        print(f'{scnx_email_recipient_domain} ({', '.join(new1)}) {stats}{scnx_email_recipient_domain_only}\n')
+        print(f'{scnx_email_recipient_domain} ({', '.join(new2)}) {stats}{scnx_email_recipient_domain_only}\n')
+        print(f'{scnx_fqdn} ({', '.join(new1)}) {stats}{scnx_fqdn_only}\n')
+        print(f'{scnx_fqdn} ({', '.join(new2)}) {stats}{scnx_fqdn_only}\n')
+        print(f'{scnx_root_domain} ({', '.join(new1)}) {stats}{scnx_root_domain_only}\n')
+        print(f'{scnx_root_domain} ({', '.join(new2)}) {stats}{scnx_root_domain_only}\n')
 
-            domain_request_url_without = f' OR {scnx_request_only} contains '
+        domain_request_url_without = f' OR {scnx_request_only} contains '
 
-            domain_fqdn_without = f' OR {scnx_fqdn_only} contains '
+        domain_fqdn_without = f' OR {scnx_fqdn_only} contains '
 
-            domain_root_domain_without = f' OR {scnx_root_domain_only} contains '
+        domain_root_domain_without = f' OR {scnx_root_domain_only} contains '
 
-            domain_email_recipient_domain_without = f' OR {scnx_email_recipient_domain_only} contains '
+        domain_email_recipient_domain_without = f' OR {scnx_email_recipient_domain_only} contains '
 
-            print(f'{scnx_request_only} contains {domain_request_url_without.join(new1)}\n')
-            print(f'{scnx_request_only} contains {domain_request_url_without.join(new2)}\n')
-            print(f'{scnx_email_recipient_domain_only} contains {domain_email_recipient_domain_without.join(new1)}\n')
-            print(f'{scnx_email_recipient_domain_only} contains {domain_email_recipient_domain_without.join(new2)}\n')
-            print(f'{scnx_fqdn_only} contains {domain_fqdn_without.join(new1)}\n')
-            print(f'{scnx_fqdn_only} contains {domain_fqdn_without.join(new2)}\n')
-            print(f'{scnx_root_domain_only} contains {domain_root_domain_without.join(new1)}\n')
-            print(f'{scnx_root_domain_only} contains {domain_root_domain_without.join(new2)}\n')
-            print(f'{scnx_email_recipient_domain_only} contains {domain_email_recipient_domain_without.join(new1)}\n')
-            print(f'{scnx_email_recipient_domain_only} contains {domain_email_recipient_domain_without.join(new2)}\n')
+        print(f'{scnx_request_only} contains {domain_request_url_without.join(new1)}\n')
+        print(f'{scnx_request_only} contains {domain_request_url_without.join(new2)}\n')
+        print(f'{scnx_email_recipient_domain_only} contains {domain_email_recipient_domain_without.join(new1)}\n')
+        print(f'{scnx_email_recipient_domain_only} contains {domain_email_recipient_domain_without.join(new2)}\n')
+        print(f'{scnx_fqdn_only} contains {domain_fqdn_without.join(new1)}\n')
+        print(f'{scnx_fqdn_only} contains {domain_fqdn_without.join(new2)}\n')
+        print(f'{scnx_root_domain_only} contains {domain_root_domain_without.join(new1)}\n')
+        print(f'{scnx_root_domain_only} contains {domain_root_domain_without.join(new2)}\n')
+        print(f'{scnx_email_recipient_domain_only} contains {domain_email_recipient_domain_without.join(new1)}\n')
+        print(f'{scnx_email_recipient_domain_only} contains {domain_email_recipient_domain_without.join(new2)}\n')
 
 
 def domain_scnx(arguments):
+
     if not domain(arguments.input):
         print(colorama.Fore.RED + 'Not found domain address' + colorama.Style.RESET_ALL)
     else:
@@ -514,6 +510,7 @@ def domain_scnx(arguments):
 
 
 def domain_rsa_l(arguments):
+
     if arguments.input and arguments.domain and arguments.rsa and arguments.l:
 
         if not domain(arguments.input):
@@ -538,349 +535,354 @@ def domain_rsa_l(arguments):
 
     
 def domain_rsa(arguments):
-        if not domain(arguments.input):
-            print(colorama.Fore.RED + 'Not found domain address' + colorama.Style.RESET_ALL)
-        else:   
-            records_domain = []
-            rsa_url = siem.rsa_url()
-            found_domain = domain(args.input)
+    
+    if not domain(arguments.input):
+        print(colorama.Fore.RED + 'Not found domain address' + colorama.Style.RESET_ALL)
+    else:   
+        records_domain = []
+        rsa_url = siem.rsa_url()
+        found_domain = domain(args.input)
 
-            for index in found_domain:
-                records_domain.append("'" + index + "'")
-                
-            print(colorama.Fore.GREEN + '[+] NGFW / WAF / PROXY\n' + colorama.Style.RESET_ALL)
-            color = ' ||' + colorama.Fore.BLUE + ' url = ' + colorama.Style.RESET_ALL
-            print(f'{rsa_url} {color.join(records_domain)}')
+        for index in found_domain:
+            records_domain.append("'" + index + "'")
+            
+        print(colorama.Fore.GREEN + '[+] NGFW / WAF / PROXY\n' + colorama.Style.RESET_ALL)
+        color = ' ||' + colorama.Fore.BLUE + ' url = ' + colorama.Style.RESET_ALL
+        print(f'{rsa_url} {color.join(records_domain)}')
 
 
 def domain_only(arguments):
-        if not domain(arguments.input):
-            print(colorama.Fore.RED + 'Not found domain address' + colorama.Style.RESET_ALL)
-        else:   
-            print(colorama.Fore.GREEN + '[+] Domains\n' + colorama.Style.RESET_ALL)   
-            found_domain = domain(args.input)
-            for index in set(found_domain):
-                print(index)
+        
+    if not domain(arguments.input):
+        print(colorama.Fore.RED + 'Not found domain address' + colorama.Style.RESET_ALL)
+    else:   
+        print(colorama.Fore.GREEN + '[+] Domains\n' + colorama.Style.RESET_ALL)   
+        found_domain = domain(args.input)
+        for index in set(found_domain):
+            print(index)
 
 
 def articact_scnx_l(arguments):
-        if not artifact(arguments.input):
-            print(colorama.Fore.RED + 'Not found artifact' + colorama.Style.RESET_ALL)
-        else:        
-            records_artifact = []
-            scnx_sourceprocessname = siem.scnx_source_process_name()
-            scnx_source_process_name_only = siem.scnx_source_process_name_only()
-            scnx_destination_process_name = siem.scnx_destination_process_name()
-            scnx_destination_process_name_only = siem.scnx_destination_process_name_only()
-            scnx_filename = siem.scnx_file_name()
-            scnx_file_name_only = siem.scnx_file_name_only()
-            found_artifact = artifact(args.input)
-            command_line_only = siem.scnx_command_line_only()
-            childprocesscommandline_only = siem.childprocesscommandline_only()
-            stats = siem.scnx_stats()
 
-            while len(found_artifact) >= 2:
-                
-                found_artifact = artifact(args.input)
-                for index in found_artifact:
-                    records_artifact.append(index)
+    if not artifact(arguments.input):
+        print(colorama.Fore.RED + 'Not found artifact' + colorama.Style.RESET_ALL)
+    else:        
+        records_artifact = []
+        scnx_sourceprocessname = siem.scnx_source_process_name()
+        scnx_source_process_name_only = siem.scnx_source_process_name_only()
+        scnx_destination_process_name = siem.scnx_destination_process_name()
+        scnx_destination_process_name_only = siem.scnx_destination_process_name_only()
+        scnx_filename = siem.scnx_file_name()
+        scnx_file_name_only = siem.scnx_file_name_only()
+        found_artifact = artifact(args.input)
+        command_line_only = siem.scnx_command_line_only()
+        childprocesscommandline_only = siem.childprocesscommandline_only()
+        stats = siem.scnx_stats()
 
-                    if args.include:
-                        records_artifact.extend(args.include)
-                        records_artifact = list(set(records_artifact))
-
-                    meadle = len(records_artifact) // 2
-                    new1 = records_artifact[:meadle]
-                    new2 = records_artifact[meadle:]
-
-                print(colorama.Fore.GREEN + '[+] AV / EDR / Windows / Linux\n' + colorama.Style.RESET_ALL)
-
-                print(f'{scnx_sourceprocessname} ({', '.join(new1)})\n')
-                print(f'{scnx_sourceprocessname} ({', '.join(new2)})\n')
-                print(f'{scnx_destination_process_name} ({', '.join(new1)})\n')
-                print(f'{scnx_destination_process_name} ({', '.join(new2)})\n')
-                print(f'{scnx_sourceprocessname} ({', '.join(new1)}) {colorama.Fore.BLUE}OR{colorama.Style.RESET_ALL} {scnx_destination_process_name} ({', '.join(new1)})\n')
-                print(f'{scnx_sourceprocessname} ({', '.join(new2)}) {colorama.Fore.BLUE}OR{colorama.Style.RESET_ALL} {scnx_destination_process_name} ({', '.join(new2)})\n')
-                print(f'{scnx_filename} ({', '.join(new1)})\n')
-                print(f'{scnx_filename} ({', '.join(new2)})\n')
-                print(f'{scnx_filename} ({', '.join(new1)}) {stats} {scnx_file_name_only}\n')
-                print(f'{scnx_filename} ({', '.join(new2)}) {stats} {scnx_file_name_only}\n')
-                print(f'{scnx_filename} ({', '.join(new1)}) {stats} {scnx_file_name_only} {childprocesscommandline_only}\n')
-                print(f'{scnx_filename} ({', '.join(new2)}) {stats} {scnx_file_name_only} {childprocesscommandline_only}\n')
-                print(f'{scnx_sourceprocessname} ({', '.join(new1)}) {stats} {scnx_source_process_name_only} {command_line_only}\n')
-                print(f'{scnx_sourceprocessname} ({', '.join(new2)}) {stats} {scnx_source_process_name_only} {command_line_only}\n')
-                print(f'{scnx_destination_process_name} ({', '.join(new1)}) {stats} {scnx_destination_process_name_only} {command_line_only}\n')
-                print(f'{scnx_destination_process_name} ({', '.join(new2)}) {stats} {scnx_destination_process_name_only} {command_line_only}\n')
-
-                break
-
-            if len(found_artifact) < 2:                    
-                print(colorama.Fore.RED + 'The -l or --l argument only accepts values ​​equal to or greater than 2, possibly the source does not have more than one value or cannot be extracted correctly\n' + colorama.Style.RESET_ALL)
-
-
-def artifact_scnx(arguments):
-    
-        if not artifact(arguments.input):
-            print(colorama.Fore.RED + 'Not found artifact' + colorama.Style.RESET_ALL)
-        else:        
-            records_artifact = []
-            scnx_sourceprocessname = siem.scnx_source_process_name()
-            scnx_source_process_name_only = siem.scnx_source_process_name_only()
-            scnx_destination_process_name = siem.scnx_destination_process_name()
-            scnx_destination_process_name_only = siem.scnx_destination_process_name_only()
-            scnx_filename = siem.scnx_file_name()
-            scnx_file_name_only = siem.scnx_file_name_only()
-            found_artifact = artifact(args.input)
-            command_line_only = siem.scnx_command_line_only()
-            childprocesscommandline_only = siem.childprocesscommandline_only()
-            stats = siem.scnx_stats()
+        while len(found_artifact) >= 2:
             
             found_artifact = artifact(args.input)
             for index in found_artifact:
                 records_artifact.append(index)
 
-            if args.include:
-                records_artifact.extend(args.include)
-                records_artifact = list(set(records_artifact))
-                
-            print(colorama.Fore.GREEN + '[+] AV / EDR / Windows / Linux\n' + colorama.Style.RESET_ALL)
-            print(f'{scnx_sourceprocessname} ({', '.join(records_artifact)})\n')
-            print(f'{scnx_destination_process_name} ({', '.join(records_artifact)})\n')
-            print(f'{scnx_sourceprocessname} ({', '.join(records_artifact)}) {colorama.Fore.BLUE}OR{colorama.Style.RESET_ALL} {scnx_destination_process_name} ({', '.join(records_artifact)})\n')
-            print(f'{scnx_filename} ({', '.join(records_artifact)})\n')
-            print(f'{scnx_filename} ({', '.join(records_artifact)}) {stats} {scnx_file_name_only}\n')
-            print(f'{scnx_filename} ({', '.join(records_artifact)}) {stats} {scnx_file_name_only} {childprocesscommandline_only}\n')
-            print(f'{scnx_sourceprocessname} ({', '.join(records_artifact)}) {stats} {scnx_source_process_name_only} {command_line_only}\n')
-            print(f'{scnx_destination_process_name} ({', '.join(records_artifact)}) {stats} {scnx_destination_process_name_only} {command_line_only}\n')
-            print(f'{scnx_sourceprocessname} ({', '.join(records_artifact)}) {stats} {scnx_source_process_name_only} {scnx_destination_process_name_only} {command_line_only}\n')
-            print(f'{scnx_sourceprocessname} ({', '.join(records_artifact)}) {colorama.Fore.BLUE}OR{colorama.Style.RESET_ALL} {scnx_destination_process_name} ({', '.join(records_artifact)}) {stats} {scnx_source_process_name_only} {scnx_destination_process_name_only} {command_line_only}\n')
-            
+                if args.include:
+                    records_artifact.extend(args.include)
+                    records_artifact = list(set(records_artifact))
 
-def artifact_rsa_l(arguments):
-    
-        if not artifact(arguments.input):
-            print(colorama.Fore.RED + 'Not found artifact' + colorama.Style.RESET_ALL)
-        else:        
-
-            records_artifact = []
-            rsa_process = siem.process_contains()
-            found_artifact = artifact(args.input)
-
-            for index in found_artifact:
-                records_artifact.append("'" + index + "'")
                 meadle = len(records_artifact) // 2
                 new1 = records_artifact[:meadle]
                 new2 = records_artifact[meadle:]
 
-
             print(colorama.Fore.GREEN + '[+] AV / EDR / Windows / Linux\n' + colorama.Style.RESET_ALL)
-            color = ' ||' + colorama.Fore.BLUE + ' process contains ' + colorama.Style.RESET_ALL
-            print(f'{rsa_process} {color.join(new1)}\n')
-            color = ' ||' + colorama.Fore.BLUE + ' process contains ' + colorama.Style.RESET_ALL
-            print(f'{rsa_process} {color.join(new2)}')
+
+            print(f'{scnx_sourceprocessname} ({', '.join(new1)})\n')
+            print(f'{scnx_sourceprocessname} ({', '.join(new2)})\n')
+            print(f'{scnx_destination_process_name} ({', '.join(new1)})\n')
+            print(f'{scnx_destination_process_name} ({', '.join(new2)})\n')
+            print(f'{scnx_sourceprocessname} ({', '.join(new1)}) {colorama.Fore.BLUE}OR{colorama.Style.RESET_ALL} {scnx_destination_process_name} ({', '.join(new1)})\n')
+            print(f'{scnx_sourceprocessname} ({', '.join(new2)}) {colorama.Fore.BLUE}OR{colorama.Style.RESET_ALL} {scnx_destination_process_name} ({', '.join(new2)})\n')
+            print(f'{scnx_filename} ({', '.join(new1)})\n')
+            print(f'{scnx_filename} ({', '.join(new2)})\n')
+            print(f'{scnx_filename} ({', '.join(new1)}) {stats} {scnx_file_name_only}\n')
+            print(f'{scnx_filename} ({', '.join(new2)}) {stats} {scnx_file_name_only}\n')
+            print(f'{scnx_filename} ({', '.join(new1)}) {stats} {scnx_file_name_only} {childprocesscommandline_only}\n')
+            print(f'{scnx_filename} ({', '.join(new2)}) {stats} {scnx_file_name_only} {childprocesscommandline_only}\n')
+            print(f'{scnx_sourceprocessname} ({', '.join(new1)}) {stats} {scnx_source_process_name_only} {command_line_only}\n')
+            print(f'{scnx_sourceprocessname} ({', '.join(new2)}) {stats} {scnx_source_process_name_only} {command_line_only}\n')
+            print(f'{scnx_destination_process_name} ({', '.join(new1)}) {stats} {scnx_destination_process_name_only} {command_line_only}\n')
+            print(f'{scnx_destination_process_name} ({', '.join(new2)}) {stats} {scnx_destination_process_name_only} {command_line_only}\n')
+
+            break
+
+        if len(found_artifact) < 2:                    
+            print(colorama.Fore.RED + 'The -l or --l argument only accepts values ​​equal to or greater than 2, possibly the source does not have more than one value or cannot be extracted correctly\n' + colorama.Style.RESET_ALL)
+
+
+def artifact_scnx(arguments):
+    
+    if not artifact(arguments.input):
+        print(colorama.Fore.RED + 'Not found artifact' + colorama.Style.RESET_ALL)
+    else:        
+        records_artifact = []
+        scnx_sourceprocessname = siem.scnx_source_process_name()
+        scnx_source_process_name_only = siem.scnx_source_process_name_only()
+        scnx_destination_process_name = siem.scnx_destination_process_name()
+        scnx_destination_process_name_only = siem.scnx_destination_process_name_only()
+        scnx_filename = siem.scnx_file_name()
+        scnx_file_name_only = siem.scnx_file_name_only()
+        found_artifact = artifact(args.input)
+        command_line_only = siem.scnx_command_line_only()
+        childprocesscommandline_only = siem.childprocesscommandline_only()
+        stats = siem.scnx_stats()
+        
+        found_artifact = artifact(args.input)
+        for index in found_artifact:
+            records_artifact.append(index)
+
+        if args.include:
+            records_artifact.extend(args.include)
+            records_artifact = list(set(records_artifact))
+            
+        print(colorama.Fore.GREEN + '[+] AV / EDR / Windows / Linux\n' + colorama.Style.RESET_ALL)
+        print(f'{scnx_sourceprocessname} ({', '.join(records_artifact)})\n')
+        print(f'{scnx_destination_process_name} ({', '.join(records_artifact)})\n')
+        print(f'{scnx_sourceprocessname} ({', '.join(records_artifact)}) {colorama.Fore.BLUE}OR{colorama.Style.RESET_ALL} {scnx_destination_process_name} ({', '.join(records_artifact)})\n')
+        print(f'{scnx_filename} ({', '.join(records_artifact)})\n')
+        print(f'{scnx_filename} ({', '.join(records_artifact)}) {stats} {scnx_file_name_only}\n')
+        print(f'{scnx_filename} ({', '.join(records_artifact)}) {stats} {scnx_file_name_only} {childprocesscommandline_only}\n')
+        print(f'{scnx_sourceprocessname} ({', '.join(records_artifact)}) {stats} {scnx_source_process_name_only} {command_line_only}\n')
+        print(f'{scnx_destination_process_name} ({', '.join(records_artifact)}) {stats} {scnx_destination_process_name_only} {command_line_only}\n')
+        print(f'{scnx_sourceprocessname} ({', '.join(records_artifact)}) {stats} {scnx_source_process_name_only} {scnx_destination_process_name_only} {command_line_only}\n')
+        print(f'{scnx_sourceprocessname} ({', '.join(records_artifact)}) {colorama.Fore.BLUE}OR{colorama.Style.RESET_ALL} {scnx_destination_process_name} ({', '.join(records_artifact)}) {stats} {scnx_source_process_name_only} {scnx_destination_process_name_only} {command_line_only}\n')
+            
+
+def artifact_rsa_l(arguments):
+    
+    if not artifact(arguments.input):
+        print(colorama.Fore.RED + 'Not found artifact' + colorama.Style.RESET_ALL)
+    else:        
+
+        records_artifact = []
+        rsa_process = siem.process_contains()
+        found_artifact = artifact(args.input)
+
+        for index in found_artifact:
+            records_artifact.append("'" + index + "'")
+            meadle = len(records_artifact) // 2
+            new1 = records_artifact[:meadle]
+            new2 = records_artifact[meadle:]
+
+
+        print(colorama.Fore.GREEN + '[+] AV / EDR / Windows / Linux\n' + colorama.Style.RESET_ALL)
+        color = ' ||' + colorama.Fore.BLUE + ' process contains ' + colorama.Style.RESET_ALL
+        print(f'{rsa_process} {color.join(new1)}\n')
+        color = ' ||' + colorama.Fore.BLUE + ' process contains ' + colorama.Style.RESET_ALL
+        print(f'{rsa_process} {color.join(new2)}')
 
 
 def artifact_rsa(arguments):
     
-        if not artifact(arguments.input):
-            print(colorama.Fore.RED + 'Not found artifact' + colorama.Style.RESET_ALL)
-        else:        
+    if not artifact(arguments.input):
+        print(colorama.Fore.RED + 'Not found artifact' + colorama.Style.RESET_ALL)
+    else:
+        records_artifact = []
+        rsa_process = siem.process_contains()
+        found_artifact = artifact(args.input)
 
-            records_artifact = []
-            rsa_process = siem.process_contains()
-            found_artifact = artifact(args.input)
+        for index in found_artifact:
+            records_artifact.append("'" + index + "'")
 
-            for index in found_artifact:
-                records_artifact.append("'" + index + "'")
-
-            print(colorama.Fore.GREEN + '[+] AV / EDR / Windows / Linux\n' + colorama.Style.RESET_ALL)
-            color = ' ||' + colorama.Fore.BLUE + ' process contains ' + colorama.Style.RESET_ALL
-            print(f'{rsa_process} {color.join(records_artifact)}')
+        print(colorama.Fore.GREEN + '[+] AV / EDR / Windows / Linux\n' + colorama.Style.RESET_ALL)
+        color = ' ||' + colorama.Fore.BLUE + ' process contains ' + colorama.Style.RESET_ALL
+        print(f'{rsa_process} {color.join(records_artifact)}')
 
 
 def artifact_only(arguments):
-        if not artifact(arguments.input):
-            print(colorama.Fore.RED + 'Not found artifact' + colorama.Style.RESET_ALL)
-        else:
-            print(colorama.Fore.GREEN + '[+] Artifacts\n' + colorama.Style.RESET_ALL)
-            found_artifact = artifact(args.input)
-            for index in set(found_artifact):
-                print(index)
+        
+    if not artifact(arguments.input):
+        print(colorama.Fore.RED + 'Not found artifact' + colorama.Style.RESET_ALL)
+    else:
+        print(colorama.Fore.GREEN + '[+] Artifacts\n' + colorama.Style.RESET_ALL)
+        found_artifact = artifact(args.input)
+        for index in set(found_artifact):
+            print(index)
 
 
 def md5_scnx_l(arguments):
     
-        if not md5(arguments.input):
-            print(colorama.Fore.RED + 'Not found md5 hashes' + colorama.Style.RESET_ALL)
-        else:        
-            records_md5 = []
-            scnx_old_file_hash = siem.scnx_old_file_hash()
-            scnx_old_file_hash_only = siem.scnx_old_file_hash_only()
-            scnx_file_hash = siem.scnx_file_hash()
-            scnx_file_hash_only = siem.scnx_file_hash_only()
-            found_md5 = md5(args.input)
-            stats = siem.scnx_stats()
+    if not md5(arguments.input):
+        print(colorama.Fore.RED + 'Not found md5 hashes' + colorama.Style.RESET_ALL)
+    else:        
+        records_md5 = []
+        scnx_old_file_hash = siem.scnx_old_file_hash()
+        scnx_old_file_hash_only = siem.scnx_old_file_hash_only()
+        scnx_file_hash = siem.scnx_file_hash()
+        scnx_file_hash_only = siem.scnx_file_hash_only()
+        found_md5 = md5(args.input)
+        stats = siem.scnx_stats()
 
-            while len(found_md5) >= 2:
+        while len(found_md5) >= 2:
 
-                for index in found_md5:
-                    records_md5.append(index)
-                    meadle = len(records_md5) // 2
-                    new1 = records_md5[:meadle]
-                    new2 = records_md5[meadle:]
+            for index in found_md5:
+                records_md5.append(index)
+                meadle = len(records_md5) // 2
+                new1 = records_md5[:meadle]
+                new2 = records_md5[meadle:]
 
-                print(colorama.Fore.GREEN + '[+] AV / EDR / NGFW\n' + colorama.Style.RESET_ALL)
-                print(f'{scnx_old_file_hash} ({', '.join(new1)})\n')
-                print(f'{scnx_old_file_hash} ({', '.join(new2)})\n')
-                print(f'{scnx_file_hash} ({', '.join(new1)})\n')
-                print(f'{scnx_file_hash} ({', '.join(new2)})\n')
-                print(f'{scnx_old_file_hash} ({', '.join(new1)}) {stats} {scnx_old_file_hash_only}\n')
-                print(f'{scnx_old_file_hash} ({', '.join(new2)}) {stats} {scnx_old_file_hash_only}\n')
-                print(f'{scnx_file_hash} ({', '.join(new1)}) {stats} {scnx_file_hash_only}\n')
-                print(f'{scnx_file_hash} ({', '.join(new2)}) {stats} {scnx_file_hash_only}\n')
+            print(colorama.Fore.GREEN + '[+] AV / EDR / NGFW\n' + colorama.Style.RESET_ALL)
+            print(f'{scnx_old_file_hash} ({', '.join(new1)})\n')
+            print(f'{scnx_old_file_hash} ({', '.join(new2)})\n')
+            print(f'{scnx_file_hash} ({', '.join(new1)})\n')
+            print(f'{scnx_file_hash} ({', '.join(new2)})\n')
+            print(f'{scnx_old_file_hash} ({', '.join(new1)}) {stats} {scnx_old_file_hash_only}\n')
+            print(f'{scnx_old_file_hash} ({', '.join(new2)}) {stats} {scnx_old_file_hash_only}\n')
+            print(f'{scnx_file_hash} ({', '.join(new1)}) {stats} {scnx_file_hash_only}\n')
+            print(f'{scnx_file_hash} ({', '.join(new2)}) {stats} {scnx_file_hash_only}\n')
 
-                break
+            break
 
-            if len(found_md5) < 2:                    
-                print(colorama.Fore.RED + 'The -l or --l argument only accepts values ​​equal to or greater than 2, possibly the source does not have more than one value or cannot be extracted correctly\n' + colorama.Style.RESET_ALL)
+        if len(found_md5) < 2:                    
+            print(colorama.Fore.RED + 'The -l or --l argument only accepts values ​​equal to or greater than 2, possibly the source does not have more than one value or cannot be extracted correctly\n' + colorama.Style.RESET_ALL)
 
 
 def md5_scnx(arguments):
     
-        if not md5(arguments.input):
-            print(colorama.Fore.RED + 'Not found md5 hashes' + colorama.Style.RESET_ALL)
-        else:        
-            records_md5 = []
-            scnx_old_file_hash = siem.scnx_old_file_hash()
-            scnx_old_file_hash_only = siem.scnx_old_file_hash_only()
-            scnx_file_hash = siem.scnx_file_hash()
-            scnx_file_hash_only = siem.scnx_file_hash_only()            
-            found_md5 = md5(args.input)
-            stats = siem.scnx_stats()
+    if not md5(arguments.input):
+        print(colorama.Fore.RED + 'Not found md5 hashes' + colorama.Style.RESET_ALL)
+    else:        
+        records_md5 = []
+        scnx_old_file_hash = siem.scnx_old_file_hash()
+        scnx_old_file_hash_only = siem.scnx_old_file_hash_only()
+        scnx_file_hash = siem.scnx_file_hash()
+        scnx_file_hash_only = siem.scnx_file_hash_only()            
+        found_md5 = md5(args.input)
+        stats = siem.scnx_stats()
 
-            for index in found_md5:
-                records_md5.append(index)
+        for index in found_md5:
+            records_md5.append(index)
 
-            print(colorama.Fore.GREEN + '[+] AV / EDR \n' + colorama.Style.RESET_ALL)
-            print(f'{scnx_old_file_hash} ({', '.join(records_md5)})\n')
-            print(f'{scnx_file_hash} ({', '.join(records_md5)})\n')
-            print(f'{scnx_old_file_hash} ({', '.join(records_md5)}) {stats} {scnx_old_file_hash_only}\n')
-            print(f'{scnx_file_hash} ({', '.join(records_md5)}) {stats} {scnx_file_hash_only}\n')
+        print(colorama.Fore.GREEN + '[+] AV / EDR \n' + colorama.Style.RESET_ALL)
+        print(f'{scnx_old_file_hash} ({', '.join(records_md5)})\n')
+        print(f'{scnx_file_hash} ({', '.join(records_md5)})\n')
+        print(f'{scnx_old_file_hash} ({', '.join(records_md5)}) {stats} {scnx_old_file_hash_only}\n')
+        print(f'{scnx_file_hash} ({', '.join(records_md5)}) {stats} {scnx_file_hash_only}\n')
 
 
 def md5_rsa_l(arguments):
     
-        if not md5(arguments.input):
-            print(colorama.Fore.RED + 'Not found md5 hashes' + colorama.Style.RESET_ALL)
-        else:        
-            records_md5 = []
-            rsa_checksum = siem.rsa_cheksum()
-            found_checksum = md5(args.input)
+    if not md5(arguments.input):
+        print(colorama.Fore.RED + 'Not found md5 hashes' + colorama.Style.RESET_ALL)
+    else:        
+        records_md5 = []
+        rsa_checksum = siem.rsa_cheksum()
+        found_checksum = md5(args.input)
 
-            while len(found_checksum) >= 2:
+        while len(found_checksum) >= 2:
 
-                for index in found_checksum:
-                    records_md5.append(index)
-                    meadle = len(records_md5) // 2
-                    new1 = records_md5[:meadle]
-                    new2 = records_md5[meadle:]
+            for index in found_checksum:
+                records_md5.append(index)
+                meadle = len(records_md5) // 2
+                new1 = records_md5[:meadle]
+                new2 = records_md5[meadle:]
 
-                print(colorama.Fore.GREEN + '[+] AV / EDR\n' + colorama.Style.RESET_ALL)
+            print(colorama.Fore.GREEN + '[+] AV / EDR\n' + colorama.Style.RESET_ALL)
 
-                color = ' ||' + colorama.Fore.BLUE + ' checksum = ' + colorama.Style.RESET_ALL + "'"
-                records_md5_two = [f"{sha256}'" for sha256 in new1]
-                print(f'{rsa_checksum} {color.join(records_md5_two)} \n')
-                color = ' ||' + colorama.Fore.BLUE + ' checksum = ' + colorama.Style.RESET_ALL + "'"
-                records_md5_two = [f"{sha256}'" for sha256 in new2]
-                print(f'{rsa_checksum} {color.join(records_md5_two)} \n') 
+            color = ' ||' + colorama.Fore.BLUE + ' checksum = ' + colorama.Style.RESET_ALL + "'"
+            records_md5_two = [f"{sha256}'" for sha256 in new1]
+            print(f'{rsa_checksum} {color.join(records_md5_two)} \n')
+            color = ' ||' + colorama.Fore.BLUE + ' checksum = ' + colorama.Style.RESET_ALL + "'"
+            records_md5_two = [f"{sha256}'" for sha256 in new2]
+            print(f'{rsa_checksum} {color.join(records_md5_two)} \n') 
 
-                print(colorama.Fore.GREEN + '[SYSMON]\n' + colorama.Style.RESET_ALL)
+            print(colorama.Fore.GREEN + '[SYSMON]\n' + colorama.Style.RESET_ALL)
 
-                color = ' ||' + colorama.Fore.BLUE + ' checksum = ' + colorama.Style.RESET_ALL + "'md5="
-                records_md5_two = [f"{md5}'" for md5 in new1]        
-                print(f"{rsa_checksum} 'md5={color.join(records_md5_two)}\n")
-                color = ' ||' + colorama.Fore.BLUE + ' checksum = ' + colorama.Style.RESET_ALL + "'md5="
-                records_md5_two = [f"{md5}'" for md5 in new2]        
-                print(f"{rsa_checksum} 'md5={color.join(records_md5_two)}")
+            color = ' ||' + colorama.Fore.BLUE + ' checksum = ' + colorama.Style.RESET_ALL + "'md5="
+            records_md5_two = [f"{md5}'" for md5 in new1]        
+            print(f"{rsa_checksum} 'md5={color.join(records_md5_two)}\n")
+            color = ' ||' + colorama.Fore.BLUE + ' checksum = ' + colorama.Style.RESET_ALL + "'md5="
+            records_md5_two = [f"{md5}'" for md5 in new2]        
+            print(f"{rsa_checksum} 'md5={color.join(records_md5_two)}")
 
-                break
+            break
 
-            if len(found_checksum) < 2:                    
-                print(colorama.Fore.RED + 'The -l or --l argument only accepts values ​​equal to or greater than 2, possibly the source does not have more than one value or cannot be extracted correctly\n' + colorama.Style.RESET_ALL)
+        if len(found_checksum) < 2:                    
+            print(colorama.Fore.RED + 'The -l or --l argument only accepts values ​​equal to or greater than 2, possibly the source does not have more than one value or cannot be extracted correctly\n' + colorama.Style.RESET_ALL)
 
 
 def md5_rsa(arguments):
     
-        if not md5(arguments.input):
-            print(colorama.Fore.RED + 'Not found md5 hashes' + colorama.Style.RESET_ALL)
-        else:        
-            records_md5 = []
-            rsa_checksum = siem.rsa_cheksum()
-            found_checksum = md5(args.input)
+    if not md5(arguments.input):
+        print(colorama.Fore.RED + 'Not found md5 hashes' + colorama.Style.RESET_ALL)
+    else:        
+        records_md5 = []
+        rsa_checksum = siem.rsa_cheksum()
+        found_checksum = md5(args.input)
 
-            for index in found_checksum:
-                records_md5.append(index)
+        for index in found_checksum:
+            records_md5.append(index)
 
-            print(colorama.Fore.GREEN + '[+] AV / EDR\n' + colorama.Style.RESET_ALL)
-            color = ' ||' + colorama.Fore.BLUE + ' checksum = ' + colorama.Style.RESET_ALL + "'"
-            records_md5_two = [f"{md5}'" for md5 in records_md5]
-            print(f'{rsa_checksum} \'{color.join(records_md5_two)} \n') 
-            print(colorama.Fore.GREEN + '[+] SYSMON\n')
+        print(colorama.Fore.GREEN + '[+] AV / EDR\n' + colorama.Style.RESET_ALL)
+        color = ' ||' + colorama.Fore.BLUE + ' checksum = ' + colorama.Style.RESET_ALL + "'"
+        records_md5_two = [f"{md5}'" for md5 in records_md5]
+        print(f'{rsa_checksum} \'{color.join(records_md5_two)} \n') 
+        print(colorama.Fore.GREEN + '[+] SYSMON\n')
 
-            color = ' ||' + colorama.Fore.BLUE + ' checksum = ' + colorama.Style.RESET_ALL + "'md5="
-            records_md5 = [f"{md5}'" for md5 in records_md5]        
-            print(f"{rsa_checksum} 'md5={color.join(records_md5)}")        
+        color = ' ||' + colorama.Fore.BLUE + ' checksum = ' + colorama.Style.RESET_ALL + "'md5="
+        records_md5 = [f"{md5}'" for md5 in records_md5]        
+        print(f"{rsa_checksum} 'md5={color.join(records_md5)}")        
 
 
 def md5_only(arguments):
 
-        if not md5(arguments.input):
-            print(colorama.Fore.RED + 'Not found md5 hashes' + colorama.Style.RESET_ALL)
-        else:
-            print(colorama.Fore.GREEN + '[+] Hashes md5\n' + colorama.Style.RESET_ALL)
-            found_md5 = md5(args.input)
-            for index in set(found_md5):
-                print(index)
+    if not md5(arguments.input):
+        print(colorama.Fore.RED + 'Not found md5 hashes' + colorama.Style.RESET_ALL)
+    else:
+        print(colorama.Fore.GREEN + '[+] Hashes md5\n' + colorama.Style.RESET_ALL)
+        found_md5 = md5(args.input)
+        for index in set(found_md5):
+            print(index)
     
 
-def sha1_scnx_l(arguments):    
-        if not sha1(arguments.input):
-            print(colorama.Fore.RED + 'Not found sha1 hashes' + colorama.Style.RESET_ALL)
-        else:        
-            records_sha1 = []
-            scnx_old_file_hash = siem.scnx_old_file_hash()
-            scnx_old_file_hash_only = siem.scnx_old_file_hash_only()
-            scnx_file_hash = siem.scnx_file_hash()
-            scnx_file_hash_only = siem.scnx_file_hash_only()
-            found_sha1 = sha1(args.input)
-            stats = siem.scnx_stats()
+def sha1_scnx_l(arguments):  
+          
+    if not sha1(arguments.input):
+        print(colorama.Fore.RED + 'Not found sha1 hashes' + colorama.Style.RESET_ALL)
+    else:        
+        records_sha1 = []
+        scnx_old_file_hash = siem.scnx_old_file_hash()
+        scnx_old_file_hash_only = siem.scnx_old_file_hash_only()
+        scnx_file_hash = siem.scnx_file_hash()
+        scnx_file_hash_only = siem.scnx_file_hash_only()
+        found_sha1 = sha1(args.input)
+        stats = siem.scnx_stats()
 
-            while len(found_sha1) >= 2:
-            
-                for index in found_sha1:
-                    records_sha1.append(index)
-                    meadle = len(records_sha1) // 2
-                    new1 = records_sha1[:meadle]
-                    new2 = records_sha1[meadle:]
-
-
-                print(colorama.Fore.GREEN + '[+] AV / EDR\n' + colorama.Style.RESET_ALL)
-                print(f'{scnx_old_file_hash} ({', '.join(new1)})\n')
-                print(f'{scnx_old_file_hash} ({', '.join(new2)})\n')
-                print(f'{scnx_file_hash} ({', '.join(new1)})\n')
-                print(f'{scnx_file_hash} ({', '.join(new2)})\n')
-                print(f'{scnx_old_file_hash} ({', '.join(new1)}) {stats} {scnx_old_file_hash_only}\n')
-                print(f'{scnx_old_file_hash} ({', '.join(new2)}) {stats} {scnx_old_file_hash_only}\n')
-                print(f'{scnx_file_hash} ({', '.join(new1)}) {stats} {scnx_file_hash_only}\n')
-                print(f'{scnx_file_hash} ({', '.join(new2)}) {stats} {scnx_file_hash_only}\n')
-
-                break
-
-            if len(found_sha1) < 2:                    
-                print(colorama.Fore.RED + 'The -l or --l argument only accepts values ​​equal to or greater than 2, possibly the source does not have more than one value or cannot be extracted correctly\n' + colorama.Style.RESET_ALL)
+        while len(found_sha1) >= 2:
+        
+            for index in found_sha1:
+                records_sha1.append(index)
+                meadle = len(records_sha1) // 2
+                new1 = records_sha1[:meadle]
+                new2 = records_sha1[meadle:]
 
 
-def sha1_scnx(arguments):    
+            print(colorama.Fore.GREEN + '[+] AV / EDR\n' + colorama.Style.RESET_ALL)
+            print(f'{scnx_old_file_hash} ({', '.join(new1)})\n')
+            print(f'{scnx_old_file_hash} ({', '.join(new2)})\n')
+            print(f'{scnx_file_hash} ({', '.join(new1)})\n')
+            print(f'{scnx_file_hash} ({', '.join(new2)})\n')
+            print(f'{scnx_old_file_hash} ({', '.join(new1)}) {stats} {scnx_old_file_hash_only}\n')
+            print(f'{scnx_old_file_hash} ({', '.join(new2)}) {stats} {scnx_old_file_hash_only}\n')
+            print(f'{scnx_file_hash} ({', '.join(new1)}) {stats} {scnx_file_hash_only}\n')
+            print(f'{scnx_file_hash} ({', '.join(new2)}) {stats} {scnx_file_hash_only}\n')
+
+            break
+
+        if len(found_sha1) < 2:                    
+            print(colorama.Fore.RED + 'The -l or --l argument only accepts values ​​equal to or greater than 2, possibly the source does not have more than one value or cannot be extracted correctly\n' + colorama.Style.RESET_ALL)
+
+
+def sha1_scnx(arguments):   
+
     if not sha1(arguments.input):
         print(colorama.Fore.RED + 'Not found sha1 hashes' + colorama.Style.RESET_ALL)
     else:        
@@ -904,73 +906,74 @@ def sha1_scnx(arguments):
 
 def sha1_rsa_l(arguments):
 
-        if not sha1(arguments.input):
-            print(colorama.Fore.RED + 'Not found sha1 hashes' + colorama.Style.RESET_ALL)
-        else:        
-            records_sha1 = []
-            rsa_checksum = siem.rsa_cheksum()
-            found_checksum = sha1(args.input)
+    if not sha1(arguments.input):
+        print(colorama.Fore.RED + 'Not found sha1 hashes' + colorama.Style.RESET_ALL)
+    else:        
+        records_sha1 = []
+        rsa_checksum = siem.rsa_cheksum()
+        found_checksum = sha1(args.input)
 
-            while len(found_checksum) >= 2:
-
-                for index in found_checksum:
-                    records_sha1.append(index)
-                    meadle = len(records_sha1) // 2
-                    new1 = records_sha1[:meadle]
-                    new2 = records_sha1[meadle:]
-
-                print(colorama.Fore.GREEN + '[+] AV / EDR\n' + colorama.Style.RESET_ALL)
-                
-                color = ' || ' + colorama.Fore.BLUE + ' checksum = ' + colorama.Style.RESET_ALL + "'"
-                records_sha1_two = [f"{sha1}'" for sha1 in new1]
-                print(f'{rsa_checksum} {color.join(records_sha1_two)}\n')  
-
-                color = ' || ' + colorama.Fore.BLUE + ' checksum = ' + colorama.Style.RESET_ALL + "'"
-                records_sha1_two = [f"{sha1}'" for sha1 in new2]
-                print(f'{rsa_checksum} {color.join(records_sha1_two)}\n')
-
-                print('colorama.Fore.GREEN + [+] SYSMON\n')
-
-                color = ' ||' + colorama.Fore.BLUE + ' checksum = ' + colorama.Style.RESET_ALL + "'sha1="
-                records_sha1_two = [f"{sha1}'" for sha1 in new1]
-                print(f"{rsa_checksum} 'sha1={color.join(records_sha1_two)}\n")
-
-                color = ' ||' + colorama.Fore.BLUE + ' checksum = ' + colorama.Style.RESET_ALL + "'sha1="
-                records_sha1_two = [f"{sha1}'" for sha1 in new2]
-                print(f"{rsa_checksum} 'sha1={color.join(records_sha1_two)}")
-
-                break
-
-            if len(found_checksum) < 2:                    
-                print(colorama.Fore.RED + 'The -l or --l argument only accepts values ​​equal to or greater than 2, possibly the source does not have more than one value or cannot be extracted correctly\n' + colorama.Style.RESET_ALL)
-
-
-def sha1_rsa(arguments):
-    
-        if not sha1(arguments.input):
-            print(colorama.Fore.RED + 'Not found sha1 hashes' + colorama.Style.RESET_ALL)
-        else:        
-            records_sha1 = []
-            rsa_checksum = siem.rsa_cheksum()
-            found_checksum = sha1(args.input)
+        while len(found_checksum) >= 2:
 
             for index in found_checksum:
                 records_sha1.append(index)
+                meadle = len(records_sha1) // 2
+                new1 = records_sha1[:meadle]
+                new2 = records_sha1[meadle:]
 
             print(colorama.Fore.GREEN + '[+] AV / EDR\n' + colorama.Style.RESET_ALL)
             
             color = ' || ' + colorama.Fore.BLUE + ' checksum = ' + colorama.Style.RESET_ALL + "'"
-            records_sha1_two = [f"{sha1}'" for sha1 in records_sha1]
-            print(f'{rsa_checksum} \'{color.join(records_sha1_two)}\n')  
+            records_sha1_two = [f"{sha1}'" for sha1 in new1]
+            print(f'{rsa_checksum} {color.join(records_sha1_two)}\n')  
 
-            print(colorama.Fore.GREEN + '[+] SYSMON\n')
+            color = ' || ' + colorama.Fore.BLUE + ' checksum = ' + colorama.Style.RESET_ALL + "'"
+            records_sha1_two = [f"{sha1}'" for sha1 in new2]
+            print(f'{rsa_checksum} {color.join(records_sha1_two)}\n')
+
+            print('colorama.Fore.GREEN + [+] SYSMON\n')
 
             color = ' ||' + colorama.Fore.BLUE + ' checksum = ' + colorama.Style.RESET_ALL + "'sha1="
-            records_sha1 = [f"{sha1}'" for sha1 in records_sha1]
-            print(f"{rsa_checksum} 'sha1={color.join(records_sha1)}") 
+            records_sha1_two = [f"{sha1}'" for sha1 in new1]
+            print(f"{rsa_checksum} 'sha1={color.join(records_sha1_two)}\n")
+
+            color = ' ||' + colorama.Fore.BLUE + ' checksum = ' + colorama.Style.RESET_ALL + "'sha1="
+            records_sha1_two = [f"{sha1}'" for sha1 in new2]
+            print(f"{rsa_checksum} 'sha1={color.join(records_sha1_two)}")
+
+            break
+
+        if len(found_checksum) < 2:                    
+            print(colorama.Fore.RED + 'The -l or --l argument only accepts values ​​equal to or greater than 2, possibly the source does not have more than one value or cannot be extracted correctly\n' + colorama.Style.RESET_ALL)
+
+
+def sha1_rsa(arguments):
+    
+    if not sha1(arguments.input):
+        print(colorama.Fore.RED + 'Not found sha1 hashes' + colorama.Style.RESET_ALL)
+    else:        
+        records_sha1 = []
+        rsa_checksum = siem.rsa_cheksum()
+        found_checksum = sha1(args.input)
+
+        for index in found_checksum:
+            records_sha1.append(index)
+
+        print(colorama.Fore.GREEN + '[+] AV / EDR\n' + colorama.Style.RESET_ALL)
+        
+        color = ' || ' + colorama.Fore.BLUE + ' checksum = ' + colorama.Style.RESET_ALL + "'"
+        records_sha1_two = [f"{sha1}'" for sha1 in records_sha1]
+        print(f'{rsa_checksum} \'{color.join(records_sha1_two)}\n')  
+
+        print(colorama.Fore.GREEN + '[+] SYSMON\n')
+
+        color = ' ||' + colorama.Fore.BLUE + ' checksum = ' + colorama.Style.RESET_ALL + "'sha1="
+        records_sha1 = [f"{sha1}'" for sha1 in records_sha1]
+        print(f"{rsa_checksum} 'sha1={color.join(records_sha1)}") 
 
 
 def sha1_only(arguments):
+
     if not sha1(arguments.input):
         print(colorama.Fore.RED + 'Not found sha1 hashes' + colorama.Style.RESET_ALL)
     else: 
@@ -982,379 +985,396 @@ def sha1_only(arguments):
 
 def sha256_scnx_l(arguments):
 
-        if not sha256(arguments.input):
-            print(colorama.Fore.RED + 'Not found sha256 hashes' + colorama.Style.RESET_ALL)
-        else:
-            records_sha256 = []
-            scnx_old_file_hash = siem.scnx_old_file_hash()
-            scnx_old_file_hash_only = siem.scnx_old_file_hash_only()
-            scnx_file_hash = siem.scnx_file_hash()
-            scnx_file_hash_only = siem.scnx_file_hash_only()
-            found_sha256 = sha256(arguments.input)
-            stats = siem.scnx_stats()
+    if not sha256(arguments.input):
+        print(colorama.Fore.RED + 'Not found sha256 hashes' + colorama.Style.RESET_ALL)
+    else:
+        records_sha256 = []
+        scnx_old_file_hash = siem.scnx_old_file_hash()
+        scnx_old_file_hash_only = siem.scnx_old_file_hash_only()
+        scnx_file_hash = siem.scnx_file_hash()
+        scnx_file_hash_only = siem.scnx_file_hash_only()
+        found_sha256 = sha256(arguments.input)
+        stats = siem.scnx_stats()
 
-            while len(found_sha256) >= 2:
+        while len(found_sha256) >= 2:
 
-                for index in set(found_sha256):
-                    records_sha256.append(index)
-                    meadle = len(records_sha256) // 2
-                    new1 = records_sha256[:meadle]
-                    new2 = records_sha256[meadle:]
+            for index in set(found_sha256):
+                records_sha256.append(index)
+                meadle = len(records_sha256) // 2
+                new1 = records_sha256[:meadle]
+                new2 = records_sha256[meadle:]
 
-                print(colorama.Fore.GREEN + '[+] AV / EDR\n' + colorama.Style.RESET_ALL)
-                print(f'{scnx_old_file_hash} ({', '.join(new1)})\n')   
-                print(f'{scnx_old_file_hash} ({', '.join(new2)})\n')
-                print(f'{scnx_file_hash} ({', '.join(new1)})\n')   
-                print(f'{scnx_file_hash} ({', '.join(new2)})\n')
-                print(f'{scnx_old_file_hash} ({', '.join(new1)}) {stats} {scnx_old_file_hash_only}\n')
-                print(f'{scnx_old_file_hash} ({', '.join(new2)}) {stats} {scnx_old_file_hash_only}\n')
-                print(f'{scnx_file_hash} ({', '.join(new1)}) {stats} {scnx_file_hash_only}\n')
-                print(f'{scnx_file_hash} ({', '.join(new2)}) {stats} {scnx_file_hash_only}\n')
+            print(colorama.Fore.GREEN + '[+] AV / EDR\n' + colorama.Style.RESET_ALL)
+            print(f'{scnx_old_file_hash} ({', '.join(new1)})\n')   
+            print(f'{scnx_old_file_hash} ({', '.join(new2)})\n')
+            print(f'{scnx_file_hash} ({', '.join(new1)})\n')   
+            print(f'{scnx_file_hash} ({', '.join(new2)})\n')
+            print(f'{scnx_old_file_hash} ({', '.join(new1)}) {stats} {scnx_old_file_hash_only}\n')
+            print(f'{scnx_old_file_hash} ({', '.join(new2)}) {stats} {scnx_old_file_hash_only}\n')
+            print(f'{scnx_file_hash} ({', '.join(new1)}) {stats} {scnx_file_hash_only}\n')
+            print(f'{scnx_file_hash} ({', '.join(new2)}) {stats} {scnx_file_hash_only}\n')
 
-                break
+            break
 
-            if len(found_sha256) < 2:                    
-                print(colorama.Fore.RED + 'The -l or --l argument only accepts values ​​equal to or greater than 2, possibly the source does not have more than one value or cannot be extracted correctly\n' + colorama.Style.RESET_ALL)
+        if len(found_sha256) < 2:                    
+            print(colorama.Fore.RED + 'The -l or --l argument only accepts values ​​equal to or greater than 2, possibly the source does not have more than one value or cannot be extracted correctly\n' + colorama.Style.RESET_ALL)
 
 
 def sha256_scnx(arguments):
 
-        if not sha256(arguments.input):
-            print(colorama.Fore.RED + 'Not found sha256 hashes' + colorama.Style.RESET_ALL)
-        else:
-            records_sha256 = []
-            scnx_old_file_hash = siem.scnx_old_file_hash()
-            scnx_old_file_hash_only = siem.scnx_old_file_hash_only()
-            found_sha256 = sha256(arguments.input)
-            stats = siem.scnx_stats()
+    if not sha256(arguments.input):
+        print(colorama.Fore.RED + 'Not found sha256 hashes' + colorama.Style.RESET_ALL)
+    else:
+        records_sha256 = []
+        scnx_old_file_hash = siem.scnx_old_file_hash()
+        scnx_old_file_hash_only = siem.scnx_old_file_hash_only()
+        found_sha256 = sha256(arguments.input)
+        stats = siem.scnx_stats()
 
-            for index in set(found_sha256):
-                records_sha256.append(index)
+        for index in set(found_sha256):
+            records_sha256.append(index)
 
-            print(colorama.Fore.GREEN + '[+] AV / EDR\n' + colorama.Style.RESET_ALL)
-            print(f'{scnx_old_file_hash} ({', '.join(records_sha256)})\n')  
-            print(f'{scnx_old_file_hash} ({', '.join(records_sha256)}) {stats} {scnx_old_file_hash_only}\n') 
+        print(colorama.Fore.GREEN + '[+] AV / EDR\n' + colorama.Style.RESET_ALL)
+        print(f'{scnx_old_file_hash} ({', '.join(records_sha256)})\n')  
+        print(f'{scnx_old_file_hash} ({', '.join(records_sha256)}) {stats} {scnx_old_file_hash_only}\n') 
 
 
 def sha256_rsa_l(arguments):
 
-        if not sha256(arguments.input):
-            print(colorama.Fore.RED + 'Not found sha256 hashes' + colorama.Style.RESET_ALL)
-        else:
-            records_sha256 = []
-            rsa_checksum = siem.rsa_cheksum()
-            found_checksum = sha256(args.input)
+    if not sha256(arguments.input):
+        print(colorama.Fore.RED + 'Not found sha256 hashes' + colorama.Style.RESET_ALL)
+    else:
+        records_sha256 = []
+        rsa_checksum = siem.rsa_cheksum()
+        found_checksum = sha256(args.input)
 
-            while len(found_checksum) >= 2:
-
-                for index in found_checksum:
-                    records_sha256.append(index)
-                    meadle = len(records_sha256) // 2
-                    new1 = records_sha256[:meadle]
-                    new2 = records_sha256[meadle:]
-
-                print(colorama.Fore.GREEN + '[+] AV / EDR\n' + colorama.Style.RESET_ALL)
-
-                color = ' || ' + colorama.Fore.BLUE + ' checksum = ' + colorama.Style.RESET_ALL + "'"
-                records_sha256_two = [f"{sha256}'" for sha256 in new1]
-                print(f'{rsa_checksum} {color.join(records_sha256_two)}\n')
-                color = ' || ' + colorama.Fore.BLUE + ' checksum = ' + colorama.Style.RESET_ALL+ "'"
-                records_sha256_two = [f"{sha256}'" for sha256 in new2]
-                print(f'{rsa_checksum} {color.join(records_sha256_two)}\n')
-                print('[+] SYSMON\n')
-                color = ' ||' + colorama.Fore.BLUE + ' checksum = ' + colorama.Style.RESET_ALL + "'sha256="
-                records_sha256_two = [f"{sha256}'" for sha256 in new1]
-                print(f"{rsa_checksum} 'sha256={color.join(records_sha256_two)}\n")
-                color = ' ||' + colorama.Fore.BLUE + ' checksum = ' + colorama.Style.RESET_ALL + "'sha256="
-                records_sha256_two = [f"{sha256}'" for sha256 in new2]
-                print(f"{rsa_checksum} 'sha256={color.join(records_sha256_two)}") 
-
-                break
-
-            if len(found_checksum) < 2:                    
-                print(colorama.Fore.RED + 'The -l or --l argument only accepts values ​​equal to or greater than 2, possibly the source does not have more than one value or cannot be extracted correctly\n' + colorama.Style.RESET_ALL)
-
-
-def sha256_rsa(arguments):
-
-        if not sha256(arguments.input):
-            print(colorama.Fore.RED + 'Not found sha256 hashes' + colorama.Style.RESET_ALL)
-        else:
-            records_sha256 = []
-            rsa_checksum = siem.rsa_cheksum()
-            found_checksum = sha256(args.input)
+        while len(found_checksum) >= 2:
 
             for index in found_checksum:
                 records_sha256.append(index)
-                
+                meadle = len(records_sha256) // 2
+                new1 = records_sha256[:meadle]
+                new2 = records_sha256[meadle:]
 
             print(colorama.Fore.GREEN + '[+] AV / EDR\n' + colorama.Style.RESET_ALL)
 
             color = ' || ' + colorama.Fore.BLUE + ' checksum = ' + colorama.Style.RESET_ALL + "'"
-            records_sha256_two = [f"{sha256}'" for sha256 in records_sha256]
-            print(f'{rsa_checksum} \'{color.join(records_sha256_two)}\n')
-            print(colorama.Fore.GREEN + '[SYSMON]\n' + colorama.Style.RESET_ALL)
+            records_sha256_two = [f"{sha256}'" for sha256 in new1]
+            print(f'{rsa_checksum} {color.join(records_sha256_two)}\n')
+            color = ' || ' + colorama.Fore.BLUE + ' checksum = ' + colorama.Style.RESET_ALL+ "'"
+            records_sha256_two = [f"{sha256}'" for sha256 in new2]
+            print(f'{rsa_checksum} {color.join(records_sha256_two)}\n')
+            print('[+] SYSMON\n')
             color = ' ||' + colorama.Fore.BLUE + ' checksum = ' + colorama.Style.RESET_ALL + "'sha256="
-            records_sha256 = [f"{sha256}'" for sha256 in records_sha256]
-            print(f"{rsa_checksum} 'sha256={color.join(records_sha256)}") 
+            records_sha256_two = [f"{sha256}'" for sha256 in new1]
+            print(f"{rsa_checksum} 'sha256={color.join(records_sha256_two)}\n")
+            color = ' ||' + colorama.Fore.BLUE + ' checksum = ' + colorama.Style.RESET_ALL + "'sha256="
+            records_sha256_two = [f"{sha256}'" for sha256 in new2]
+            print(f"{rsa_checksum} 'sha256={color.join(records_sha256_two)}") 
+
+            break
+
+        if len(found_checksum) < 2:                    
+            print(colorama.Fore.RED + 'The -l or --l argument only accepts values ​​equal to or greater than 2, possibly the source does not have more than one value or cannot be extracted correctly\n' + colorama.Style.RESET_ALL)
+
+
+def sha256_rsa(arguments):
+
+    if not sha256(arguments.input):
+        print(colorama.Fore.RED + 'Not found sha256 hashes' + colorama.Style.RESET_ALL)
+    else:
+        records_sha256 = []
+        rsa_checksum = siem.rsa_cheksum()
+        found_checksum = sha256(args.input)
+
+        for index in found_checksum:
+            records_sha256.append(index)
+            
+
+        print(colorama.Fore.GREEN + '[+] AV / EDR\n' + colorama.Style.RESET_ALL)
+
+        color = ' || ' + colorama.Fore.BLUE + ' checksum = ' + colorama.Style.RESET_ALL + "'"
+        records_sha256_two = [f"{sha256}'" for sha256 in records_sha256]
+        print(f'{rsa_checksum} \'{color.join(records_sha256_two)}\n')
+        print(colorama.Fore.GREEN + '[SYSMON]\n' + colorama.Style.RESET_ALL)
+        color = ' ||' + colorama.Fore.BLUE + ' checksum = ' + colorama.Style.RESET_ALL + "'sha256="
+        records_sha256 = [f"{sha256}'" for sha256 in records_sha256]
+        print(f"{rsa_checksum} 'sha256={color.join(records_sha256)}") 
         
 
 def sha256_only(arguments):
 
-        if not sha256(arguments.input):
-            print(colorama.Fore.RED + 'Not found sha256 hashes' + colorama.Style.RESET_ALL)
-        else:
-            print(colorama.Fore.GREEN + '[+] hashes sha256\n' + colorama.Style.RESET_ALL)
-            found_sha256 = sha256(args.input)
-            for index in set(found_sha256):
-                print(index)
+    if not sha256(arguments.input):
+        print(colorama.Fore.RED + 'Not found sha256 hashes' + colorama.Style.RESET_ALL)
+    else:
+        print(colorama.Fore.GREEN + '[+] hashes sha256\n' + colorama.Style.RESET_ALL)
+        found_sha256 = sha256(args.input)
+        for index in set(found_sha256):
+            print(index)
 
 
 def email_scnx_l(arguments):
 
-        if not email(arguments.input):
-            print(colorama.Fore.RED + 'Not found email address' + colorama.Style.RESET_ALL)
-        else:
-            records_email = []
-            scnx_mailboxownerupn = siem.scnx_mailboxownerupn()
-            scnx_mailboxownerupn_without = siem.scnx_mailboxownerupn_without()
-            scnx_workemail = siem.scnx_workemail()
-            scnx_workemail_without = siem.scnx_workemail_without() 
-            scnx_accountname = siem.scnx_accountname()
-            scnx_accountname_without = siem.scnx_accountname_without()
-            scnx_email_recipient = siem.scnx_email_recipient()
-            scnx_email_recipient_only = siem.scnx_email_recipient_domain_only()
-            found_email = email(arguments.input)
-            stats = siem.scnx_stats()
+    if not email(arguments.input):
+        print(colorama.Fore.RED + 'Not found email address' + colorama.Style.RESET_ALL)
+    else:
+        records_email = []
+        scnx_mailboxownerupn = siem.scnx_mailboxownerupn()
+        scnx_mailboxownerupn_without = siem.scnx_mailboxownerupn_without()
+        scnx_workemail = siem.scnx_workemail()
+        scnx_workemail_without = siem.scnx_workemail_without() 
+        scnx_accountname = siem.scnx_accountname()
+        scnx_accountname_without = siem.scnx_accountname_without()
+        scnx_email_recipient = siem.scnx_email_recipient()
+        scnx_email_recipient_only = siem.scnx_email_recipient_domain_only()
+        found_email = email(arguments.input)
+        stats = siem.scnx_stats()
 
-            while len(found_email) >= 2:
+        while len(found_email) >= 2:
 
-                for index in set(found_email):
-                    records_email.append(index)
-                    meadle = len(records_email) // 2
-                    new1 = records_email[:meadle]
-                    new2 = records_email[meadle:]
+            for index in set(found_email):
+                records_email.append(index)
+                meadle = len(records_email) // 2
+                new1 = records_email[:meadle]
+                new2 = records_email[meadle:]
 
-                print(colorama.Fore.GREEN + '[+] EXCHANGE\n' + colorama.Style.RESET_ALL)
-                print(f'{scnx_mailboxownerupn} ({', '.join(new1)})\n')   
-                print(f'{scnx_mailboxownerupn} ({', '.join(new2)})\n')
-                print(f'{scnx_accountname} ({', '.join(new1)})\n')   
-                print(f'{scnx_accountname} ({', '.join(new2)})\n')
-                print(f'{scnx_workemail} ({', '.join(new1)})\n') 
-                print(f'{scnx_workemail} ({', '.join(new2)})\n')
-                print(f'{scnx_email_recipient} ({', '.join(new1)})\n') 
-                print(f'{scnx_email_recipient} ({', '.join(new2)})\n')
-                print(f'{scnx_mailboxownerupn} ({', '.join(new1)}) {stats} {scnx_mailboxownerupn_without}\n')   
-                print(f'{scnx_mailboxownerupn} ({', '.join(new2)}) {stats} {scnx_mailboxownerupn_without}\n')
-                print(f'{scnx_accountname} ({', '.join(new1)}) {stats} {scnx_accountname_without}\n')   
-                print(f'{scnx_accountname} ({', '.join(new2)}) {stats} {scnx_accountname_without}\n')
-                print(f'{scnx_workemail} ({', '.join(new1)}) {stats} {scnx_workemail_without}\n')   
-                print(f'{scnx_workemail} ({', '.join(new2)}) {stats} {scnx_workemail_without}\n')
-                print(f'{scnx_email_recipient} ({', '.join(new1)}) {stats} {scnx_email_recipient_only}\n')   
-                print(f'{scnx_email_recipient} ({', '.join(new2)}) {stats} {scnx_email_recipient_only}\n')
+            print(colorama.Fore.GREEN + '[+] EXCHANGE\n' + colorama.Style.RESET_ALL)
+            print(f'{scnx_mailboxownerupn} ({', '.join(new1)})\n')   
+            print(f'{scnx_mailboxownerupn} ({', '.join(new2)})\n')
+            print(f'{scnx_accountname} ({', '.join(new1)})\n')   
+            print(f'{scnx_accountname} ({', '.join(new2)})\n')
+            print(f'{scnx_workemail} ({', '.join(new1)})\n') 
+            print(f'{scnx_workemail} ({', '.join(new2)})\n')
+            print(f'{scnx_email_recipient} ({', '.join(new1)})\n') 
+            print(f'{scnx_email_recipient} ({', '.join(new2)})\n')
+            print(f'{scnx_mailboxownerupn} ({', '.join(new1)}) {stats} {scnx_mailboxownerupn_without}\n')   
+            print(f'{scnx_mailboxownerupn} ({', '.join(new2)}) {stats} {scnx_mailboxownerupn_without}\n')
+            print(f'{scnx_accountname} ({', '.join(new1)}) {stats} {scnx_accountname_without}\n')   
+            print(f'{scnx_accountname} ({', '.join(new2)}) {stats} {scnx_accountname_without}\n')
+            print(f'{scnx_workemail} ({', '.join(new1)}) {stats} {scnx_workemail_without}\n')   
+            print(f'{scnx_workemail} ({', '.join(new2)}) {stats} {scnx_workemail_without}\n')
+            print(f'{scnx_email_recipient} ({', '.join(new1)}) {stats} {scnx_email_recipient_only}\n')   
+            print(f'{scnx_email_recipient} ({', '.join(new2)}) {stats} {scnx_email_recipient_only}\n')
 
-                break
+            break
 
-            if len(found_email) < 2:                    
-                print(colorama.Fore.RED + 'The -l or --l argument only accepts values ​​equal to or greater than 2, possibly the source does not have more than one value or cannot be extracted correctly\n' + colorama.Style.RESET_ALL)
+        if len(found_email) < 2:                    
+            print(colorama.Fore.RED + 'The -l or --l argument only accepts values ​​equal to or greater than 2, possibly the source does not have more than one value or cannot be extracted correctly\n' + colorama.Style.RESET_ALL)
 
 
 def email_scnx(arguments):
 
-        if not email(arguments.input):
-            print(colorama.Fore.RED + 'Not found email address' + colorama.Style.RESET_ALL)
-        else:
-            records_email = []
-            scnx_mailboxownerupn = siem.scnx_mailboxownerupn()
-            scnx_mailboxownerupn_without = siem.scnx_mailboxownerupn_without()
-            scnx_workemail = siem.scnx_workemail()
-            scnx_workemail_without = siem.scnx_workemail_without() 
-            scnx_accountname = siem.scnx_accountname()
-            scnx_accountname_without = siem.scnx_accountname_without()
-            scnx_email_recipient = siem.scnx_email_recipient()
-            scnx_email_recipient_only = siem.scnx_email_recipient_domain_only()
-            found_email = email(arguments.input)
-            stats = siem.scnx_stats()
+    if not email(arguments.input):
+        print(colorama.Fore.RED + 'Not found email address' + colorama.Style.RESET_ALL)
+    else:
+        records_email = []
+        scnx_mailboxownerupn = siem.scnx_mailboxownerupn()
+        scnx_mailboxownerupn_without = siem.scnx_mailboxownerupn_without()
+        scnx_workemail = siem.scnx_workemail()
+        scnx_workemail_without = siem.scnx_workemail_without() 
+        scnx_accountname = siem.scnx_accountname()
+        scnx_accountname_without = siem.scnx_accountname_without()
+        scnx_email_recipient = siem.scnx_email_recipient()
+        scnx_email_recipient_only = siem.scnx_email_recipient_domain_only()
+        found_email = email(arguments.input)
+        stats = siem.scnx_stats()
 
-            for index in set(found_email):
-                records_email.append(index)
+        for index in set(found_email):
+            records_email.append(index)
 
-            print(colorama.Fore.GREEN + '[+] EXCHANGE\n' + colorama.Style.RESET_ALL)
+        print(colorama.Fore.GREEN + '[+] EXCHANGE\n' + colorama.Style.RESET_ALL)
 
-            print(f'{scnx_mailboxownerupn} ({', '.join(records_email)})\n') 
-            print(f'{scnx_workemail} ({', '.join(records_email)})\n') 
-            print(f'{scnx_accountname} ({', '.join(records_email)})\n') 
-            print(f'{scnx_email_recipient} ({', '.join(records_email)})\n')
-            print(f'{scnx_mailboxownerupn} ({', '.join(records_email)}) {stats} {scnx_mailboxownerupn_without}\n') 
-            print(f'{scnx_workemail} ({', '.join(records_email)}) {stats} {scnx_workemail_without}\n') 
-            print(f'{scnx_accountname} ({', '.join(records_email)}) {stats} {scnx_accountname_without}\n')
-            print(f'{scnx_email_recipient} ({', '.join(records_email)}) {stats} {scnx_email_recipient_only}\n')
+        print(f'{scnx_mailboxownerupn} ({', '.join(records_email)})\n') 
+        print(f'{scnx_workemail} ({', '.join(records_email)})\n') 
+        print(f'{scnx_accountname} ({', '.join(records_email)})\n') 
+        print(f'{scnx_email_recipient} ({', '.join(records_email)})\n')
+        print(f'{scnx_mailboxownerupn} ({', '.join(records_email)}) {stats} {scnx_mailboxownerupn_without}\n') 
+        print(f'{scnx_workemail} ({', '.join(records_email)}) {stats} {scnx_workemail_without}\n') 
+        print(f'{scnx_accountname} ({', '.join(records_email)}) {stats} {scnx_accountname_without}\n')
+        print(f'{scnx_email_recipient} ({', '.join(records_email)}) {stats} {scnx_email_recipient_only}\n')
 
 
 def email_rsa_l(arguments):
 
-        if not email(arguments.input):
-            print(colorama.Fore.RED + 'Not found email address' + colorama.Style.RESET_ALL)
-        else:
-            records_email = []
-            rsa_email = siem.rsa_email()
-            found_email = email(args.input)
+    if not email(arguments.input):
+        print(colorama.Fore.RED + 'Not found email address' + colorama.Style.RESET_ALL)
+    else:
+        records_email = []
+        rsa_email = siem.rsa_email()
+        found_email = email(args.input)
 
-            while len(found_email) >= 2:
+        while len(found_email) >= 2:
 
-                for index in found_email:
-                    records_email.append("'" + index + "'")
-                    meadle = len(records_email) // 2
-                    new1 = records_email[:meadle]
-                    new2 = records_email[meadle:]
+            for index in found_email:
+                records_email.append("'" + index + "'")
+                meadle = len(records_email) // 2
+                new1 = records_email[:meadle]
+                new2 = records_email[meadle:]
 
-                print(colorama.Fore.GREEN + '[+] EXCHANGE\n' + colorama.Style.RESET_ALL)
-                color = ' || ' + colorama.Fore.BLUE + ' email = ' + colorama.Style.RESET_ALL
-                print(f'{rsa_email} {color.join(new1)}\n')  
-                color = ' || ' + colorama.Fore.BLUE + ' email = ' + colorama.Style.RESET_ALL
-                print(f'{rsa_email} {color.join(new2)}\n')
+            print(colorama.Fore.GREEN + '[+] EXCHANGE\n' + colorama.Style.RESET_ALL)
+            color = ' || ' + colorama.Fore.BLUE + ' email = ' + colorama.Style.RESET_ALL
+            print(f'{rsa_email} {color.join(new1)}\n')  
+            color = ' || ' + colorama.Fore.BLUE + ' email = ' + colorama.Style.RESET_ALL
+            print(f'{rsa_email} {color.join(new2)}\n')
 
-                break
+            break
 
-            if len(found_email) < 2:                    
-                print(colorama.Fore.RED + 'The -l or --l argument only accepts values ​​equal to or greater than 2, possibly the source does not have more than one value or cannot be extracted correctly\n' + colorama.Style.RESET_ALL)
+        if len(found_email) < 2:                    
+            print(colorama.Fore.RED + 'The -l or --l argument only accepts values ​​equal to or greater than 2, possibly the source does not have more than one value or cannot be extracted correctly\n' + colorama.Style.RESET_ALL)
 
 
 def email_rsa(arguments):
 
-        if not email(arguments.input):
-            print(colorama.Fore.RED + 'Not found email address' + colorama.Style.RESET_ALL)
-        else:
-            records_email = []
-            rsa_email = siem.rsa_email()
-            found_email = email(args.input)
+    if not email(arguments.input):
+        print(colorama.Fore.RED + 'Not found email address' + colorama.Style.RESET_ALL)
+    else:
+        records_email = []
+        rsa_email = siem.rsa_email()
+        found_email = email(args.input)
 
-            for index in found_email:
-                records_email.append("'" + index + "'")
+        for index in found_email:
+            records_email.append("'" + index + "'")
 
-            print(colorama.Fore.GREEN + '[+] EXCHANGE\n' + colorama.Style.RESET_ALL)
-            color = ' || ' + colorama.Fore.BLUE + ' email = ' + colorama.Style.RESET_ALL
-            print(f'{rsa_email} {color.join(records_email)}\n')  
+        print(colorama.Fore.GREEN + '[+] EXCHANGE\n' + colorama.Style.RESET_ALL)
+        color = ' || ' + colorama.Fore.BLUE + ' email = ' + colorama.Style.RESET_ALL
+        print(f'{rsa_email} {color.join(records_email)}\n')  
 
 
 def email_only(arguments):
 
-        if not email(arguments.input):
-            print(colorama.Fore.RED + 'Not found email address' + colorama.Style.RESET_ALL)
-        else:
-            print(colorama.Fore.GREEN + '[+] Emails\n' + colorama.Style.RESET_ALL)
-            found_email = email(args.input)
-            for index in set(found_email):
-                print(index)
+    if not email(arguments.input):
+        print(colorama.Fore.RED + 'Not found email address' + colorama.Style.RESET_ALL)
+    else:
+        print(colorama.Fore.GREEN + '[+] Emails\n' + colorama.Style.RESET_ALL)
+        found_email = email(args.input)
+        for index in set(found_email):
+            print(index)
 
 
 def reg_scnx_l(arguments):
 
-        if not reg(arguments.input):
-            print(colorama.Fore.RED + 'Not found windows registry' + colorama.Style.RESET_ALL)
-        else:
-            records_registry = []
-            scnx_eventdata_only = siem.scnx_eventdata_only()
-            found_registry = reg(arguments.input)
-            stats = siem.scnx_stats()
+    if not reg(arguments.input):
+        print(colorama.Fore.RED + 'Not found windows registry' + colorama.Style.RESET_ALL)
+    else:
+        records_registry = []
+        scnx_eventdata_only = siem.scnx_eventdata_only()
+        found_registry = reg(arguments.input)
+        stats = siem.scnx_stats()
 
-            while len(found_registry) >= 2:
+        while len(found_registry) >= 2:
 
-                for index in set(found_registry):
-                    records_registry.append(index)
-                    meadle = len(records_registry) // 2
-                    new1 = records_registry[:meadle]
-                    new2 = records_registry[meadle:]
+            for index in set(found_registry):
+                records_registry.append(index)
+                meadle = len(records_registry) // 2
+                new1 = records_registry[:meadle]
+                new2 = records_registry[meadle:]
 
-                print(colorama.Fore.GREEN + '[+] Windows\n' + colorama.Style.RESET_ALL)
+            print(colorama.Fore.GREEN + '[+] Windows\n' + colorama.Style.RESET_ALL)
 
-                eventdata_without = f' OR {scnx_eventdata_only} contains '
+            eventdata_without = f' OR {scnx_eventdata_only} contains '
 
-                print(f'{scnx_eventdata_only} contains {eventdata_without.join(new1)}\n')
-                print(f'{scnx_eventdata_only} contains {eventdata_without.join(new2)}\n')
-                print(f'{scnx_eventdata_only} contains {eventdata_without.join(new1)}) {stats} {scnx_eventdata_only}\n')
-                print(f'{scnx_eventdata_only} contains {eventdata_without.join(new2)}) {stats} {scnx_eventdata_only}\n')
+            print(f'{scnx_eventdata_only} contains {eventdata_without.join(new1)}\n')
+            print(f'{scnx_eventdata_only} contains {eventdata_without.join(new2)}\n')
+            print(f'{scnx_eventdata_only} contains {eventdata_without.join(new1)}) {stats} {scnx_eventdata_only}\n')
+            print(f'{scnx_eventdata_only} contains {eventdata_without.join(new2)}) {stats} {scnx_eventdata_only}\n')
 
-                break
+            break
 
-            if len(found_registry) < 2:                    
-                print(colorama.Fore.RED + 'The -l or --l argument only accepts values ​​equal to or greater than 2, possibly the source does not have more than one value or cannot be extracted correctly\n'+ colorama.Style.RESET_ALL)
+        if len(found_registry) < 2:                    
+            print(colorama.Fore.RED + 'The -l or --l argument only accepts values ​​equal to or greater than 2, possibly the source does not have more than one value or cannot be extracted correctly\n'+ colorama.Style.RESET_ALL)
 
 
 def reg_scnx(arguments):
             
-            if not reg(arguments.input):
-                print(colorama.Fore.RED + 'Not found windows registry' + colorama.Style.RESET_ALL)
-            else:
-                records_registry = []
-                scnx_eventdata_only = siem.scnx_eventdata_only()
-                found_registry = reg(arguments.input)
-                stats = siem.scnx_stats()
-    
-                for index in set(found_registry):
-                    records_registry.append(index)
-    
-                print(colorama.Fore.GREEN + '[+] Windows\n' + colorama.Style.RESET_ALL)    
-                eventdata_without = f' OR {scnx_eventdata_only} contains '    
-                print(f'{scnx_eventdata_only} contains {eventdata_without.join(records_registry)}\n')
-                print(f'{scnx_eventdata_only} contains {eventdata_without.join(records_registry)}) {stats} {scnx_eventdata_only}\n')
+    if not reg(arguments.input):
+        print(colorama.Fore.RED + 'Not found windows registry' + colorama.Style.RESET_ALL)
+    else:
+        records_registry = []
+        scnx_eventdata_only = siem.scnx_eventdata_only()
+        found_registry = reg(arguments.input)
+        stats = siem.scnx_stats()
+
+        for index in set(found_registry):
+            records_registry.append(index)
+
+        print(colorama.Fore.GREEN + '[+] Windows\n' + colorama.Style.RESET_ALL)    
+        eventdata_without = f' OR {scnx_eventdata_only} contains '    
+        print(f'{scnx_eventdata_only} contains {eventdata_without.join(records_registry)}\n')
+        print(f'{scnx_eventdata_only} contains {eventdata_without.join(records_registry)}) {stats} {scnx_eventdata_only}\n')
 
 
 def reg_rsa_l(arguments):
             
-        if not reg(arguments.input):
-            print(colorama.Fore.RED + 'Not found windows registry' + colorama.Style.RESET_ALL)
-        else:
-            records_registry = []
-            rsa_registry = siem.rsa_object_name()
-            found_registry = reg(arguments.input)
+    if not reg(arguments.input):
+        print(colorama.Fore.RED + 'Not found windows registry' + colorama.Style.RESET_ALL)
+    else:
+        records_registry = []
+        rsa_registry = siem.rsa_object_name()
+        found_registry = reg(arguments.input)
 
-            while len(found_registry) >= 2:
+        while len(found_registry) >= 2:
 
-                for index in found_registry:
-                    records_registry.append("'" + index + "'")
-                    meadle = len(records_registry) // 2
-                    new1 = records_registry[:meadle]
-                    new2 = records_registry[meadle:]
+            for index in found_registry:
+                records_registry.append("'" + index + "'")
+                meadle = len(records_registry) // 2
+                new1 = records_registry[:meadle]
+                new2 = records_registry[meadle:]
 
-                print(colorama.Fore.GREEN + '[+] Windows\n' + colorama.Style.RESET_ALL)
-                color = ' || ' + colorama.Fore.BLUE + ' registry = ' + colorama.Style.RESET_ALL
-                print(f'{rsa_registry} {color.join(new1)}\n')
-                color = ' || ' + colorama.Fore.BLUE + ' registry = ' + colorama.Style.RESET_ALL
-                print(f'{rsa_registry} {color.join(new2)}\n')
+            print(colorama.Fore.GREEN + '[+] Windows\n' + colorama.Style.RESET_ALL)
+            color = ' || ' + colorama.Fore.BLUE + ' registry = ' + colorama.Style.RESET_ALL
+            print(f'{rsa_registry} {color.join(new1)}\n')
+            color = ' || ' + colorama.Fore.BLUE + ' registry = ' + colorama.Style.RESET_ALL
+            print(f'{rsa_registry} {color.join(new2)}\n')
 
-                break
+            break
 
-            if len(found_registry) < 2:                    
-                print(colorama.Fore.RED + 'The -l or --l argument only accepts values ​​equal to or greater than 2, possibly the source does not have more than one value or cannot be extracted correctly\n' + colorama.Style.RESET_ALL)
+        if len(found_registry) < 2:                    
+            print(colorama.Fore.RED + 'The -l or --l argument only accepts values ​​equal to or greater than 2, possibly the source does not have more than one value or cannot be extracted correctly\n' + colorama.Style.RESET_ALL)
 
 
 def reg_rsa(arguments):
                 
-        if not reg(arguments.input):
-            print(colorama.Fore.RED + 'Not found windows registry' + colorama.Style.RESET_ALL)
-        else:
-            records_registry = []
-            rsa_registry = siem.rsa_object_name()
-            found_registry = reg(arguments.input)
+    if not reg(arguments.input):
+        print(colorama.Fore.RED + 'Not found windows registry' + colorama.Style.RESET_ALL)
+    else:
+        records_registry = []
+        rsa_registry = siem.rsa_object_name()
+        found_registry = reg(arguments.input)
 
-            for index in set(found_registry):
-                records_registry.append(index)
+        for index in set(found_registry):
+            records_registry.append(index)
 
-            print(colorama.Fore.GREEN + '[+] Windows\n' + colorama.Style.RESET_ALL)
-            color = ' || ' + colorama.Fore.BLUE + ' registry = ' + colorama.Style.RESET_ALL
-            records_registry_two = [f"{registry}'" for registry in records_registry]
-            print(f'{rsa_registry} {color.join(records_registry_two)}\n')
+        print(colorama.Fore.GREEN + '[+] Windows\n' + colorama.Style.RESET_ALL)
+        color = ' || ' + colorama.Fore.BLUE + ' registry = ' + colorama.Style.RESET_ALL
+        records_registry_two = [f"{registry}'" for registry in records_registry]
+        print(f'{rsa_registry} {color.join(records_registry_two)}\n')
 
 
 def reg_only(arguments):
-         if not reg(arguments.input):
-             print(colorama.Fore.RED + 'Not found Windows registry' + colorama.Style.RESET_ALL)
-         else:
-             print(colorama.Fore.GREEN + '[+] Windows Registry Keys\n' + colorama.Style.RESET_ALL)
-             found_reg = reg(arguments.input)
-             for index in set(found_reg):
-                 print(index)  
+         
+    if not reg(arguments.input):
+        print(colorama.Fore.RED + 'Not found Windows registry' + colorama.Style.RESET_ALL)
+    else:
+        print(colorama.Fore.GREEN + '[+] Windows Registry Keys\n' + colorama.Style.RESET_ALL)
+        found_reg = reg(arguments.input)
+        for index in set(found_reg):
+            print(index)  
+
+
+def cve_only(arguments):
+    
+    if not cve(arguments.input):
+        print(colorama.Fore.RED + 'Not found CVEs' + colorama.Style.RESET_ALL)
+    else:
+        print(colorama.Fore.GREEN + '[+] CVEs\n' + colorama.Style.RESET_ALL)
+        found_cves = cve(arguments.input)
+        for index in set(found_cves):
+            print(index)
+
+
+def cve_with_report(arguments):
+    conv = list(cve(arguments.input))
+    return conv  
 
 
 def check_analysis(cves, base_path='./CVE/'):
@@ -1582,3 +1602,9 @@ elif args.input and args.reg and args.rsa:
 
 elif args.input and args.reg == True:
     reg_only(args)
+
+elif args.input and args.cve == True and args.report == True:
+    cve_with_report(args)
+
+elif args.input and args.cve == True:
+    cve_only(args)
