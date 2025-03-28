@@ -138,7 +138,6 @@ def email(arq):
 
 
 def find_exploit_cve(cve):
-
     url = "https://gitlab.com/exploit-database/exploitdb/-/raw/main/files_exploits.csv?ref_type=heads"
 
     try:
@@ -149,15 +148,17 @@ def find_exploit_cve(cve):
         reader = csv.reader(csv_data)
 
         for row in reader:
-            if any(cell.strip() == cve for cell in row):  
-                return True  
+            for cell in row:
+                # Divide os valores por ";", remove espaços extras e verifica se a CVE está presente
+                if any(value.strip() == cve for value in cell.split(";")):
+                    return True  
 
         return False
 
     except requests.RequestException as e:
         print(f"Error accessing Exploit-DB: {e}")
         return None
-    
+
 
 def cve_with_report(arguments):
     conv = list(cve(arguments.input))
