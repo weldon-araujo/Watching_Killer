@@ -10,8 +10,6 @@ import colorama
 import ipaddress
 from fpdf import FPDF
 from io import StringIO
-import sys
-sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 
 load_dotenv(override=True)
@@ -139,19 +137,7 @@ def email(arq):
     return set(emails)
 
 
-def option(arguments):    
-        
-    
-
-        if arguments.exploitdb:
-            print(colorama.Fore.YELLOW + "\n[+] Checking for exploits in Exploit-DB...\n" + colorama.Style.RESET_ALL)
-            
-            for index in set(found_cves):
-                if find_exploit_cve(index):  
-                    print(colorama.Fore.GREEN + f"[+] Exploit found for {index}!" + colorama.Style.RESET_ALL)
-                else:
-                    print(colorama.Fore.RED + f"[-] No Exploit found for {index}." + colorama.Style.RESET_ALL)
-
+#def option(arguments):
 
 def find_exploit_cve(cve):
 
@@ -175,7 +161,9 @@ def find_exploit_cve(cve):
         return None
     
 
-
+def cve_with_report(arguments):
+    conv = list(cve(arguments.input))
+    return conv  
 
 
 def ip_scnx(arguments):
@@ -1080,175 +1068,175 @@ def sha256_rsa_l(arguments):
 
 def sha256_rsa(arguments):
 
-    if not sha256(arguments.input):
-        print(colorama.Fore.RED + 'Not found sha256 hashes' + colorama.Style.RESET_ALL)
-    else:
-        records_sha256 = []
-        rsa_checksum = siem.rsa_cheksum()
-        found_checksum = sha256(args.input)
+        if not sha256(arguments.input):
+            print(colorama.Fore.RED + 'Not found sha256 hashes' + colorama.Style.RESET_ALL)
+        else:
+            records_sha256 = []
+            rsa_checksum = siem.rsa_cheksum()
+            found_checksum = sha256(args.input)
 
-        for index in found_checksum:
-            records_sha256.append(index)
-            
+            for index in found_checksum:
+                records_sha256.append(index)
+                
 
-        print(colorama.Fore.GREEN + '[+] AV / EDR\n' + colorama.Style.RESET_ALL)
+            print(colorama.Fore.GREEN + '[+] AV / EDR\n' + colorama.Style.RESET_ALL)
 
-        color = ' || ' + colorama.Fore.BLUE + ' checksum = ' + colorama.Style.RESET_ALL + "'"
-        records_sha256_two = [f"{sha256}'" for sha256 in records_sha256]
-        print(f'{rsa_checksum} \'{color.join(records_sha256_two)}\n')
-        print(colorama.Fore.GREEN + '[SYSMON]\n' + colorama.Style.RESET_ALL)
-        color = ' ||' + colorama.Fore.BLUE + ' checksum = ' + colorama.Style.RESET_ALL + "'sha256="
-        records_sha256 = [f"{sha256}'" for sha256 in records_sha256]
-        print(f"{rsa_checksum} 'sha256={color.join(records_sha256)}") 
+            color = ' || ' + colorama.Fore.BLUE + ' checksum = ' + colorama.Style.RESET_ALL + "'"
+            records_sha256_two = [f"{sha256}'" for sha256 in records_sha256]
+            print(f'{rsa_checksum} \'{color.join(records_sha256_two)}\n')
+            print(colorama.Fore.GREEN + '[SYSMON]\n' + colorama.Style.RESET_ALL)
+            color = ' ||' + colorama.Fore.BLUE + ' checksum = ' + colorama.Style.RESET_ALL + "'sha256="
+            records_sha256 = [f"{sha256}'" for sha256 in records_sha256]
+            print(f"{rsa_checksum} 'sha256={color.join(records_sha256)}") 
         
 
 def sha256_only(arguments):
 
-    if not sha256(arguments.input):
-        print(colorama.Fore.RED + 'Not found sha256 hashes' + colorama.Style.RESET_ALL)
-    else:
-        print(colorama.Fore.GREEN + '[+] hashes sha256\n' + colorama.Style.RESET_ALL)
-        found_sha256 = sha256(args.input)
-        for index in set(found_sha256):
-            print(index)
+        if not sha256(arguments.input):
+            print(colorama.Fore.RED + 'Not found sha256 hashes' + colorama.Style.RESET_ALL)
+        else:
+            print(colorama.Fore.GREEN + '[+] hashes sha256\n' + colorama.Style.RESET_ALL)
+            found_sha256 = sha256(args.input)
+            for index in set(found_sha256):
+                print(index)
 
 
 def email_scnx_l(arguments):
 
-    if not email(arguments.input):
-        print(colorama.Fore.RED + 'Not found email address' + colorama.Style.RESET_ALL)
-    else:
-        records_email = []
-        scnx_mailboxownerupn = siem.scnx_mailboxownerupn()
-        scnx_mailboxownerupn_without = siem.scnx_mailboxownerupn_without()
-        scnx_workemail = siem.scnx_workemail()
-        scnx_workemail_without = siem.scnx_workemail_without() 
-        scnx_accountname = siem.scnx_accountname()
-        scnx_accountname_without = siem.scnx_accountname_without()
-        scnx_email_recipient = siem.scnx_email_recipient()
-        scnx_email_recipient_only = siem.scnx_email_recipient_domain_only()
-        found_email = email(arguments.input)
-        stats = siem.scnx_stats()
+        if not email(arguments.input):
+            print(colorama.Fore.RED + 'Not found email address' + colorama.Style.RESET_ALL)
+        else:
+            records_email = []
+            scnx_mailboxownerupn = siem.scnx_mailboxownerupn()
+            scnx_mailboxownerupn_without = siem.scnx_mailboxownerupn_without()
+            scnx_workemail = siem.scnx_workemail()
+            scnx_workemail_without = siem.scnx_workemail_without() 
+            scnx_accountname = siem.scnx_accountname()
+            scnx_accountname_without = siem.scnx_accountname_without()
+            scnx_email_recipient = siem.scnx_email_recipient()
+            scnx_email_recipient_only = siem.scnx_email_recipient_domain_only()
+            found_email = email(arguments.input)
+            stats = siem.scnx_stats()
 
-        while len(found_email) >= 2:
+            while len(found_email) >= 2:
 
-            for index in set(found_email):
-                records_email.append(index)
-                meadle = len(records_email) // 2
-                new1 = records_email[:meadle]
-                new2 = records_email[meadle:]
+                for index in set(found_email):
+                    records_email.append(index)
+                    meadle = len(records_email) // 2
+                    new1 = records_email[:meadle]
+                    new2 = records_email[meadle:]
 
-            print(colorama.Fore.GREEN + '[+] EXCHANGE\n' + colorama.Style.RESET_ALL)
-            print(f'{scnx_mailboxownerupn} ({', '.join(new1)})\n')   
-            print(f'{scnx_mailboxownerupn} ({', '.join(new2)})\n')
-            print(f'{scnx_accountname} ({', '.join(new1)})\n')   
-            print(f'{scnx_accountname} ({', '.join(new2)})\n')
-            print(f'{scnx_workemail} ({', '.join(new1)})\n') 
-            print(f'{scnx_workemail} ({', '.join(new2)})\n')
-            print(f'{scnx_email_recipient} ({', '.join(new1)})\n') 
-            print(f'{scnx_email_recipient} ({', '.join(new2)})\n')
-            print(f'{scnx_mailboxownerupn} ({', '.join(new1)}) {stats} {scnx_mailboxownerupn_without}\n')   
-            print(f'{scnx_mailboxownerupn} ({', '.join(new2)}) {stats} {scnx_mailboxownerupn_without}\n')
-            print(f'{scnx_accountname} ({', '.join(new1)}) {stats} {scnx_accountname_without}\n')   
-            print(f'{scnx_accountname} ({', '.join(new2)}) {stats} {scnx_accountname_without}\n')
-            print(f'{scnx_workemail} ({', '.join(new1)}) {stats} {scnx_workemail_without}\n')   
-            print(f'{scnx_workemail} ({', '.join(new2)}) {stats} {scnx_workemail_without}\n')
-            print(f'{scnx_email_recipient} ({', '.join(new1)}) {stats} {scnx_email_recipient_only}\n')   
-            print(f'{scnx_email_recipient} ({', '.join(new2)}) {stats} {scnx_email_recipient_only}\n')
+                print(colorama.Fore.GREEN + '[+] EXCHANGE\n' + colorama.Style.RESET_ALL)
+                print(f'{scnx_mailboxownerupn} ({', '.join(new1)})\n')   
+                print(f'{scnx_mailboxownerupn} ({', '.join(new2)})\n')
+                print(f'{scnx_accountname} ({', '.join(new1)})\n')   
+                print(f'{scnx_accountname} ({', '.join(new2)})\n')
+                print(f'{scnx_workemail} ({', '.join(new1)})\n') 
+                print(f'{scnx_workemail} ({', '.join(new2)})\n')
+                print(f'{scnx_email_recipient} ({', '.join(new1)})\n') 
+                print(f'{scnx_email_recipient} ({', '.join(new2)})\n')
+                print(f'{scnx_mailboxownerupn} ({', '.join(new1)}) {stats} {scnx_mailboxownerupn_without}\n')   
+                print(f'{scnx_mailboxownerupn} ({', '.join(new2)}) {stats} {scnx_mailboxownerupn_without}\n')
+                print(f'{scnx_accountname} ({', '.join(new1)}) {stats} {scnx_accountname_without}\n')   
+                print(f'{scnx_accountname} ({', '.join(new2)}) {stats} {scnx_accountname_without}\n')
+                print(f'{scnx_workemail} ({', '.join(new1)}) {stats} {scnx_workemail_without}\n')   
+                print(f'{scnx_workemail} ({', '.join(new2)}) {stats} {scnx_workemail_without}\n')
+                print(f'{scnx_email_recipient} ({', '.join(new1)}) {stats} {scnx_email_recipient_only}\n')   
+                print(f'{scnx_email_recipient} ({', '.join(new2)}) {stats} {scnx_email_recipient_only}\n')
 
-            break
+                break
 
-        if len(found_email) < 2:                    
-            print(colorama.Fore.RED + 'The -l or --l argument only accepts values ​​equal to or greater than 2, possibly the source does not have more than one value or cannot be extracted correctly\n' + colorama.Style.RESET_ALL)
+            if len(found_email) < 2:                    
+                print(colorama.Fore.RED + 'The -l or --l argument only accepts values ​​equal to or greater than 2, possibly the source does not have more than one value or cannot be extracted correctly\n' + colorama.Style.RESET_ALL)
 
 
 def email_scnx(arguments):
 
-    if not email(arguments.input):
-        print(colorama.Fore.RED + 'Not found email address' + colorama.Style.RESET_ALL)
-    else:
-        records_email = []
-        scnx_mailboxownerupn = siem.scnx_mailboxownerupn()
-        scnx_mailboxownerupn_without = siem.scnx_mailboxownerupn_without()
-        scnx_workemail = siem.scnx_workemail()
-        scnx_workemail_without = siem.scnx_workemail_without() 
-        scnx_accountname = siem.scnx_accountname()
-        scnx_accountname_without = siem.scnx_accountname_without()
-        scnx_email_recipient = siem.scnx_email_recipient()
-        scnx_email_recipient_only = siem.scnx_email_recipient_domain_only()
-        found_email = email(arguments.input)
-        stats = siem.scnx_stats()
+        if not email(arguments.input):
+            print(colorama.Fore.RED + 'Not found email address' + colorama.Style.RESET_ALL)
+        else:
+            records_email = []
+            scnx_mailboxownerupn = siem.scnx_mailboxownerupn()
+            scnx_mailboxownerupn_without = siem.scnx_mailboxownerupn_without()
+            scnx_workemail = siem.scnx_workemail()
+            scnx_workemail_without = siem.scnx_workemail_without() 
+            scnx_accountname = siem.scnx_accountname()
+            scnx_accountname_without = siem.scnx_accountname_without()
+            scnx_email_recipient = siem.scnx_email_recipient()
+            scnx_email_recipient_only = siem.scnx_email_recipient_domain_only()
+            found_email = email(arguments.input)
+            stats = siem.scnx_stats()
 
-        for index in set(found_email):
-            records_email.append(index)
+            for index in set(found_email):
+                records_email.append(index)
 
-        print(colorama.Fore.GREEN + '[+] EXCHANGE\n' + colorama.Style.RESET_ALL)
+            print(colorama.Fore.GREEN + '[+] EXCHANGE\n' + colorama.Style.RESET_ALL)
 
-        print(f'{scnx_mailboxownerupn} ({', '.join(records_email)})\n') 
-        print(f'{scnx_workemail} ({', '.join(records_email)})\n') 
-        print(f'{scnx_accountname} ({', '.join(records_email)})\n') 
-        print(f'{scnx_email_recipient} ({', '.join(records_email)})\n')
-        print(f'{scnx_mailboxownerupn} ({', '.join(records_email)}) {stats} {scnx_mailboxownerupn_without}\n') 
-        print(f'{scnx_workemail} ({', '.join(records_email)}) {stats} {scnx_workemail_without}\n') 
-        print(f'{scnx_accountname} ({', '.join(records_email)}) {stats} {scnx_accountname_without}\n')
-        print(f'{scnx_email_recipient} ({', '.join(records_email)}) {stats} {scnx_email_recipient_only}\n')
+            print(f'{scnx_mailboxownerupn} ({', '.join(records_email)})\n') 
+            print(f'{scnx_workemail} ({', '.join(records_email)})\n') 
+            print(f'{scnx_accountname} ({', '.join(records_email)})\n') 
+            print(f'{scnx_email_recipient} ({', '.join(records_email)})\n')
+            print(f'{scnx_mailboxownerupn} ({', '.join(records_email)}) {stats} {scnx_mailboxownerupn_without}\n') 
+            print(f'{scnx_workemail} ({', '.join(records_email)}) {stats} {scnx_workemail_without}\n') 
+            print(f'{scnx_accountname} ({', '.join(records_email)}) {stats} {scnx_accountname_without}\n')
+            print(f'{scnx_email_recipient} ({', '.join(records_email)}) {stats} {scnx_email_recipient_only}\n')
 
 
 def email_rsa_l(arguments):
 
-    if not email(arguments.input):
-        print(colorama.Fore.RED + 'Not found email address' + colorama.Style.RESET_ALL)
-    else:
-        records_email = []
-        rsa_email = siem.rsa_email()
-        found_email = email(args.input)
+        if not email(arguments.input):
+            print(colorama.Fore.RED + 'Not found email address' + colorama.Style.RESET_ALL)
+        else:
+            records_email = []
+            rsa_email = siem.rsa_email()
+            found_email = email(args.input)
 
-        while len(found_email) >= 2:
+            while len(found_email) >= 2:
 
-            for index in found_email:
-                records_email.append("'" + index + "'")
-                meadle = len(records_email) // 2
-                new1 = records_email[:meadle]
-                new2 = records_email[meadle:]
+                for index in found_email:
+                    records_email.append("'" + index + "'")
+                    meadle = len(records_email) // 2
+                    new1 = records_email[:meadle]
+                    new2 = records_email[meadle:]
 
-            print(colorama.Fore.GREEN + '[+] EXCHANGE\n' + colorama.Style.RESET_ALL)
-            color = ' || ' + colorama.Fore.BLUE + ' email = ' + colorama.Style.RESET_ALL
-            print(f'{rsa_email} {color.join(new1)}\n')  
-            color = ' || ' + colorama.Fore.BLUE + ' email = ' + colorama.Style.RESET_ALL
-            print(f'{rsa_email} {color.join(new2)}\n')
+                print(colorama.Fore.GREEN + '[+] EXCHANGE\n' + colorama.Style.RESET_ALL)
+                color = ' || ' + colorama.Fore.BLUE + ' email = ' + colorama.Style.RESET_ALL
+                print(f'{rsa_email} {color.join(new1)}\n')  
+                color = ' || ' + colorama.Fore.BLUE + ' email = ' + colorama.Style.RESET_ALL
+                print(f'{rsa_email} {color.join(new2)}\n')
 
-            break
+                break
 
-        if len(found_email) < 2:                    
-            print(colorama.Fore.RED + 'The -l or --l argument only accepts values ​​equal to or greater than 2, possibly the source does not have more than one value or cannot be extracted correctly\n' + colorama.Style.RESET_ALL)
+            if len(found_email) < 2:                    
+                print(colorama.Fore.RED + 'The -l or --l argument only accepts values ​​equal to or greater than 2, possibly the source does not have more than one value or cannot be extracted correctly\n' + colorama.Style.RESET_ALL)
 
 
 def email_rsa(arguments):
 
-    if not email(arguments.input):
-        print(colorama.Fore.RED + 'Not found email address' + colorama.Style.RESET_ALL)
-    else:
-        records_email = []
-        rsa_email = siem.rsa_email()
-        found_email = email(args.input)
+        if not email(arguments.input):
+            print(colorama.Fore.RED + 'Not found email address' + colorama.Style.RESET_ALL)
+        else:
+            records_email = []
+            rsa_email = siem.rsa_email()
+            found_email = email(args.input)
 
-        for index in found_email:
-            records_email.append("'" + index + "'")
+            for index in found_email:
+                records_email.append("'" + index + "'")
 
-        print(colorama.Fore.GREEN + '[+] EXCHANGE\n' + colorama.Style.RESET_ALL)
-        color = ' || ' + colorama.Fore.BLUE + ' email = ' + colorama.Style.RESET_ALL
-        print(f'{rsa_email} {color.join(records_email)}\n')  
+            print(colorama.Fore.GREEN + '[+] EXCHANGE\n' + colorama.Style.RESET_ALL)
+            color = ' || ' + colorama.Fore.BLUE + ' email = ' + colorama.Style.RESET_ALL
+            print(f'{rsa_email} {color.join(records_email)}\n')  
 
 
 def email_only(arguments):
 
-    if not email(arguments.input):
-        print(colorama.Fore.RED + 'Not found email address' + colorama.Style.RESET_ALL)
-    else:
-        print(colorama.Fore.GREEN + '[+] Emails\n' + colorama.Style.RESET_ALL)
-        found_email = email(args.input)
-        for index in set(found_email):
-            print(index)
+        if not email(arguments.input):
+            print(colorama.Fore.RED + 'Not found email address' + colorama.Style.RESET_ALL)
+        else:
+            print(colorama.Fore.GREEN + '[+] Emails\n' + colorama.Style.RESET_ALL)
+            found_email = email(args.input)
+            for index in set(found_email):
+                print(index)
 
 
 def reg_scnx_l(arguments):
@@ -1351,7 +1339,7 @@ def reg_rsa(arguments):
 
 
 def reg_only(arguments):
-         
+
     if not reg(arguments.input):
         print(colorama.Fore.RED + 'Not found Windows registry' + colorama.Style.RESET_ALL)
     else:
@@ -1359,6 +1347,17 @@ def reg_only(arguments):
         found_reg = reg(arguments.input)
         for index in set(found_reg):
             print(index)  
+
+
+def cve_exploitdb():
+    
+    print(colorama.Fore.YELLOW + "\n[+] Checking for exploits in Exploit-DB...\n" + colorama.Style.RESET_ALL)
+    
+    for index in set(found_cves):
+        if find_exploit_cve(index):  
+            print(colorama.Fore.GREEN + f"[+] Exploit found for {index}!" + colorama.Style.RESET_ALL)
+        else:
+            print(colorama.Fore.RED + f"[-] No Exploit found for {index}." + colorama.Style.RESET_ALL)
 
 
 def cve_only(arguments):
@@ -1370,11 +1369,6 @@ def cve_only(arguments):
         found_cves = cve(arguments.input)
         for index in set(found_cves):
             print(index)
-
-
-def cve_with_report(arguments):
-    conv = list(cve(arguments.input))
-    return conv  
 
 
 def check_analysis(cves, base_path='./CVE/'):
@@ -1472,10 +1466,11 @@ def generator_report(cves_analyzed, cves_pending):
     pdf.output(file_name)
     print(f"Relatório gerado: {file_name}")
 
-if option(args) == None:
+
+if cve_with_report(args) == None:
     pass
 else:
-    cves_extraidas = option(args)
+    cves_extraidas = cve_with_report(args)
     cves_analyzed, cves_pending = check_analysis(cves_extraidas)
     generator_report(cves_analyzed, cves_pending)
 
@@ -1603,8 +1598,11 @@ elif args.input and args.reg and args.rsa:
 elif args.input and args.reg == True:
     reg_only(args)
 
-elif args.input and args.cve == True and args.report == True:
-    cve_with_report(args)
+elif args.exploitdb and args.cve == True:
+    cve_exploitdb(args)
 
 elif args.input and args.cve == True:
     cve_only(args)
+
+elif args.input and args.cve == True and args.report == True:
+    cve_with_report(args)
