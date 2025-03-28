@@ -137,8 +137,6 @@ def email(arq):
     return set(emails)
 
 
-#def option(arguments):
-
 def find_exploit_cve(cve):
 
     url = "https://gitlab.com/exploit-database/exploitdb/-/raw/main/files_exploits.csv?ref_type=heads"
@@ -1349,8 +1347,7 @@ def reg_only(arguments):
             print(index)  
 
 
-def cve_exploitdb():
-    
+def cve_exploitdb(found_cves):
     print(colorama.Fore.YELLOW + "\n[+] Checking for exploits in Exploit-DB...\n" + colorama.Style.RESET_ALL)
     
     for index in set(found_cves):
@@ -1361,14 +1358,16 @@ def cve_exploitdb():
 
 
 def cve_only(arguments):
+    found_cves = cve(arguments.input)
     
-    if not cve(arguments.input):
+    if not found_cves:
         print(colorama.Fore.RED + 'Not found CVEs' + colorama.Style.RESET_ALL)
     else:
         print(colorama.Fore.GREEN + '[+] CVEs\n' + colorama.Style.RESET_ALL)
-        found_cves = cve(arguments.input)
         for index in set(found_cves):
             print(index)
+    
+    return found_cves  # Retorna a lista de CVEs encontradas
 
 
 def check_analysis(cves, base_path='./CVE/'):
@@ -1467,12 +1466,11 @@ def generator_report(cves_analyzed, cves_pending):
     print(f"Relatório gerado: {file_name}")
 
 
-if cve_with_report(args) == None:
-    pass
-else:
+if args.report: 
     cves_extraidas = cve_with_report(args)
-    cves_analyzed, cves_pending = check_analysis(cves_extraidas)
-    generator_report(cves_analyzed, cves_pending)
+    if cves_extraidas:  
+        cves_analyzed, cves_pending = check_analysis(cves_extraidas)
+        generator_report(cves_analyzed, cves_pending)
 
 
 if args.input and args.ip and args.scnx and args.l:
@@ -1598,10 +1596,12 @@ elif args.input and args.reg and args.rsa:
 elif args.input and args.reg == True:
     reg_only(args)
 
-elif args.exploitdb and args.cve == True:
-    cve_exploitdb(args)
+elif args.exploitdb and args.cve:
+    found_cves = cve_only(args)  
+    if found_cves:
+        cve_exploitdb(found_cves)
 
-elif args.input and args.cve == True:
+elif args.input and args.cve:
     cve_only(args)
 
 elif args.input and args.cve == True and args.report == True:
