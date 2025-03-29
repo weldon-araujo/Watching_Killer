@@ -149,7 +149,6 @@ def find_exploit_cve(cve):
 
         for row in reader:
             for cell in row:
-                # Divide os valores por ";", remove espaços extras e verifica se a CVE está presente
                 if any(value.strip() == cve for value in cell.split(";")):
                     return True  
 
@@ -1349,13 +1348,14 @@ def reg_only(arguments):
 
 
 def cve_exploitdb(found_cves):
+    
     print(colorama.Fore.YELLOW + "\n[+] Checking for exploits in Exploit-DB...\n" + colorama.Style.RESET_ALL)
     
     for index in set(found_cves):
         if find_exploit_cve(index):  
-            print(colorama.Fore.GREEN + f"[+] Exploit found for {index}!" + colorama.Style.RESET_ALL)
+            print(colorama.Fore.GREEN + f"[+] Exploit found for {index}" + colorama.Style.RESET_ALL)
         else:
-            print(colorama.Fore.RED + f"[-] No Exploit found for {index}." + colorama.Style.RESET_ALL)
+            print(colorama.Fore.RED + f"[-] No Exploit found for {index}" + colorama.Style.RESET_ALL)
 
 
 def cve_only(arguments):
@@ -1368,7 +1368,7 @@ def cve_only(arguments):
         for index in set(found_cves):
             print(index)
     
-    return found_cves  # Retorna a lista de CVEs encontradas
+    return found_cves
 
 
 def check_analysis(cves, base_path='./CVE/'):
@@ -1582,19 +1582,19 @@ elif args.input and args.email == True and args.rsa == True:
 elif args.input and args.email == True:
     email_only(args)
 
-elif args.input and args.reg and args.scnx and args.l:
+elif args.input and args.registry and args.scnx and args.l:
     reg_scnx_l(args)
 
-elif args.input and args.reg and args.scnx:
+elif args.input and args.registry and args.scnx:
     reg_scnx(args)
 
-elif args.input and args.reg and args.rsa and args.l:
+elif args.input and args.registry and args.rsa and args.l:
     reg_rsa_l(args)
 
-elif args.input and args.reg and args.rsa:
+elif args.input and args.registry and args.rsa:
     reg_rsa(args)
 
-elif args.input and args.reg == True:
+elif args.input and args.registry == True:
     reg_only(args)
 
 elif args.exploitdb and args.cve:
