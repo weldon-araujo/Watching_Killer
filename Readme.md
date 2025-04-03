@@ -107,26 +107,26 @@ python.exe .\Watching_Killer.py --help
 
 </h4>
 
-<h4 align="center">
-
 * As vezes é possível que o usuário identifique algum valor que não seja necessário nas queries, neste caso ele pode remover através do argumento --remove ou -r
 
+<h4 align="center">
+ 
 ![img](https://i.imgur.com/enfOXeJ.png)
 
 </h4>
 
-<h4 align="center">
-
 * O argumento --exploitdb utilizado em conjunto com o --cve realiza uma busca por exploits públicos mantidos pela base Exploitdb no Gitlab público.
 
+<h4 align="center">
+ 
 ![img](https://i.imgur.com/WAnMNE4.png)
 
 </h4>
 
-<h4 align="center">
-
 * O argumento --cve_details utilizado em conjunto com o --cve traz informações acerca das CVEs extraidas.
 
+<h4 align="center">
+ 
 ![img](https://i.imgur.com/YcuvNtA.png)
 
 </h4>
