@@ -574,6 +574,9 @@ def articact_scnx_l(arguments):
                 if args.include:
                     records_artifact.extend(args.include)
                     records_artifact = list(set(records_artifact))
+                
+                if args.remove:
+                    records_artifact = [item for item in records_artifact if item not in args.remove]
 
                 meadle = len(records_artifact) // 2
                 new1 = records_artifact[:meadle]
@@ -628,6 +631,9 @@ def artifact_scnx(arguments):
         if args.include:
             records_artifact.extend(args.include)
             records_artifact = list(set(records_artifact))
+
+        if args.remove:
+            records_artifact = [item for item in records_artifact if item not in args.remove]
             
         print(colorama.Fore.GREEN + '[+] AV / EDR / Windows / Linux\n' + colorama.Style.RESET_ALL)
         print(f'{scnx_sourceprocessname} ({', '.join(records_artifact)})\n')
@@ -1336,6 +1342,58 @@ def reg_rsa(arguments):
         print(f'{rsa_registry} {color.join(records_registry_two)}\n')
 
 
+def cve_details(args):
+    cve_list = cve_only(args)
+
+    if not cve_list:
+        print("[!] Nenhuma CVE encontrada para buscar detalhes.")
+        return
+
+    url_base = "https://vulners.com/api/v3/search/lucene/?query={}"
+    headers = {"User-Agent": "WatchingKiller/1.0"}
+
+    for cve in cve_list:
+        url = url_base.format(cve)
+        response = requests.get(url, headers=headers)
+
+        if response.status_code == 200:
+            data = response.json()
+            if "data" in data and "search" in data["data"]:
+                results = data["data"]["search"]
+                if results:
+                    cve_info = results[0].get("_source", {})  
+                    descricao = cve_info.get('description', 'Sem descrição disponível')
+                    referencia = cve_info.get('href', 'N/A')
+
+                    cvss_info = cve_info.get("cvss3", {}) or cve_info.get("cvss2", {}).get("cvssV2", {})
+                    cvss_score = cvss_info.get('baseScore', 'N/A')
+
+                    if cvss_score != "N/A":
+                        cvss_score = float(cvss_score)
+                        if cvss_score >= 7.0:
+                            cor = colorama.Fore.RED  
+                        elif 4.0 <= cvss_score < 7.0:
+                            cor = colorama.Fore.YELLOW
+                        else:
+                            cor = colorama.Fore.GREEN  
+                    else:
+                        cor = colorama.Fore.WHITE
+
+                    print("=" * 80)
+                    print(f"CVE: {cve_info.get('id', 'N/A')}")
+                    print(f"Descrição: {descricao}")
+                    print(f"{cor}CVSS Score: {cvss_score}{colorama.Style.RESET_ALL}")
+                    print(f"Referência: {referencia}")
+                    print("=" * 80)
+                
+                else:
+                    print(f"[!] Nenhum resultado encontrado para {cve}")
+            else:
+                print(f"[!] Resposta inválida da API para {cve}")
+        else:
+            print(f"[!] Erro ao consultar API para {cve}: {response.status_code}")
+
+
 def reg_only(arguments):
 
     if not reg(arguments.input):
@@ -1360,13 +1418,15 @@ def cve_exploitdb(found_cves):
 
 def cve_only(arguments):
     found_cves = cve(arguments.input)
-    
+
     if not found_cves:
         print(colorama.Fore.RED + 'Not found CVEs' + colorama.Style.RESET_ALL)
     else:
-        print(colorama.Fore.GREEN + '[+] CVEs\n' + colorama.Style.RESET_ALL)
-        for index in set(found_cves):
-            print(index)
+        
+        if not arguments.cve_details:
+            print(colorama.Fore.GREEN + '[+] CVEs\n' + colorama.Style.RESET_ALL)
+            for index in set(found_cves):
+                print(index)
     
     return found_cves
 
@@ -1467,14 +1527,14 @@ def generator_report(cves_analyzed, cves_pending):
     print(f"Relatório gerado: {file_name}")
 
 
-if args.report: 
+if args.cvereport: 
     cves_extraidas = cve_with_report(args)
     if cves_extraidas:  
         cves_analyzed, cves_pending = check_analysis(cves_extraidas)
         generator_report(cves_analyzed, cves_pending)
 
 
-if args.input and args.ip and args.scnx and args.l:
+if args.input and args.ip and args.securonix and args.l:
     ip_scnx_l(args)
 
 elif args.input and args.ip and args.rsa and args.l:
@@ -1483,7 +1543,7 @@ elif args.input and args.ip and args.rsa and args.l:
 elif args.input and args.ip == True and args.rsa == True:
     ip_rsa(args)
 
-elif args.input and args.ip == True and args.scnx == True:
+elif args.input and args.ip == True and args.securonix == True:
     ip_scnx(args)
 
 if args.input and args.ip == True and args.reputation == True:
@@ -1492,10 +1552,10 @@ if args.input and args.ip == True and args.reputation == True:
 elif args.input and args.ip == True:
     ip_only(args)
 
-elif args.input and args.domain and args.scnx and args.l:
+elif args.input and args.domain and args.securonix and args.l:
     domain_scnx_l(args)
 
-elif args.input and args.domain == True and args.scnx == True:
+elif args.input and args.domain == True and args.securonix == True:
     domain_scnx(args)
 
 elif args.input and args.domain and args.rsa and args.l:
@@ -1507,10 +1567,10 @@ elif args.input and args.domain == True and args.rsa == True:
 elif args.input and args.domain == True:
     domain_only(args)
 
-elif args.input and args.artifact and args.scnx and args.l:
+elif args.input and args.artifact and args.securonix and args.l:
     articact_scnx_l(args)
 
-elif args.input and args.artifact == True and args.scnx == True:
+elif args.input and args.artifact == True and args.securonix == True:
     artifact_scnx(args)
 
 elif args.input and args.artifact and args.rsa and args.l:
@@ -1522,10 +1582,10 @@ elif args.input and args.artifact == True and args.rsa == True:
 elif args.input and args.artifact:
     artifact_only(args)
 
-elif args.input and args.md5 and args.scnx and args.l:
+elif args.input and args.md5 and args.securonix and args.l:
     md5_scnx_l(args)
 
-elif args.input and args.md5 == True and args.scnx == True:
+elif args.input and args.md5 == True and args.securonix == True:
     md5_scnx(args)
 
 elif args.input and args.md5 and args.rsa and args.l:
@@ -1537,10 +1597,10 @@ elif args.input and args.md5 == True and args.rsa == True:
 elif args.input and args.md5 == True:
     md5_only(args)
 
-elif args.input and args.sha1 and args.scnx and args.l:
+elif args.input and args.sha1 and args.securonix and args.l:
     sha1_scnx_l(args)
 
-elif args.input and args.sha1 == True and args.scnx == True:
+elif args.input and args.sha1 == True and args.securonix == True:
     sha1_scnx(args)
 
 elif args.input and args.sha1 and args.rsa and args.l:
@@ -1552,10 +1612,10 @@ elif args.input and args.sha1 == True and args.rsa == True:
 elif args.input and args.sha1 == True:
     sha1_only(args)
 
-elif args.input and args.sha256 and args.scnx and args.l:
+elif args.input and args.sha256 and args.securonix and args.l:
     sha256_scnx_l(args)
 
-elif args.input and args.sha256 == True and args.scnx == True:
+elif args.input and args.sha256 == True and args.securonix == True:
     sha256_scnx(args)
 
 elif args.input and args.sha256 and args.rsa and args.l:
@@ -1567,10 +1627,10 @@ elif args.input and args.sha256 == True and args.rsa == True:
 elif args.input and args.sha256 == True:
     sha1_only(args)
 
-elif args.input and args.email and args.scnx and args.l:
+elif args.input and args.email and args.securonix and args.l:
     email_scnx_l(args)
 
-elif args.input and args.email == True and args.scnx == True:
+elif args.input and args.email == True and args.securonix == True:
     email_scnx(args)
 
 elif args.input and args.email and args.rsa and args.l:
@@ -1582,10 +1642,10 @@ elif args.input and args.email == True and args.rsa == True:
 elif args.input and args.email == True:
     email_only(args)
 
-elif args.input and args.registry and args.scnx and args.l:
+elif args.input and args.registry and args.securonix and args.l:
     reg_scnx_l(args)
 
-elif args.input and args.registry and args.scnx:
+elif args.input and args.registry and args.securonix:
     reg_scnx(args)
 
 elif args.input and args.registry and args.rsa and args.l:
@@ -1602,8 +1662,12 @@ elif args.exploitdb and args.cve:
     if found_cves:
         cve_exploitdb(found_cves)
 
+elif args.input and args.cve and args.cve_details:
+    cve_only(args)
+    cve_details(args)   
+    
 elif args.input and args.cve:
     cve_only(args)
 
-elif args.input and args.cve == True and args.report == True:
+elif args.input and args.cve == True and args.cvereport == True:
     cve_with_report(args)
