@@ -21,6 +21,11 @@ O Watching Killer é uma toolkit cujo a função é realizar automação do proc
 
 <h3></h3>
 
+
+<h1>Arquitetura da solução</h1>
+
+![img](https://i.imgur.com/wD52fN3.png)
+
 <!-- Modo de uso-->
 
 <h1>Modo de uso</h1>
@@ -38,7 +43,7 @@ python.exe .\Watching_Killer.py --help
 ```
 <h4 align="center">
 
-![img](https://i.imgur.com/29zIWlb.png)
+![img](https://i.imgur.com/jjqXG57.png)
 
 </h4>
 
@@ -50,11 +55,11 @@ python.exe .\Watching_Killer.py --help
 
 </h4>
 
-* Como demonstrado no exemplo abaixo com o argumento "--ip", a usabilidade é a mesma para os demais argumentos --md5, --sha1, --sha256, --domain, --cve, --email, --reg e --artifact 
+* Como demonstrado no exemplo abaixo com o argumento "--ip", a usabilidade é a mesma para os demais argumentos --md5, --sha1, --sha256, --domain, --cve, --email, --registry e --artifact 
 
 <h4 align="center">
 
-![img](https://i.imgur.com/uBMUlM3.png)
+![img](https://i.imgur.com/5435NAS.png)
 
 </h4>
  
@@ -62,7 +67,8 @@ python.exe .\Watching_Killer.py --help
 
 <h4 align="center">
  
-![img](https://i.imgur.com/sCeY7Gz.png)
+![img](https://i.imgur.com/jspJxVV.png)
+
 
 </h4>
 
@@ -97,7 +103,31 @@ python.exe .\Watching_Killer.py --help
 
 <h4 align="center">
  
-![img](https://i.imgur.com/s7wuXIn.png)
+![img](https://i.imgur.com/NBUfEkc.png)
+
+</h4>
+
+<h4 align="center">
+
+* As vezes é possível que o usuário identifique algum valor que não seja necessário nas queries, neste caso ele pode remover através do argumento --remove ou -r
+
+![img](https://i.imgur.com/enfOXeJ.png)
+
+</h4>
+
+<h4 align="center">
+
+* O argumento --exploitdb utilizado em conjunto com o --cve realiza uma busca por exploits públicos mantidos pela base Exploitdb no Gitlab público.
+
+![img](https://i.imgur.com/WAnMNE4.png)
+
+</h4>
+
+<h4 align="center">
+
+* O argumento --cve_details utilizado em conjunto com o --cve traz informações acerca das CVEs extraidas.
+
+![img](https://i.imgur.com/YcuvNtA.png)
 
 </h4>
 
@@ -107,7 +137,7 @@ python.exe .\Watching_Killer.py --help
 
 <h4 align="center">
 
-![img](https://i.imgur.com/bFGbF5w.png)
+![img](https://i.imgur.com/ZnamUh3.png)
 
 </h4>
 
