@@ -107,7 +107,7 @@ python.exe .\Watching_Killer.py --help
 
 </h4>
 
-* As vezes é possível que o usuário identifique algum valor que não seja necessário nas queries, neste caso ele pode remover através do argumento --remove ou -r
+* As vezes é possível que o usuário identifique algum valor que não seja necessário nas queries, neste caso ele pode remover através do argumento --remove ou -r, o argumento é utilizável com os argumentos --ip, --domain, --email, --registry e --artifact.
 
 <h4 align="center">
  
@@ -115,7 +115,7 @@ python.exe .\Watching_Killer.py --help
 
 </h4>
 
-* O argumento --exploitdb utilizado em conjunto com o --cve realiza uma busca por exploits públicos mantidos pela base <a href="https://gitlab.com/exploit-database/exploitdb/" target="_blank">Exploitdb</a>Exploitdb no Gitlab público.
+* O argumento --exploitdb utilizado em conjunto com o --cve realiza uma busca por exploits públicos mantidos pela base do <a href="https://gitlab.com/exploit-database/exploitdb/" target="_blank">Exploitdb</a> no Gitlab público oficial.
 
 <h4 align="center">
  
@@ -133,7 +133,7 @@ python.exe .\Watching_Killer.py --help
 
 * A ferramenta conta com um módulo de relatório que retorna uma análise de exploits disponíveis em bases públicas, como Exploit-DB e Packet Storm. Ela sugere queries específicas com base nos pontos-chave identificados nos exploits. A base de dados da ferramenta, que armazena as análises, está contida neste repositório. Atualmente, ainda é pequena, mas tende a evoluir.
 
-O argumento deve obrigatoriamente ser utilizado junto à opção "--cve" ou "-cve", pois a análise se baseia nos valores extraídos do arquivo de origem para verificar se já existe um registro na base interna da ferramenta sobre as CVEs identificadas.
+* O argumento deve obrigatoriamente ser utilizado junto à opção "--cve" ou "-cve", pois a análise se baseia nos valores extraídos do arquivo de origem para verificar se já existe um registro na base interna da ferramenta sobre as CVEs identificadas.
 
 * Usabilidade.
 
