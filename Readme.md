@@ -8,7 +8,7 @@
 
 <h1>Descrição do projeto</h1>
 
-O Watching Killer é uma toolkit cujo a função é realizar automação do processo de cyber threat hunting. Ela possui funcionalidades como: extração de IOCs e artefatos de fontes não estruturadas, consulta de reputações de endereços IPs e relatório de análise de exploits públicos. Esse aparato auxilía no processo que se baseia na metodologia <a href="https://www.betaalvereniging.nl/en/safety/tahiti/" target="_blank">TAHITI</a> (Targeted Hunting integrating Threat Intelligence)
+O Watching Killer é uma toolkit cuja função é automatizar o processo de cyber threat hunting. Ele possui funcionalidades como: extração de IOCs e artefatos de fontes não estruturadas, consulta de reputação de endereços IP e geração de relatórios de análise de exploits públicos. Esse conjunto de ferramentas auxilia no processo, que se baseia na metodologia <a href="https://www.betaalvereniging.nl/en/safety/tahiti/" target="_blank">TAHITI</a> (Targeted Hunting integrating Threat Intelligence)
 
 <h3></h3>
 
@@ -21,11 +21,16 @@ O Watching Killer é uma toolkit cujo a função é realizar automação do proc
 
 <h3></h3>
 
+
+<h1>Arquitetura da solução</h1>
+
+![img](https://i.imgur.com/Mw0JZNS.png)
+
 <!-- Modo de uso-->
 
 <h1>Modo de uso</h1>
 
-* Após realizar a clonagem do repositório é necessário instalar as libs externas simplesmente executando **pip install -r requirements.txt** estando a partir do diretório raiz do repositório ou repassando o caminho absoluto até o arquivo **requirements.txt**.
+* Após realizar a clonagem do repositório é necessário instalar as libs externas simplesmente executando **pip install -r requirements.txt** estando a partir do diretório raiz do repositório ou repassando o caminho absoluto ou relativo até o arquivo **requirements.txt**.
 * Para visualizar ajuda e verificar os parâmetros necessários execute o script principal Watching_Killer.py com argumento "-h" ou "--help".
 
 ```
@@ -38,11 +43,11 @@ python.exe .\Watching_Killer.py --help
 ```
 <h4 align="center">
 
-![img](https://i.imgur.com/29zIWlb.png)
+![img](https://i.imgur.com/jjqXG57.png)
 
 </h4>
 
-* A ferramenta necessita do repasse de um arquivo que contenha os valores a serem extraidos não importa se está ou não estruturado. A ferramenta tem suporte a arquivos do tipo TXT ou CSV assim como pode ser observado no exemplo abaixo.
+* A ferramenta necessita de um arquivo de entrada contendo os valores a serem extraídos, independentemente de estarem estruturados ou não. Ela oferece suporte a arquivos nos formatos TXT, CSV, JSON ou XML conforme ilustrado no exemplo abaixo.
 
 <h4 align="center">
 
@@ -50,19 +55,20 @@ python.exe .\Watching_Killer.py --help
 
 </h4>
 
-* Como demonstrado no exemplo abaixo com o argumento "--ip", a usabilidade é a mesma para os demais argumentos --md5, --sha1, --sha256, --domain, --cve, --email, --reg e --artifact 
+* Como demonstrado no exemplo abaixo com o argumento "--ip", a usabilidade é a mesma para os demais argumentos --md5, --sha1, --sha256, --domain, --cve, --email, --registry e --artifact 
 
 <h4 align="center">
 
-![img](https://i.imgur.com/uBMUlM3.png)
+![img](https://i.imgur.com/5435NAS.png)
 
 </h4>
  
- * Muitas vezes é necessário se trabalhar com grandes quantidades de dados, alguns SIENs podem limitar a quantidade de consultas por queries, o argumento "-l" ou "--l" permite dividir os valores em 2 consultas como no exemplo abaixo.
+ * Muitas vezes, é necessário trabalhar com grandes quantidades de dados. Alguns SIEMs podem limitar a quantidade de valores por consulta. O argumento "-l" ou "--l" permite dividir os valores em duas consultas, como no exemplo abaixo.
 
 <h4 align="center">
  
-![img](https://i.imgur.com/sCeY7Gz.png)
+![img](https://i.imgur.com/jspJxVV.png)
+
 
 </h4>
 
@@ -97,17 +103,43 @@ python.exe .\Watching_Killer.py --help
 
 <h4 align="center">
  
-![img](https://i.imgur.com/s7wuXIn.png)
+![img](https://i.imgur.com/NBUfEkc.png)
 
 </h4>
 
-* A ferramenta conta com um módulo de relatório que retorna uma análise de exploits disponpiveis em bases públicas como exploitDB e Packet storm. Ela sugere queries expecíficas com base nos pontos chave identificados nos exploits, a base da ferramenta que guarda as análise fica contida neste repositório, atualmente está bem pequena mas que tende a evoluir. O argumento deve obrigatoriamente ser utilizado junto a opção "--cve" ou "-cve", pois ela irá se basear nos valores extraidos do arquivo de origem para verificar se já existe análise na base interna da própria ferramenta de exploits das CVEs extraidas.
+* As vezes é possível que o usuário identifique algum valor que não seja necessário nas queries, neste caso ele pode remover através do argumento --remove ou -r, o argumento é utilizável com os argumentos --ip, --domain, --email, --registry e --artifact.
+
+<h4 align="center">
+ 
+![img](https://i.imgur.com/enfOXeJ.png)
+
+</h4>
+
+* O argumento --exploitdb utilizado em conjunto com o --cve realiza uma busca por exploits públicos mantidos pela base do <a href="https://gitlab.com/exploit-database/exploitdb/" target="_blank">Exploitdb</a> no Gitlab público oficial.
+
+<h4 align="center">
+ 
+![img](https://i.imgur.com/WAnMNE4.png)
+
+</h4>
+
+* O argumento --cve_details utilizado em conjunto com o --cve traz informações acerca das CVEs extraidas.
+
+<h4 align="center">
+ 
+![img](https://i.imgur.com/YcuvNtA.png)
+
+</h4>
+
+* A ferramenta conta com um módulo de relatório que retorna uma análise de exploits disponíveis em bases públicas, como Exploit-DB e Packet Storm. Ela sugere queries específicas com base nos pontos-chave identificados nos exploits. A base de dados da ferramenta, que armazena as análises, está contida neste repositório. Atualmente, ainda é pequena, mas tende a evoluir.
+
+* O argumento deve obrigatoriamente ser utilizado junto à opção "--cve" ou "-cve", pois a análise se baseia nos valores extraídos do arquivo de origem para verificar se já existe um registro na base interna da ferramenta sobre as CVEs identificadas.
 
 * Usabilidade.
 
 <h4 align="center">
 
-![img](https://i.imgur.com/bFGbF5w.png)
+![img](https://i.imgur.com/ZnamUh3.png)
 
 </h4>
 
