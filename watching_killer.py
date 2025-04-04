@@ -180,6 +180,13 @@ def ip_scnx(arguments):
         for index in found_ip:
             records_ip.append(index)
 
+            if args.include:
+                        records_ip.extend(args.include)
+                        records_ip = list(set(records_ip))
+                
+            if args.remove:
+                records_ip = [item for item in records_ip if item not in args.remove]
+
         print(colorama.Fore.GREEN + '[+] AV / EDR / SO\n' + colorama.Style.RESET_ALL)
         print(f'{scnx_source_address} ({', '.join(records_ip)})\n')
         print(f'{scnx_destination_address} ({', '.join(records_ip)})\n')
@@ -205,6 +212,14 @@ def ip_scnx_l(arguments):
 
                 for index in found_ip:
                     records_ip.append(index)
+
+                    if args.include:
+                        records_ip.extend(args.include)
+                        records_ip = list(set(records_ip))
+                
+                    if args.remove:
+                        records_ip = [item for item in records_ip if item not in args.remove]
+
                     meadle = len(records_ip) // 2
                     new1 = records_ip[:meadle]
                     new2 = records_ip[meadle:]
@@ -408,6 +423,14 @@ def domain_scnx_l(arguments):
 
         for index in found_domain:
             records_domain.append(index)
+
+            if args.include:
+                    records_domain.extend(args.include)
+                    records_domain = list(set(records_domain))
+                
+            if args.remove:
+                records_domain = [item for item in records_domain if item not in args.remove]
+
             meadle = len(records_domain) // 2
             new1 = records_domain[:meadle]
             new2 = records_domain[meadle:]                
@@ -469,6 +492,13 @@ def domain_scnx(arguments):
 
         for index in found_domain:
             records_domain.append(index)
+
+            if args.include:
+                    records_domain.extend(args.include)
+                    records_domain = list(set(records_domain))
+                
+            if args.remove:
+                records_domain = [item for item in records_domain if item not in args.remove]
 
         print(colorama.Fore.GREEN + '[+] NGFW / WAF / PROXY / EXCHANGE\n' + colorama.Style.RESET_ALL)
 
@@ -1126,6 +1156,14 @@ def email_scnx_l(arguments):
 
                 for index in set(found_email):
                     records_email.append(index)
+
+                    if args.include:
+                        records_email.extend(args.include)
+                        records_email = list(set(records_email))
+                
+                    if args.remove:
+                        records_email = [item for item in records_email if item not in args.remove]
+
                     meadle = len(records_email) // 2
                     new1 = records_email[:meadle]
                     new2 = records_email[meadle:]
@@ -1173,6 +1211,13 @@ def email_scnx(arguments):
 
             for index in set(found_email):
                 records_email.append(index)
+
+                if args.include:
+                        records_email.extend(args.include)
+                        records_email = list(set(records_email))
+                
+                if args.remove:
+                    records_email = [item for item in records_email if item not in args.remove]
 
             print(colorama.Fore.GREEN + '[+] EXCHANGE\n' + colorama.Style.RESET_ALL)
 
@@ -1257,6 +1302,14 @@ def reg_scnx_l(arguments):
 
             for index in set(found_registry):
                 records_registry.append(index)
+
+                if args.include:
+                        records_registry.extend(args.include)
+                        records_registry = list(set(records_registry))
+                
+                if args.remove:
+                    records_registry = [item for item in records_registry if item not in args.remove]
+                    
                 meadle = len(records_registry) // 2
                 new1 = records_registry[:meadle]
                 new2 = records_registry[meadle:]
@@ -1288,6 +1341,13 @@ def reg_scnx(arguments):
 
         for index in set(found_registry):
             records_registry.append(index)
+
+            if args.include:
+                        records_registry.extend(args.include)
+                        records_registry = list(set(records_registry))
+                
+            if args.remove:
+                records_registry = [item for item in records_registry if item not in args.remove] 
 
         print(colorama.Fore.GREEN + '[+] Windows\n' + colorama.Style.RESET_ALL)    
         eventdata_without = f' OR {scnx_eventdata_only} contains '    
@@ -1549,7 +1609,7 @@ elif args.input and args.ip == True and args.securonix == True:
 if args.input and args.ip == True and args.reputation == True:
     ip_with_reputation(args)
 
-elif args.input and args.ip == True:
+elif args.input and args.ip and not any([args.securonix, args.rsa]):
     ip_only(args)
 
 elif args.input and args.domain and args.securonix and args.l:
