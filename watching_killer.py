@@ -1402,56 +1402,94 @@ def reg_rsa(arguments):
         print(f'{rsa_registry} {color.join(records_registry_two)}\n')
 
 
-def cve_details(args):
-    cve_list = cve_only(args)
+def extrair_cve(texto):
+    match = re.search(r'CVE-\d{4}-\d{4,7}', texto)
+    return match.group() if match else 'CVE não identificado'
 
-    if not cve_list:
-        print("[!] Nenhuma CVE encontrada para buscar detalhes.")
-        return
 
-    url_base = "https://vulners.com/api/v3/search/lucene/?query={}"
-    headers = {"User-Agent": "WatchingKiller/1.0"}
+def clean_description(texto):
+    
+    texto = re.sub(r"\*\*.*?\*\*", "", texto) 
+    texto = re.sub(r"Assessed Attacker Value: \d+", "", texto)  
+    texto = re.sub(r"\n+", "\n", texto)
+    texto = re.sub(r"\s{2,}", " ", texto)
+    return texto.strip()
 
-    for cve in cve_list:
-        url = url_base.format(cve)
-        response = requests.get(url, headers=headers)
 
+def cve_details(cve_id):
+    if not cve_id or "CVE" not in cve_id:
+        print(f"[!] Ignorando resultado inválido: {cve_id}")
+        return None
+
+    url = f"https://vulners.com/api/v3/search/id/?id={cve_id}"
+
+    try:
+        response = requests.get(url, timeout=10)
         if response.status_code == 200:
             data = response.json()
-            if "data" in data and "search" in data["data"]:
-                results = data["data"]["search"]
-                if results:
-                    cve_info = results[0].get("_source", {})  
-                    descricao = cve_info.get('description', 'Sem descrição disponível')
-                    referencia = cve_info.get('href', 'N/A')
 
-                    cvss_info = cve_info.get("cvss3", {}) or cve_info.get("cvss2", {}).get("cvssV2", {})
-                    cvss_score = cvss_info.get('baseScore', 'N/A')
+            if data.get("result") != "OK":
+                print(f"[!] Resposta inesperada da API para {cve_id}: {data.get('result')}")
+                return None
 
-                    if cvss_score != "N/A":
-                        cvss_score = float(cvss_score)
-                        if cvss_score >= 7.0:
-                            cor = colorama.Fore.RED  
-                        elif 4.0 <= cvss_score < 7.0:
-                            cor = colorama.Fore.YELLOW
-                        else:
-                            cor = colorama.Fore.GREEN  
-                    else:
-                        cor = colorama.Fore.WHITE
+            documents = data.get("data", {}).get("documents", {})
+            doc = documents.get(cve_id)
 
-                    print("=" * 80)
-                    print(f"CVE: {cve_info.get('id', 'N/A')}")
-                    print(f"Descrição: {descricao}")
-                    print(f"{cor}CVSS Score: {cvss_score}{colorama.Style.RESET_ALL}")
-                    print(f"Referência: {referencia}")
-                    print("=" * 80)
-                
+            if not doc:
+                print(f"[!] Documento da CVE {cve_id} response not found.")
+                return None
+
+            descricao = clean_description(doc.get("description", "Description not enable"))
+
+            cvss_info = doc.get("cvss", {})
+            cvss_v3 = cvss_info.get("cvssV3", {})
+
+            score = cvss_v3.get("baseScore") or cvss_info.get("score", "N/A")
+            severity = cvss_v3.get("baseSeverity", "N/A")
+
+            if not score:
+                score = "N/A"
+            if not severity:
+                severity = "N/A"
+
+            
+            severity_map = {
+                "LOW": colorama.Fore.BLUE,
+                "MEDIUM": colorama.Fore.YELLOW,
+                "HIGH": colorama.Fore.RED,
+                "CRITICAL": f"{colorama.Back.RED}{colorama.Fore.WHITE}"
+            }
+
+            cor_severidade = severity_map.get(severity.upper(), "")
+            severity_colorida = f"{cor_severidade}{severity}{colorama.Style.RESET_ALL}"
+
+            if isinstance(score, (int, float)) or (isinstance(score, str) and score.replace('.', '', 1).isdigit()):
+                score_val = float(score)
+                if score_val < 4.0:
+                    score_colorida = f"{colorama.Fore.BLUE}{score_val}{colorama.Style.RESET_ALL}"
+                elif score_val < 7.0:
+                    score_colorida = f"{colorama.Fore.YELLOW}{score_val}{colorama.Style.RESET_ALL}"
+                elif score_val < 9.0:
+                    score_colorida = f"{colorama.Fore.RED}{score_val}{colorama.Style.RESET_ALL}"
                 else:
-                    print(f"[!] Nenhum resultado encontrado para {cve}")
+                    score_colorida = f"{colorama.Back.RED}{colorama.Fore.WHITE}{score_val}{colorama.Style.RESET_ALL}"
             else:
-                print(f"[!] Resposta inválida da API para {cve}")
+                score_colorida = score
+
+            return {
+                "id": cve_id,
+                "descricao": descricao,
+                "cvss": score_colorida,
+                "severity": severity_colorida
+            }
+
         else:
-            print(f"[!] Erro ao consultar API para {cve}: {response.status_code}")
+            print(f"[!] Not possible get data for {cve_id} (status {response.status_code})")
+            return None
+
+    except requests.RequestException as e:
+        print(f"[!] Consult error {cve_id}: {str(e)}")
+        return None
 
 
 def reg_only(arguments):
@@ -1685,7 +1723,7 @@ elif args.input and args.sha256 == True and args.rsa == True:
     sha256_rsa(args)
 
 elif args.input and args.sha256 == True:
-    sha1_only(args)
+    sha256_only(args)
 
 elif args.input and args.email and args.securonix and args.l:
     email_scnx_l(args)
@@ -1720,12 +1758,20 @@ elif args.input and args.registry == True:
 elif args.exploitdb and args.cve:
     found_cves = cve_only(args)  
     if found_cves:
-        cve_exploitdb(found_cves)
+        cve_exploitdb(found_cves) 
 
 elif args.input and args.cve and args.cve_details:
-    cve_only(args)
-    cve_details(args)   
-    
+    cve_list = cve_only(args)
+
+    for cve_id in cve_list:
+        resultado = cve_details(cve_id)
+        if resultado:
+            print("=" * 100)
+            print(f"\nCVE: {resultado['id']}")
+            print(f"CVSS: {resultado['cvss']}")
+            print(f"DESCRIPTION: {resultado['descricao']}")
+            
+
 elif args.input and args.cve:
     cve_only(args)
 
