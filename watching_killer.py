@@ -112,12 +112,12 @@ def domain(arq):
 
 def artifact(arq):
     process = []
-    process_extension = ['.exe','dll','.py','.vbs','.ps1','.bin','.bat','.wsf','.bk','.sys']
+    process_extension = ['.exe','dll','.py','.vbs','.ps1','.bin','.bat','.wsf','.bk','.sys',]
     with open(arq, 'r', encoding="utf8") as outfile:
         reader = csv.reader(outfile)
         for raw in reader:
             for cell in raw:
-                matches = re.findall(r'\b(?:[a-zA-Z0-9-]+\.){1,}[a-zA-Z]{2,}\b', cell)
+                matches = re.findall(r'[a-zA-Z0-9_\-\.]+?\.[a-zA-Z0-9]+', cell)
                 for match in matches:
                     for index in process_extension:
                         if match.endswith(index):
@@ -649,34 +649,52 @@ def artifact_scnx(arguments):
         scnx_destination_process_name_only = siem.scnx_destination_process_name_only()
         scnx_filename = siem.scnx_file_name()
         scnx_file_name_only = siem.scnx_file_name_only()
-        found_artifact = artifact(args.input)
+        found_artifact = artifact(arguments.input)
         command_line_only = siem.scnx_command_line_only()
         childprocesscommandline_only = siem.childprocesscommandline_only()
+        scnx_baseeventid = siem.scnx_baseeventid()
+        scnx_object_file = siem.scnx_object_file()
         stats = siem.scnx_stats()
-        
-        found_artifact = artifact(args.input)
+
+        if arguments.dll:
+            found_artifact = [a for a in found_artifact if a.lower().endswith('.dll')]
+
+        if arguments.ps1:
+            found_artifact = [a for a in found_artifact if a.lower().endswith('.ps1')]            
+
         for index in found_artifact:
             records_artifact.append(index)
 
-        if args.include:
-            records_artifact.extend(args.include)
+        if arguments.include:
+            records_artifact.extend(arguments.include)
             records_artifact = list(set(records_artifact))
 
-        if args.remove:
-            records_artifact = [item for item in records_artifact if item not in args.remove]
-            
-        print(colorama.Fore.GREEN + '[+] AV / EDR / Windows / Linux\n' + colorama.Style.RESET_ALL)
-        print(f'{scnx_sourceprocessname} ({', '.join(records_artifact)})\n')
-        print(f'{scnx_destination_process_name} ({', '.join(records_artifact)})\n')
-        print(f'{scnx_sourceprocessname} ({', '.join(records_artifact)}) {colorama.Fore.BLUE}OR{colorama.Style.RESET_ALL} {scnx_destination_process_name} ({', '.join(records_artifact)})\n')
-        print(f'{scnx_filename} ({', '.join(records_artifact)})\n')
-        print(f'{scnx_filename} ({', '.join(records_artifact)}) {stats} {scnx_file_name_only}\n')
-        print(f'{scnx_filename} ({', '.join(records_artifact)}) {stats} {scnx_file_name_only} {childprocesscommandline_only}\n')
-        print(f'{scnx_sourceprocessname} ({', '.join(records_artifact)}) {stats} {scnx_source_process_name_only} {command_line_only}\n')
-        print(f'{scnx_destination_process_name} ({', '.join(records_artifact)}) {stats} {scnx_destination_process_name_only} {command_line_only}\n')
-        print(f'{scnx_sourceprocessname} ({', '.join(records_artifact)}) {stats} {scnx_source_process_name_only} {scnx_destination_process_name_only} {command_line_only}\n')
-        print(f'{scnx_sourceprocessname} ({', '.join(records_artifact)}) {colorama.Fore.BLUE}OR{colorama.Style.RESET_ALL} {scnx_destination_process_name} ({', '.join(records_artifact)}) {stats} {scnx_source_process_name_only} {scnx_destination_process_name_only} {command_line_only}\n')
-            
+        if arguments.remove:
+            records_artifact = [item for item in records_artifact if item not in arguments.remove]
+
+        if arguments.dll:
+            print(colorama.Fore.GREEN + '[+] Windows\n' + colorama.Style.RESET_ALL)
+            print(f'{scnx_baseeventid} (4663) {colorama.Fore.BLUE + 'and' + colorama.Style.RESET_ALL} {scnx_object_file} ({", ".join(records_artifact)})\n')
+            print(f'{scnx_baseeventid} (4663) {colorama.Fore.BLUE + 'and' + colorama.Style.RESET_ALL} {scnx_object_file} ({", ".join(records_artifact)} {stats} {scnx_object_file}\n')
+
+        if arguments.ps1:
+            print(colorama.Fore.GREEN + '[+] Windows\n' + colorama.Style.RESET_ALL)
+            print(f'{scnx_baseeventid} (4104) ({", ".join(records_artifact)})\n')
+        
+        if not arguments.dll and not arguments.ps1:
+            print(colorama.Fore.GREEN + '[+] AV / EDR / Windows / Linux\n' + colorama.Style.RESET_ALL)
+            print(f'{scnx_sourceprocessname} ({", ".join(records_artifact)})\n')
+            print(f'{scnx_destination_process_name} ({", ".join(records_artifact)})\n')
+            print(f'{scnx_sourceprocessname} ({", ".join(records_artifact)}) {colorama.Fore.BLUE}OR{colorama.Style.RESET_ALL} {scnx_destination_process_name} ({", ".join(records_artifact)})\n')
+            print(f'{scnx_filename} ({", ".join(records_artifact)})\n')
+            print(f'{scnx_filename} ({", ".join(records_artifact)}) {stats} {scnx_file_name_only}\n')
+            print(f'{scnx_filename} ({", ".join(records_artifact)}) {stats} {scnx_file_name_only} {childprocesscommandline_only}\n')
+            print(f'{scnx_sourceprocessname} ({", ".join(records_artifact)}) {stats} {scnx_source_process_name_only} {command_line_only}\n')
+            print(f'{scnx_destination_process_name} ({", ".join(records_artifact)}) {stats} {scnx_destination_process_name_only} {command_line_only}\n')
+            print(f'{scnx_sourceprocessname} ({", ".join(records_artifact)}) {stats} {scnx_source_process_name_only} {scnx_destination_process_name_only} {command_line_only}\n')
+            print(f'{scnx_sourceprocessname} ({", ".join(records_artifact)}) {colorama.Fore.BLUE}OR{colorama.Style.RESET_ALL} {scnx_destination_process_name} ({", ".join(records_artifact)}) {stats} {scnx_source_process_name_only} {scnx_destination_process_name_only} {command_line_only}\n')
+
+
 
 def artifact_rsa_l(arguments):
     

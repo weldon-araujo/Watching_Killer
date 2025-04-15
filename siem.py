@@ -215,6 +215,16 @@ def scnx_file_name_only():
     return file_name_only
 
 
+def scnx_object_file():
+    object_file = colorama.Fore.BLUE + 'objectfile in' + colorama.Style.RESET_ALL
+    return object_file
+
+
+def scnx_baseeventid():
+    baseeventid = colorama.Fore.BLUE + 'baseeventid in' + colorama.Style.RESET_ALL
+    return baseeventid
+
+
 def rsa_object_name():
     object_name = colorama.Fore.BLUE + 'object.name =' + colorama.Style.RESET_ALL
     return object_name

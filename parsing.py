@@ -17,6 +17,8 @@ def arguments():
     parser.add_argument('--email', '-email', action='store_true', help='This option try capture all email addresses')
     parser.add_argument('--registry','-reg', action='store_true', help='This option try capture Windows registry')
     parser.add_argument('--artifact', '-art', action='store_true', help='This option try to capture all artifact like tools and process')
+    parser.add_argument('--dll', '-dll', action='store_true', help='This option try to capture all dlls')
+    parser.add_argument('--ps1', '-ps1', action='store_true', help='This option try to capture all powershell scripts')
     parser.add_argument('--cvereport', '-cver', action='store_true', help='This option will generate report with public exploits analisys from public databases like ExploitDB and Packet Storm, only use with argument --cve EX: \watching_killer.py source.txt" --cve --cvereport')
     parser.add_argument('--reputation', '-rep', action='store_true', help='This option verifies the reputation of address ip, necessary to use with argument -ip or --ip option EX: \watching_killer.py source.txt" -ip --reputation')
     parser.add_argument('--exploitdb', '-edb', action='store_true', help='This option verifies if the CVE has an exploit in the ExploitDB database, necessary to use with argument --cve EX: \watching_killer.py source.txt" --cve --exploitdb')
