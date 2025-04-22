@@ -220,10 +220,35 @@ def scnx_object_file():
     return object_file
 
 
+def scnx_object_file_only():
+    object_file_only = colorama.Fore.BLUE + 'objectfile' + colorama.Style.RESET_ALL
+    return object_file_only
+
+
 def scnx_baseeventid():
     baseeventid = colorama.Fore.BLUE + 'baseeventid in' + colorama.Style.RESET_ALL
     return baseeventid
 
+
+def scnx_childprocesscommandline():
+    childprocesscommandline = colorama.Fore.BLUE + 'childprocesscommandline in' + colorama.Style.RESET_ALL
+    return childprocesscommandline
+
+def scnx_childprocesscommandline_only():
+    childprocesscommandline_only = colorama.Fore.BLUE + 'childprocesscommandline' + colorama.Style.RESET_ALL
+    return childprocesscommandline_only
+
+def scnx_scriptpath():
+    scriptpath = colorama.Fore.BLUE + 'scriptpath in' + colorama.Style.RESET_ALL
+    return scriptpath
+
+def scnx_scriptpath_only():
+    scriptpath_only = colorama.Fore.BLUE + 'scriptpath' + colorama.Style.RESET_ALL
+    return scriptpath_only
+
+def scnx_md5hash():
+    md5hash = colorama.Fore.BLUE + 'md5hash in' + colorama.Style.RESET_ALL
+    return md5hash
 
 def rsa_object_name():
     object_name = colorama.Fore.BLUE + 'object.name =' + colorama.Style.RESET_ALL
