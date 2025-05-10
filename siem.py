@@ -246,6 +246,14 @@ def scnx_scriptpath_only():
     scriptpath_only = colorama.Fore.BLUE + 'scriptpath' + colorama.Style.RESET_ALL
     return scriptpath_only
 
+def scnx_file_path():
+    filepath = colorama.Fore.BLUE + 'filepath in' + colorama.Style.RESET_ALL
+    return filepath
+
+def scnx_file_path_only():
+    filepath_only = colorama.Fore.BLUE + 'filepath' + colorama.Style.RESET_ALL
+    return filepath_only
+
 def scnx_md5hash():
     md5hash = colorama.Fore.BLUE + 'md5hash in' + colorama.Style.RESET_ALL
     return md5hash

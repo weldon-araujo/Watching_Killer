@@ -189,12 +189,18 @@ def ip_scnx(arguments):
             if args.remove:
                 records_ip = [item for item in records_ip if item not in args.remove]
 
+        arrow = colorama.Fore.RED + '    ↳  ' + colorama.Style.RESET_ALL
         print(colorama.Fore.GREEN + '[+] AV / EDR / SO\n' + colorama.Style.RESET_ALL)
-        print(f'{scnx_source_address} ({', '.join(records_ip)})\n')
-        print(f'{scnx_destination_address} ({', '.join(records_ip)})\n')
-        print(f'{scnx_source_address} ({', '.join(records_ip)}) {colorama.Fore.BLUE}OR{colorama.Style.RESET_ALL} {scnx_destination_address} ({', '.join(records_ip)})\n')  
-        print(f'{scnx_source_address} ({', '.join(records_ip)}) {colorama.Fore.BLUE}OR{colorama.Style.RESET_ALL} {scnx_destination_address} ({', '.join(records_ip)}) {stats}{source_only}\n')  
-        print(f'{scnx_source_address} ({', '.join(records_ip)}) {colorama.Fore.BLUE}OR{colorama.Style.RESET_ALL} {scnx_destination_address} ({', '.join(records_ip)}) {stats}{destination_only}\n')
+        print(colorama.Fore.RED + '[+] This query seeks to identify IP addresses as the source of communication' + colorama.Style.RESET_ALL)
+        print(arrow, f'{scnx_source_address} ({', '.join(records_ip)})\n')
+        print(colorama.Fore.RED + '[+] This query seeks to identify IP addresses as the communication destination.' + colorama.Style.RESET_ALL)
+        print(arrow, f'{scnx_destination_address} ({', '.join(records_ip)})\n')
+        print(colorama.Fore.RED + '[+] This query seeks to identify IP addresses as the source or destination of the communication' + colorama.Style.RESET_ALL)
+        print(arrow, f'{scnx_source_address} ({', '.join(records_ip)}) {colorama.Fore.BLUE}OR{colorama.Style.RESET_ALL} {scnx_destination_address} ({', '.join(records_ip)})\n')
+        print(colorama.Fore.RED + '[+] This query seeks to identify IP addresses as the source or destination of the communication' + colorama.Style.RESET_ALL)
+        print(arrow, f'{scnx_source_address} ({', '.join(records_ip)}) {colorama.Fore.BLUE}OR{colorama.Style.RESET_ALL} {scnx_destination_address} ({', '.join(records_ip)}) {stats}{source_only}\n') 
+        print(colorama.Fore.RED + '[+] This query seeks to identify IP addresses as the source or destination of the communication' + colorama.Style.RESET_ALL) 
+        print(arrow, f'{scnx_source_address} ({', '.join(records_ip)}) {colorama.Fore.BLUE}OR{colorama.Style.RESET_ALL} {scnx_destination_address} ({', '.join(records_ip)}) {stats}{destination_only}\n')
 
 
 def ip_scnx_l(arguments):
@@ -256,16 +262,20 @@ def ip_rsa(arguments):
         for index in found_ip:
             records_ip.append(index)
 
+        arrow = colorama.Fore.RED + '    ↳  ' + colorama.Style.RESET_ALL
         print(colorama.Fore.GREEN + '[+] AV / EDR / SO\n' + colorama.Style.RESET_ALL)
 
         color = ' ||' + colorama.Fore.BLUE + ' ip.src = ' + colorama.Style.RESET_ALL
-        print(f'{rsa_src_adress} {color.join(records_ip)} \n')
+        print(colorama.Fore.RED + '[+] This query seeks to identify IP addresses as the source of communication' + colorama.Style.RESET_ALL)
+        print(arrow, f'{rsa_src_adress} {color.join(records_ip)} \n')
 
         color = ' ||' + colorama.Fore.BLUE + ' ip.dst = ' + colorama.Style.RESET_ALL
-        print(f'{rsa_dst_adress} {color.join(records_ip)} \n')
+        print(colorama.Fore.RED + '[+] This query seeks to identify IP addresses as the communication destination.' + colorama.Style.RESET_ALL)
+        print(arrow, f'{rsa_dst_adress} {color.join(records_ip)} \n')
 
         color = ' ||' + colorama.Fore.BLUE + ' ip.src = ' + colorama.Style.RESET_ALL
-        print(f'{rsa_src_adress} {color.join(records_ip)} {colorama.Fore.BLUE} || {colorama.Style.RESET_ALL}', end='')
+        print(colorama.Fore.RED + '[+] This query seeks to identify IP addresses as the source or destination of the communication' + colorama.Style.RESET_ALL)
+        print(arrow, f'{rsa_src_adress} {color.join(records_ip)} {colorama.Fore.BLUE} || {colorama.Style.RESET_ALL}', end='')
 
         color = ' || ' + colorama.Fore.BLUE + ' ip.dst = ' + colorama.Style.RESET_ALL
         print(rsa_dst_adress, color.join(records_ip))
@@ -325,8 +335,9 @@ def ip_rsa_l(arguments):
 def ip_with_reputation(arguments):
         
     if not ip(arguments.input):
-        print(colorama.Fore.RED + '[!] Not found ip address' + colorama.Style.RESET_ALL )
-    else:        
+        print(colorama.Fore.RED + '[!] Not found ip address' + colorama.Style.RESET_ALL)
+    else: 
+        print(colorama.Fore.GREEN + '[+] IP Address Reputation Check on AbuseIPDB\n' + colorama.Style.RESET_ALL)       
 
         url = 'https://api.abuseipdb.com/api/v2/check'
         
@@ -502,30 +513,32 @@ def domain_scnx(arguments):
             if args.remove:
                 records_domain = [item for item in records_domain if item not in args.remove]
 
-        print(colorama.Fore.GREEN + '[+] NGFW / WAF / PROXY / EXCHANGE\n' + colorama.Style.RESET_ALL)
-
-        print(f'{scnx_request_url} ({', '.join(records_domain)})\n')
-        print(f'{scnx_email_recipient_domain} ({', '.join(records_domain)})\n')
-        print(f'{scnx_fqdn} ({', '.join(records_domain)})\n')
-        print(f'{scnx_root_domain} ({', '.join(records_domain)})\n')
-
-        domain_request_url_without = f' OR {scnx_request_only} contains '
-
-        domain_fqdn_without = f' OR {scnx_fqdn_only} contains '
-
-        domain_root_domain_without = f' OR {scnx_root_domain_only} contains '
-
-        domain_email_recipient_domain_without = f' OR {scnx_email_recipient_domain_only} contains '
-
-        print(f'{scnx_request_only} contains {domain_request_url_without.join(records_domain)}\n')
-        print(f'{scnx_fqdn_only} contains {domain_fqdn_without.join(records_domain)}\n')
-        print(f'{scnx_root_domain_only} contains {domain_root_domain_without.join(records_domain)}\n')
-        print(f'{scnx_email_recipient_domain_only} contains {domain_email_recipient_domain_without.join(records_domain)}\n')
-        print(f'{scnx_request_url} ({', '.join(records_domain)}) {stats}{scnx_request_only}\n')
-        print(f'{scnx_fqdn} ({', '.join(records_domain)}) {stats}{scnx_fqdn_only}\n')
-        print(f'{scnx_root_domain} ({', '.join(records_domain)}) {stats}{scnx_root_domain_only}\n')
-        print(f'{scnx_email_recipient_domain} ({', '.join(records_domain)}) {stats}{scnx_email_recipient_domain_only}\n')
-
+        print(colorama.Fore.GREEN + '[-] NGFW / WAF / PROXY\n' + colorama.Style.RESET_ALL)
+        arrow = colorama.Fore.RED + '    ↳  ' + colorama.Style.RESET_ALL
+        print(colorama.Fore.YELLOW + '[!] Please note that this query considers exact values. Some data sources address this information with more details than just the domain/subdomain. For example: "www.google.com/file?=" in this case it may be more interesting to use the "contains" query suggestion\n' + colorama.Style.RESET_ALL)
+        print(colorama.Fore.RED + '[-] This query seeks to identify domain addresses\n' + colorama.Style.RESET_ALL)        
+        print(arrow, f'{scnx_request_url} ({', '.join(records_domain)})')
+        print(arrow, f'{scnx_fqdn} ({', '.join(records_domain)})')
+        print(arrow, f'{scnx_root_domain} ({', '.join(records_domain)})\n')
+        print(colorama.Fore.RED + '[-] This query seeks to identify the value queried within a string using the "CONTAINS" operator\n' + colorama.Style.RESET_ALL)
+        domain_request_url_without =  f' {colorama.Fore.BLUE} OR {scnx_request_only} {colorama.Fore.BLUE} contains ' + colorama.Style.RESET_ALL
+        print(arrow, f'{scnx_request_only} {colorama.Fore.BLUE} contains {colorama.Style.RESET_ALL} {domain_request_url_without.join(records_domain)}')
+        domain_fqdn_without = f' {colorama.Fore.BLUE} OR {scnx_fqdn_only} {colorama.Fore.BLUE} contains ' + colorama.Style.RESET_ALL
+        print(arrow, f'{scnx_fqdn_only} contains {domain_fqdn_without.join(records_domain)}')
+        domain_root_domain_without = f' {colorama.Fore.BLUE} OR {scnx_root_domain_only} {colorama.Fore.BLUE} contains ' + colorama.Style.RESET_ALL
+        print(arrow, f'{scnx_root_domain_only} contains {domain_root_domain_without.join(records_domain)}')
+        domain_email_recipient_domain_without = f' {colorama.Fore.BLUE} OR {scnx_email_recipient_domain_only} contains ' + colorama.Style.RESET_ALL      
+        print(arrow, f'{scnx_email_recipient_domain_only} contains {domain_email_recipient_domain_without.join(records_domain)}\n')
+        print(colorama.Fore.RED + '[-] This query seeks to identify queried values ​​organized by the values ​​of the queried metadata.\n' + colorama.Style.RESET_ALL)
+        print(arrow, f'{scnx_request_url} ({', '.join(records_domain)}) {stats}{scnx_request_only}')
+        print(arrow, f'{scnx_fqdn} ({', '.join(records_domain)}) {stats}{scnx_fqdn_only}')
+        print(arrow, f'{scnx_root_domain} ({', '.join(records_domain)}) {stats}{scnx_root_domain_only}\n')        
+        print(colorama.Fore.GREEN + '[+] EXCHANGE\n' + colorama.Style.RESET_ALL)
+        print(colorama.Fore.RED + '[-] This query seeks to identify domain addresses using the requesturl recipientdomain metacharacter used in email solution data sources\n' + colorama.Style.RESET_ALL) 
+        print(arrow, f'{scnx_email_recipient_domain} ({', '.join(records_domain)})\n')
+        print(colorama.Fore.RED + '[-] This query seeks to identify queried values ​​organized by the values ​​of the queried metadata.\n' + colorama.Style.RESET_ALL)
+        print(arrow, f'{scnx_email_recipient_domain} ({', '.join(records_domain)}) {stats}{scnx_email_recipient_domain_only}\n')        
+        
 
 def domain_rsa_l(arguments):
 
@@ -658,6 +671,7 @@ def artifact_scnx(arguments):
         scnx_object_file = siem.scnx_object_file()
         scnx_object_file_only = siem.scnx_object_file_only()
         scnx_scriptpath_only = siem.scnx_scriptpath_only()
+        scnx_filepath_only = siem.scnx_file_path_only()
         stats = siem.scnx_stats()
 
         if arguments.dll:
@@ -696,19 +710,32 @@ def artifact_scnx(arguments):
            
         
         if not arguments.dll and not arguments.ps1:
-            print(colorama.Fore.GREEN + '[+] AV / EDR / Windows / Linux\n' + colorama.Style.RESET_ALL)
-
-            print(f'{scnx_sourceprocessname} ({", ".join(records_artifact)})\n')
-            print(f'{scnx_destination_process_name} ({", ".join(records_artifact)})\n')
-            print(f'{scnx_sourceprocessname} ({", ".join(records_artifact)}) {colorama.Fore.BLUE}OR{colorama.Style.RESET_ALL} {scnx_destination_process_name} ({", ".join(records_artifact)})\n')
-            print(f'{scnx_filename} ({", ".join(records_artifact)})\n')
-            print(f'{scnx_filename} ({", ".join(records_artifact)}) {stats} {scnx_file_name_only}\n')
-            print(f'{scnx_sourceprocessname} ({", ".join(records_artifact)}) {stats} {scnx_source_process_name_only} {command_line_only}\n')
-            print(f'{scnx_destination_process_name} ({", ".join(records_artifact)}) {stats} {scnx_destination_process_name_only} {command_line_only}\n')
-            print(f'{scnx_sourceprocessname} ({", ".join(records_artifact)}) {stats} {scnx_source_process_name_only} {scnx_destination_process_name_only} {command_line_only}\n')
-            print(f'{scnx_sourceprocessname} ({", ".join(records_artifact)}) {colorama.Fore.BLUE}OR{colorama.Style.RESET_ALL} {scnx_destination_process_name} ({", ".join(records_artifact)}) {stats} {scnx_source_process_name_only} {scnx_destination_process_name_only} {command_line_only}\n')
-
-
+            arrow = colorama.Fore.RED + '    ↳  ' + colorama.Style.RESET_ALL
+            print(colorama.Fore.GREEN + '[+] Windows / Linux\n' + colorama.Style.RESET_ALL)
+            print(colorama.Fore.RED + '[-] This query seeks to identify the process acting as the parent process' + colorama.Style.RESET_ALL)
+            print(arrow, f'{scnx_sourceprocessname} ({", ".join(records_artifact)})\n')
+            print(colorama.Fore.RED + '[-] This query seeks to identify the process acting as a child process' + colorama.Style.RESET_ALL)
+            print(arrow, f'{scnx_destination_process_name} ({", ".join(records_artifact)})\n')
+            print(colorama.Fore.RED + '[-] This query seeks to identify the process acting as a parent or child process' + colorama.Style.RESET_ALL)
+            print(arrow, f'{scnx_sourceprocessname} ({", ".join(records_artifact)}) {colorama.Fore.BLUE}OR{colorama.Style.RESET_ALL} {scnx_destination_process_name} ({", ".join(records_artifact)})\n')
+            print(colorama.Fore.RED + '[-] This query seeks to identify the parent processes and list them organized by the parent processes and command line on the SIEM screen' + colorama.Style.RESET_ALL)
+            print(arrow, f'{scnx_sourceprocessname} ({", ".join(records_artifact)}) {stats} {scnx_source_process_name_only} {command_line_only}\n')
+            print(colorama.Fore.RED + '[-] This query seeks to identify child processes and list them organized by child processes and command line on the SIEM screen' + colorama.Style.RESET_ALL)
+            print(arrow, f'{scnx_destination_process_name} ({", ".join(records_artifact)}) {stats} {scnx_destination_process_name_only} {command_line_only}\n')
+            print(colorama.Fore.RED + '[-] This query seeks to identify the parent processes and lists them organized by the parent, child process and command line on the SIEM screen' + colorama.Style.RESET_ALL)
+            print(arrow, f'{scnx_sourceprocessname} ({", ".join(records_artifact)}) {stats} {scnx_source_process_name_only} {scnx_destination_process_name_only} {command_line_only}\n')
+            print(colorama.Fore.RED + '[-] This query seeks to identify the parent or child processes and lists them organized by the parent, child processes and command line on the SIEM screen' + colorama.Style.RESET_ALL)
+            print(arrow, f'{scnx_sourceprocessname} ({", ".join(records_artifact)}) {colorama.Fore.BLUE}OR{colorama.Style.RESET_ALL} {scnx_destination_process_name} ({", ".join(records_artifact)}) {stats} {scnx_source_process_name_only} {scnx_destination_process_name_only} {command_line_only}\n')
+            print(colorama.Fore.GREEN + '[+] AV / EDR\n' + colorama.Style.RESET_ALL)
+            print(colorama.Fore.RED + '[-] This query seeks to identify the processes identified by the antivirus or EDR solution' + colorama.Style.RESET_ALL)
+            print(arrow, f'{scnx_filename} ({", ".join(records_artifact)})\n')
+            print(colorama.Fore.RED + '[-] This query seeks to identify the processes identified by the antivirus or EDR solution and list them organized by process on the SIEM screen' + colorama.Style.RESET_ALL)
+            print(arrow, f'{scnx_filename} ({", ".join(records_artifact)}) {stats} {scnx_file_name_only}\n')
+            print(colorama.Fore.RED + '[-] This query seeks to identify the processes identified by the antivirus or EDR solution and list them organized by process on the SIEM screen' + colorama.Style.RESET_ALL)
+            print(arrow, f'{scnx_filename} ({", ".join(records_artifact)}) {stats} {scnx_file_name_only} {scnx_childprocesscommandline_only}\n')
+            print(colorama.Fore.RED + '[-] This query seeks to identify the processes identified by the antivirus or EDR solution and list them organized by process, command line and process path on the SIEM screen' + colorama.Style.RESET_ALL)
+            print(arrow, f'{scnx_filename} ({", ".join(records_artifact)}) {stats} {scnx_file_name_only} {scnx_childprocesscommandline_only} {scnx_filepath_only} \n')
+            
 
 def artifact_rsa_l(arguments):
     
@@ -783,15 +810,18 @@ def md5_scnx_l(arguments):
                 new1 = records_md5[:meadle]
                 new2 = records_md5[meadle:]
 
+            arrow = colorama.Fore.RED + '    ↳  ' + colorama.Style.RESET_ALL
             print(colorama.Fore.GREEN + '[+] AV / EDR / NGFW\n' + colorama.Style.RESET_ALL)
-            print(f'{scnx_old_file_hash} ({', '.join(new1)})\n')
-            print(f'{scnx_old_file_hash} ({', '.join(new2)})\n')
-            print(f'{scnx_file_hash} ({', '.join(new1)})\n')
-            print(f'{scnx_file_hash} ({', '.join(new2)})\n')
-            print(f'{scnx_old_file_hash} ({', '.join(new1)}) {stats} {scnx_old_file_hash_only}\n')
-            print(f'{scnx_old_file_hash} ({', '.join(new2)}) {stats} {scnx_old_file_hash_only}\n')
-            print(f'{scnx_file_hash} ({', '.join(new1)}) {stats} {scnx_file_hash_only}\n')
-            print(f'{scnx_file_hash} ({', '.join(new2)}) {stats} {scnx_file_hash_only}\n')
+            print(colorama.Fore.RED + '[-] This query seeks to identify MD5 hash values\n' + colorama.Style.RESET_ALL)
+            print(arrow, f'{scnx_old_file_hash} ({', '.join(new1)})')
+            print(arrow, f'{scnx_old_file_hash} ({', '.join(new2)})')
+            print(arrow, f'{scnx_file_hash} ({', '.join(new1)})')
+            print(arrow, f'{scnx_file_hash} ({', '.join(new2)})\n')
+            print(colorama.Fore.RED + '[-] This query seeks to identify MD5 hash values ​​ordered by MD5 hash values\n' + colorama.Style.RESET_ALL)
+            print(arrow, f'{scnx_old_file_hash} ({', '.join(new1)}) {stats} {scnx_old_file_hash_only}')
+            print(arrow, f'{scnx_old_file_hash} ({', '.join(new2)}) {stats} {scnx_old_file_hash_only}')
+            print(arrow, f'{scnx_file_hash} ({', '.join(new1)}) {stats} {scnx_file_hash_only}')
+            print(arrow, f'{scnx_file_hash} ({', '.join(new2)}) {stats} {scnx_file_hash_only}\n')
 
             break
 
@@ -815,11 +845,14 @@ def md5_scnx(arguments):
         for index in found_md5:
             records_md5.append(index)
 
+        arrow = colorama.Fore.RED + '    ↳  ' + colorama.Style.RESET_ALL        
         print(colorama.Fore.GREEN + '[+] AV / EDR \n' + colorama.Style.RESET_ALL)
-        print(f'{scnx_old_file_hash} ({', '.join(records_md5)})\n')
-        print(f'{scnx_file_hash} ({', '.join(records_md5)})\n')
-        print(f'{scnx_old_file_hash} ({', '.join(records_md5)}) {stats} {scnx_old_file_hash_only}\n')
-        print(f'{scnx_file_hash} ({', '.join(records_md5)}) {stats} {scnx_file_hash_only}\n')
+        print(colorama.Fore.RED + '[-] This query seeks to identify MD5 hash values\n' + colorama.Style.RESET_ALL)
+        print(arrow, f'{scnx_old_file_hash} ({', '.join(records_md5)})')        
+        print(arrow, f'{scnx_file_hash} ({', '.join(records_md5)})\n')
+        print(colorama.Fore.RED + '[-] This query seeks to identify MD5 hash values ​​ordered by MD5 hash values\n' + colorama.Style.RESET_ALL)
+        print(arrow, f'{scnx_old_file_hash} ({', '.join(records_md5)}) {stats} {scnx_old_file_hash_only}')
+        print(arrow, f'{scnx_file_hash} ({', '.join(records_md5)}) {stats} {scnx_file_hash_only}\n')
 
 
 def md5_rsa_l(arguments):
@@ -919,21 +952,24 @@ def sha1_scnx_l(arguments):
                 new1 = records_sha1[:meadle]
                 new2 = records_sha1[meadle:]
 
-
+            arrow = colorama.Fore.RED + '    ↳  ' + colorama.Style.RESET_ALL
             print(colorama.Fore.GREEN + '[+] AV / EDR\n' + colorama.Style.RESET_ALL)
-            print(f'{scnx_old_file_hash} ({', '.join(new1)})\n')
-            print(f'{scnx_old_file_hash} ({', '.join(new2)})\n')
-            print(f'{scnx_file_hash} ({', '.join(new1)})\n')
-            print(f'{scnx_file_hash} ({', '.join(new2)})\n')
-            print(f'{scnx_old_file_hash} ({', '.join(new1)}) {stats} {scnx_old_file_hash_only}\n')
-            print(f'{scnx_old_file_hash} ({', '.join(new2)}) {stats} {scnx_old_file_hash_only}\n')
-            print(f'{scnx_file_hash} ({', '.join(new1)}) {stats} {scnx_file_hash_only}\n')
-            print(f'{scnx_file_hash} ({', '.join(new2)}) {stats} {scnx_file_hash_only}\n')
+            print(colorama.Fore.RED + '[-] This query seeks to identify SHA1 hash values\n' + colorama.Style.RESET_ALL)
+            print(arrow, f'{scnx_old_file_hash} ({', '.join(new1)})')
+            print(arrow, f'{scnx_old_file_hash} ({', '.join(new2)})')
+            print(arrow, f'{scnx_file_hash} ({', '.join(new1)})')
+            print(arrow, f'{scnx_file_hash} ({', '.join(new2)})\n')
+            print(colorama.Fore.RED + '[-] This query seeks to identify SHA1 hash values ​​ordered by SHA1 hash values\n' + colorama.Style.RESET_ALL)
+            print(arrow, f'{scnx_old_file_hash} ({', '.join(new1)}) {stats} {scnx_old_file_hash_only}')
+            print(arrow, f'{scnx_old_file_hash} ({', '.join(new2)}) {stats} {scnx_old_file_hash_only}')
+            print(arrow, f'{scnx_file_hash} ({', '.join(new1)}) {stats} {scnx_file_hash_only}')
+            print(arrow, f'{scnx_file_hash} ({', '.join(new2)}) {stats} {scnx_file_hash_only}\n')
             print(colorama.Fore.GREEN + '[+] Windows - Sysmon\n' + colorama.Style.RESET_ALL)
-            print(f'{scnx_md5hash} ({', '.join(new1)})\n')
-            print(f'{scnx_md5hash} ({', '.join(new2)})\n')
-            print(f'{scnx_md5hash} ({', '.join(new1)}) {stats} {scnx_md5hash}\n')
-            print(f'{scnx_md5hash} ({', '.join(new2)}) {stats} {scnx_md5hash}\n')
+            print(colorama.Fore.RED + '[-] This query seeks to identify SHA1 hash values ​​ordered by SHA1 hash values in channel sysmon\n' + colorama.Style.RESET_ALL)
+            print(arrow, f'{scnx_md5hash} ({', '.join(new1)})')
+            print(arrow, f'{scnx_md5hash} ({', '.join(new2)})')
+            print(arrow, f'{scnx_md5hash} ({', '.join(new1)}) {stats} {scnx_md5hash}')
+            print(arrow, f'{scnx_md5hash} ({', '.join(new2)}) {stats} {scnx_md5hash}\n')
 
             break
 
@@ -958,14 +994,19 @@ def sha1_scnx(arguments):
         for index in found_sha1:
             records_sha1.append(index)
 
+        arrow = colorama.Fore.RED + '    ↳  ' + colorama.Style.RESET_ALL
         print(colorama.Fore.GREEN + '[+] AV / EDR\n' + colorama.Style.RESET_ALL)
-        print(f'{scnx_old_file_hash} ({', '.join(records_sha1)})\n')
-        print(f'{scnx_file_hash} ({', '.join(records_sha1)})\n')
-        print(f'{scnx_old_file_hash} ({', '.join(records_sha1)}) {stats} {scnx_old_file_hash_only}\n')
-        print(f'{scnx_file_hash} ({', '.join(records_sha1)}) {stats} {scnx_file_hash_only}\n')
+        print(colorama.Fore.RED + '[-] This query seeks to identify SHA1 hash values\n' + colorama.Style.RESET_ALL)
+        print(arrow, f'{scnx_old_file_hash} ({', '.join(records_sha1)})')
+        print(arrow, f'{scnx_file_hash} ({', '.join(records_sha1)})\n')
+        print(colorama.Fore.RED + '[-] This query seeks to identify SHA1 hash values ​​ordered by SHA1 hash values\n' + colorama.Style.RESET_ALL)
+        print(arrow, f'{scnx_old_file_hash} ({', '.join(records_sha1)}) {stats} {scnx_old_file_hash_only}')
+        print(arrow, f'{scnx_file_hash} ({', '.join(records_sha1)}) {stats} {scnx_file_hash_only}\n')
         print(colorama.Fore.GREEN + '[+] Windows - Sysmon\n' + colorama.Style.RESET_ALL)
-        print(f'{scnx_md5hash} ({', '.join(records_sha1)})\n')
-        print(f'{scnx_md5hash} ({', '.join(records_sha1)}) {stats} {scnx_md5hash}\n')
+        print(colorama.Fore.RED + '[-] This query seeks to identify SHA1 hash values in channel sysmon\n' + colorama.Style.RESET_ALL)
+        print(arrow, f'{scnx_md5hash} ({', '.join(records_sha1)})\n')
+        print(colorama.Fore.RED + '[-] This query seeks to identify SHA1 hash values ​​ordered by SHA1 hash values in channel sysmon\n' + colorama.Style.RESET_ALL)
+        print(arrow, f'{scnx_md5hash} ({', '.join(records_sha1)}) {stats} {scnx_md5hash}\n')
 
 
 def sha1_rsa_l(arguments):
@@ -1068,15 +1109,18 @@ def sha256_scnx_l(arguments):
                 new1 = records_sha256[:meadle]
                 new2 = records_sha256[meadle:]
 
+            arrow = colorama.Fore.RED + '    ↳  ' + colorama.Style.RESET_ALL
             print(colorama.Fore.GREEN + '[+] AV / EDR\n' + colorama.Style.RESET_ALL)
-            print(f'{scnx_old_file_hash} ({', '.join(new1)})\n')   
-            print(f'{scnx_old_file_hash} ({', '.join(new2)})\n')
-            print(f'{scnx_file_hash} ({', '.join(new1)})\n')   
-            print(f'{scnx_file_hash} ({', '.join(new2)})\n')
-            print(f'{scnx_old_file_hash} ({', '.join(new1)}) {stats} {scnx_old_file_hash_only}\n')
-            print(f'{scnx_old_file_hash} ({', '.join(new2)}) {stats} {scnx_old_file_hash_only}\n')
-            print(f'{scnx_file_hash} ({', '.join(new1)}) {stats} {scnx_file_hash_only}\n')
-            print(f'{scnx_file_hash} ({', '.join(new2)}) {stats} {scnx_file_hash_only}\n')
+            print(colorama.Fore.RED + '[-] This query seeks to identify SHA256 hash values\n' + colorama.Style.RESET_ALL)
+            print(arrow, f'{scnx_old_file_hash} ({', '.join(new1)})')   
+            print(arrow, f'{scnx_old_file_hash} ({', '.join(new2)})')
+            print(arrow, f'{scnx_file_hash} ({', '.join(new1)})')   
+            print(arrow, f'{scnx_file_hash} ({', '.join(new2)})\n')
+            print(colorama.Fore.RED + '[-] This query seeks to identify SHA1 hash values ​​ordered by SHA256 hash values\n' + colorama.Style.RESET_ALL)
+            print(arrow, f'{scnx_old_file_hash} ({', '.join(new1)}) {stats} {scnx_old_file_hash_only}')
+            print(arrow, f'{scnx_old_file_hash} ({', '.join(new2)}) {stats} {scnx_old_file_hash_only}')
+            print(arrow, f'{scnx_file_hash} ({', '.join(new1)}) {stats} {scnx_file_hash_only}')
+            print(arrow, f'{scnx_file_hash} ({', '.join(new2)}) {stats} {scnx_file_hash_only}\n')
 
             break
 
@@ -1092,15 +1136,21 @@ def sha256_scnx(arguments):
         records_sha256 = []
         scnx_old_file_hash = siem.scnx_old_file_hash()
         scnx_old_file_hash_only = siem.scnx_old_file_hash_only()
+        scnx_file_hash = siem.scnx_file_hash()
         found_sha256 = sha256(arguments.input)
         stats = siem.scnx_stats()
 
         for index in set(found_sha256):
             records_sha256.append(index)
 
+        arrow = colorama.Fore.RED + '    ↳  ' + colorama.Style.RESET_ALL
         print(colorama.Fore.GREEN + '[+] AV / EDR\n' + colorama.Style.RESET_ALL)
-        print(f'{scnx_old_file_hash} ({', '.join(records_sha256)})\n')  
-        print(f'{scnx_old_file_hash} ({', '.join(records_sha256)}) {stats} {scnx_old_file_hash_only}\n') 
+        print(colorama.Fore.RED + '[-] This query seeks to identify SHA256 hash values\n' + colorama.Style.RESET_ALL)
+        print(arrow, f'{scnx_file_hash} ({', '.join(records_sha256)})')
+        print(arrow, f'{scnx_old_file_hash} ({', '.join(records_sha256)})\n')
+        print(colorama.Fore.RED + '[-] This query seeks to identify SHA1 hash values ​​ordered by SHA256 hash values\n' + colorama.Style.RESET_ALL)  
+        print(arrow, f'{scnx_file_hash} ({', '.join(records_sha256)}) {stats} {scnx_old_file_hash_only}') 
+        print(arrow, f'{scnx_old_file_hash} ({', '.join(records_sha256)}) {stats} {scnx_old_file_hash_only}\n') 
 
 
 def sha256_rsa_l(arguments):
@@ -1261,16 +1311,18 @@ def email_scnx(arguments):
                 if args.remove:
                     records_email = [item for item in records_email if item not in args.remove]
 
+            arrow = colorama.Fore.RED + '    ↳  ' + colorama.Style.RESET_ALL
             print(colorama.Fore.GREEN + '[+] EXCHANGE\n' + colorama.Style.RESET_ALL)
-
-            print(f'{scnx_mailboxownerupn} ({', '.join(records_email)})\n') 
-            print(f'{scnx_workemail} ({', '.join(records_email)})\n') 
-            print(f'{scnx_accountname} ({', '.join(records_email)})\n') 
-            print(f'{scnx_email_recipient} ({', '.join(records_email)})\n')
-            print(f'{scnx_mailboxownerupn} ({', '.join(records_email)}) {stats} {scnx_mailboxownerupn_without}\n') 
-            print(f'{scnx_workemail} ({', '.join(records_email)}) {stats} {scnx_workemail_without}\n') 
-            print(f'{scnx_accountname} ({', '.join(records_email)}) {stats} {scnx_accountname_without}\n')
-            print(f'{scnx_email_recipient} ({', '.join(records_email)}) {stats} {scnx_email_recipient_only}\n')
+            print(colorama.Fore.RED + '[-] This query seeks to identify email addresses\n' + colorama.Style.RESET_ALL)
+            print(arrow,f'{scnx_mailboxownerupn} ({', '.join(records_email)})') 
+            print(arrow,f'{scnx_workemail} ({', '.join(records_email)})') 
+            print(arrow, f'{scnx_accountname} ({', '.join(records_email)})') 
+            print(arrow, f'{scnx_email_recipient} ({', '.join(records_email)})\n')
+            print(colorama.Fore.RED + '[-] This query seeks to identify queried values ​​organized by the values ​​of the queried metadata\n' + colorama.Style.RESET_ALL)
+            print(arrow, f'{scnx_mailboxownerupn} ({', '.join(records_email)}) {stats} {scnx_mailboxownerupn_without}') 
+            print(arrow, f'{scnx_workemail} ({', '.join(records_email)}) {stats} {scnx_workemail_without}') 
+            print(arrow, f'{scnx_accountname} ({', '.join(records_email)}) {stats} {scnx_accountname_without}')
+            print(arrow, f'{scnx_email_recipient} ({', '.join(records_email)}) {stats} {scnx_email_recipient_only}\n')
 
 
 def email_rsa_l(arguments):
@@ -1360,10 +1412,13 @@ def reg_scnx_l(arguments):
 
             eventdata_without = f' {colorama.Fore.BLUE + 'OR' + colorama.Style.RESET_ALL} {scnx_eventdata_only} contains'
 
-            print(f'{scnx_eventdata_only} contains {eventdata_without.join(new1)}\n')
-            print(f'{scnx_eventdata_only} contains {eventdata_without.join(new2)}\n')
-            print(f'{scnx_eventdata_only} contains {eventdata_without.join(new1)}) {stats} {scnx_eventdata_only}\n')
-            print(f'{scnx_eventdata_only} contains {eventdata_without.join(new2)}) {stats} {scnx_eventdata_only}\n')
+            arrow = colorama.Fore.RED + '    ↳  ' + colorama.Style.RESET_ALL
+            print(colorama.Fore.RED + '[-] This query seeks to identify the values ​​of Windows registry keys\n' + colorama.Style.RESET_ALL)
+            print(arrow, f'{scnx_eventdata_only} contains {eventdata_without.join(new1)}\n')
+            print(arrow, f'{scnx_eventdata_only} contains {eventdata_without.join(new2)}\n')
+            print(colorama.Fore.RED + '[-] This query seeks to identify queried values ​​organized by the values ​​of the queried metadata\n' + colorama.Style.RESET_ALL)
+            print(arrow, f'{scnx_eventdata_only} contains {eventdata_without.join(new1)}) {stats} {scnx_eventdata_only}\n')
+            print(arrow, f'{scnx_eventdata_only} contains {eventdata_without.join(new2)}) {stats} {scnx_eventdata_only}\n')
 
             break
 
@@ -1391,10 +1446,13 @@ def reg_scnx(arguments):
             if args.remove:
                 records_registry = [item for item in records_registry if item not in args.remove] 
 
-        print(colorama.Fore.GREEN + '[+] Windows Registry Keys\n' + colorama.Style.RESET_ALL)     
+        arrow = colorama.Fore.RED + '    ↳  ' + colorama.Style.RESET_ALL
+        print(colorama.Fore.GREEN + '[+] Windows Registry Keys\n' + colorama.Style.RESET_ALL)
+        print(colorama.Fore.RED + '[-] This query seeks to identify the values ​​of Windows registry keys\n' + colorama.Style.RESET_ALL)     
         eventdata_without = f' {colorama.Fore.BLUE + 'OR' + colorama.Style.RESET_ALL} {scnx_eventdata_only} contains'   
-        print(f'{scnx_eventdata_only} contains {eventdata_without.join(records_registry)}\n')
-        print(f'{scnx_eventdata_only} contains {eventdata_without.join(records_registry)}) {stats} {scnx_eventdata_only}\n')
+        print(arrow, f'{scnx_eventdata_only} contains {eventdata_without.join(records_registry)}\n')
+        print(colorama.Fore.RED + '[-] This query seeks to identify queried values ​​organized by the values ​​of the queried metadata\n' + colorama.Style.RESET_ALL)
+        print(arrow, f'{scnx_eventdata_only} contains {eventdata_without.join(records_registry)}) {stats} {scnx_eventdata_only}\n')
 
 
 def reg_rsa_l(arguments):
