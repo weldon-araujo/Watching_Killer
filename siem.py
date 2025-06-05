@@ -200,6 +200,16 @@ def scnx_file_name():
     return file_name
 
 
+def scnx_original_file_name():
+    original_file_name = colorama.Fore.BLUE + 'originalfilename in' + colorama.Style.RESET_ALL
+    return original_file_name
+
+
+def scnx_original_file_name_only():
+    original_file_name_only = colorama.Fore.BLUE + 'originalfilename' + colorama.Style.RESET_ALL
+    return original_file_name_only
+
+
 def childprocesscommandline():
     childprocesscommandline = colorama.Fore.BLUE + 'childprocesscommandline in' + colorama.Style.RESET_ALL   
     return childprocesscommandline
