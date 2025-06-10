@@ -331,76 +331,57 @@ def ip_rsa_l(arguments):
 
 
 def ip_with_reputation(arguments):
-        
     if not ip(arguments.input):
         print(colorama.Fore.RED + '[!] Not found ip address' + colorama.Style.RESET_ALL)
-    else: 
-        print(colorama.Fore.GREEN + '[+] IP Address Reputation Check on AbuseIPDB\n' + colorama.Style.RESET_ALL)       
+        return
 
-        url = 'https://api.abuseipdb.com/api/v2/check'
-        
-        querystring = {
-            'ipAddress': '0.0.0.0',
-            'maxAgeInDays': '90'
-            }
-                
-        headers = {
-                'Accept': 'application/json',
-                'Key': ''
-            }
-        
-        headers['Key'] = abuseip
+    print(colorama.Fore.GREEN + '[+] IP Address Reputation Check on AbuseIPDB\n' + colorama.Style.RESET_ALL)
 
-        ip_parsing = ip(args.input)   
+    url = 'https://api.abuseipdb.com/api/v2/check'
+    headers = {
+        'Accept': 'application/json',
+        'Key': abuseip
+    }
 
+    querystring = {
+        'ipAddress': '0.0.0.0',
+        'maxAgeInDays': '90'
+    }
 
-        for index in ip_parsing:
-            querystring["ipAddress"] = index
+    ip_parsing = list(set(ip(arguments.input)))
 
-            try:
-                response = requests.request(method='GET', url=url, headers=headers, params=querystring)
-                decodedResponse = json.loads(response.text)
-                address = decodedResponse['data']['ipAddress']
-                rep = decodedResponse['data']['abuseConfidenceScore']
-                dns = decodedResponse['data']['hostnames']
-            except KeyError:
-                print("There's probably something wrong with the API key. Check if it's the right one and try again. Also, check if the file is named .env.",'\n')
-                break
+    print(f"{'IP':<17} {'Score':<9} {'Domínios Associados'}")
+    print("-" * 50)
 
-            ip_parsing = list(set(ip_parsing))
+    for index in ip_parsing:
+        querystring["ipAddress"] = index
 
-            if not dns:
-                if rep >= 0 and rep <= 25:   
-                    rep2 = str(rep) + '%'             
-                    print(f'{address} {colorama.Fore.GREEN + rep2 + colorama.Style.RESET_ALL }')
+        try:
+            response = requests.get(url=url, headers=headers, params=querystring)
+            data = response.json()['data']
+            address = data['ipAddress']
+            rep = data['abuseConfidenceScore']
+            dns = ', '.join(data['hostnames']) if data['hostnames'] else '-'
+        except KeyError:
+            print(colorama.Fore.RED + "[!] Erro com a chave da API ou resposta inesperada." + colorama.Style.RESET_ALL)
+            break
 
-                elif rep >= 26 and rep <= 50:
-                    rep2 = str(rep) + '%'
-                    print(f'{address} {colorama.Fore.BLUE + rep2 + colorama.Style.RESET_ALL}')
+        if rep <= 25:
+            color = colorama.Fore.GREEN
+        elif rep <= 50:
+            color = colorama.Fore.BLUE
+        elif rep <= 75:
+            color = colorama.Fore.YELLOW
+        else:
+            color = colorama.Fore.RED
 
-                elif rep >= 51 and rep <= 75:
-                    rep2 = str(rep) + '%'
-                    print(f'{address} {colorama.Fore.YELLOW + rep2 + colorama.Style.RESET_ALL }')
-                
-                elif rep >= 76 and rep <= 100:
-                    rep2 = str(rep) + '%'
-                    print(f'{address} {colorama.Fore.RED + rep2 + colorama.Style.RESET_ALL }')
+        rep_formatado = f"{rep}%"
+        rep_alinhado = f"{rep_formatado:<9}"
 
-            elif rep >= 0 and rep <= 25:   
-                rep2 = str(rep) + '%'             
-                print(f'{address} {colorama.Fore.GREEN + rep2 + colorama.Style.RESET_ALL } {dns} ')
+        rep_colorido = color + rep_alinhado + colorama.Style.RESET_ALL
 
-            elif rep >= 26 and rep <= 50:   
-                rep2 = str(rep) + '%'             
-                print(f'{address} {colorama.Fore.BLUE + rep2 + colorama.Style.RESET_ALL } {dns} ')
+        print(f"{address:<17} {rep_colorido} {dns}")
 
-            elif rep >= 51 and rep <= 75:
-                rep2 = str(rep) + '%'
-                print(f'{address} {colorama.Fore.YELLOW + rep2 + colorama.Style.RESET_ALL } {dns} ')
-                
-            elif rep >= 76 and rep <= 100:
-                rep2 = str(rep) + '%'
-                print(f'{address} {colorama.Fore.RED + rep2 + colorama.Style.RESET_ALL } {dns} ')       
 
 
 def ip_only(arguments):
