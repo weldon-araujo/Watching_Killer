@@ -19,12 +19,14 @@ O Watching Killer é uma toolkit cuja função é automatizar o processo de cybe
 
 </h4>
 
-<h3></h3>
+<h3 ></h3>
 
 
-<h1>Arquitetura da solução</h1>
+<h1 align="center">Arquitetura da solução
 
 ![img](https://i.imgur.com/MQFZi7Y.png)
+
+</h1>
 
 <!-- Modo de uso-->
 
@@ -68,7 +70,7 @@ python.exe .\Watching_Killer.py --help
 
 <h4 align="center">
  
-![img](https://i.imgur.com/jspJxVV.png)
+![img](https://i.imgur.com/5viqJwi.png)
 
 
 </h4>
@@ -86,7 +88,7 @@ python.exe .\Watching_Killer.py --help
 
 <h4 align="center">
 
-![img](https://i.imgur.com/3xwtlsg.png)
+![img](https://i.imgur.com/zVQ6TOi.png)
 
 </h4>
  
