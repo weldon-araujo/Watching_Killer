@@ -24,7 +24,7 @@ O Watching Killer é uma toolkit cuja função é automatizar o processo de cybe
 
 <h1 align="center">Arquitetura da solução
 
-![img](https://i.imgur.com/MQFZi7Y.png)
+![img](https://i.imgur.com/Av8Nr8Q.png)
 
 </h1>
 
