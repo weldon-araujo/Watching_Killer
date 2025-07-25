@@ -12,17 +12,15 @@ O Watching Killer é uma toolkit cuja função é automatizar o processo de cybe
 
 <h3></h3>
 
-
 <h4 align="center">
   
-   :construction: Projeto em desenvolvimento:construction:
+   :construction: Projeto em Desenvolvimento:construction:
 
 </h4>
 
 <h3 ></h3>
 
-
-<h1 align="center">Arquitetura da solução
+<h1 align="center">Arquitetura da Solução
 
 ![img](https://i.imgur.com/Av8Nr8Q.png)
 
@@ -72,7 +70,6 @@ python.exe .\Watching_Killer.py --help
  
 ![img](https://i.imgur.com/5viqJwi.png)
 
-
 </h4>
 
 * O argumento de reputação "--reputation" utiliza o serviço de API do portal <a href="https://docs.abuseipdb.com/#introduction" target="_blank">AbuseipDB</a>, portanto pra uso desse argumento é necessário possuir uma chave de API desse serviço, que disponibiliza até 1K checks diários na categoria free, a ferramenta usa preferencialmente o arquivo .env com o valor key atribuido a váriavel **abuseipdbkey**, então na mesma raiz onde foi clonado o projeto basta criar um arquivo .env com exatamente o mesmo nome de variável como na figura a seguir e inserir a chave.
@@ -91,14 +88,22 @@ python.exe .\Watching_Killer.py --help
 ![img](https://i.imgur.com/zVQ6TOi.png)
 
 </h4>
- 
-* Relatórios e artigos de inteligência geralmente são utilizados como trigers para iniciar investigações, contudo algumas vezes os valores a serem extraidos não estão no padrão de nomenclatura que a ferramenta consegue extrair, a títulos de exemplo, fontes de inteligência podem abordar alguns TTPs que utilize ferramentas como cmd, vssadmin entre outros. Eles podem não os descreverem na forma de processos, que seriam cmd.exe e vssadmin.exe que é o padrão que a ferramenta consegue extrair, o agumento "-i" ou "--include" serve para repassar valores que usuário deseje inserir nas queries de resposta.
 
-* No exemplo abaixo é possível notar a presença dos processos cmd.exe e powershell.exe no arquivo de origem.
+* Essa funcionalidade permite selecionar o retorno dos endereços IP por categorias --low --moderate --high --critical
 
 <h4 align="center">
 
- ![img](https://i.imgur.com/qTnO4iH.png)
+![img](https://i.imgur.com/CRNufLj.png)
+
+</h4>
+ 
+* Relatórios e artigos de inteligência geralmente são utilizados como trigers para iniciar investigações, contudo algumas vezes os valores a serem extraidos não estão no padrão de nomenclatura que a ferramenta consegue extrair, a títulos de exemplo, fontes de inteligência podem abordar alguns TTPs que utilize ferramentas como cmd, vssadmin entre outros. Eles podem não os descreverem na forma de processos, que seriam cmd.exe e vssadmin.exe que é o padrão que a ferramenta consegue extrair, o agumento "-i" ou "--include" serve para repassar valores que usuário deseje inserir nas queries de resposta.
+
+* No exemplo abaixo é possível notar a presença dos processos socks.exe e soks.exe no arquivo de origem.
+
+<h4 align="center">
+
+ ![img](https://i.imgur.com/XhitS5R.png)
 
  </h4>
 
@@ -106,7 +111,7 @@ python.exe .\Watching_Killer.py --help
 
 <h4 align="center">
  
-![img](https://i.imgur.com/NBUfEkc.png)
+![img](https://i.imgur.com/nJUrMjO.png)
 
 </h4>
 
@@ -114,9 +119,23 @@ python.exe .\Watching_Killer.py --help
 
 <h4 align="center">
  
-![img](https://i.imgur.com/enfOXeJ.png)
+![img](https://i.imgur.com/p5DW67a.png)
 
 </h4>
+
+* A ferramenta busca realizar também retorno com base em valores de processos de forma específica através de módulos auxiliares específicos pra essa finalidade que são --dll, --ps1 e --exe
+
+* DLLs
+  
+![img](https://i.imgur.com/2PwZbJ7.png)
+
+* Scripts Powershell
+
+![img](https://i.imgur.com/Nd0R238.png)
+
+* Executáveis
+
+![img](https://i.imgur.com/OmA3hXA.png)
 
 * O argumento --exploitdb utilizado em conjunto com o --cve realiza uma busca por exploits públicos mantidos pela base do <a href="https://gitlab.com/exploit-database/exploitdb/" target="_blank">Exploitdb</a> no Gitlab público oficial.
 
@@ -125,6 +144,15 @@ python.exe .\Watching_Killer.py --help
 ![img](https://i.imgur.com/WAnMNE4.png)
 
 </h4>
+
+* O argumento --github realiza uma busca por repositórios com base na lista de CVEs extraidas, essa funcionalidade faz uso da API do github, portanto assim como no caso do abuseIPDB é necessário possuir uma chave de API e cadastrala no mesmo arquivo .env porem com o nome "githubtoken" no mesmo forma em que é descrito API do AbuseIPDB
+
+<h4 align="center">
+
+![img](https://i.imgur.com/U9ujv1B.png)
+
+</h4>
+
 
 * O argumento --cve_details utilizado em conjunto com o --cve traz informações acerca das CVEs extraidas.
 
